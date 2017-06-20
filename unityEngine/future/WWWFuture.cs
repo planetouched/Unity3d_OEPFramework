@@ -19,7 +19,6 @@ namespace OEPFramework.unityEngine.future
             this.version = version;
             this.url = url;
             this.tryCount = tryCount;
-            LoopOn(Loops.UPDATE, Update);
         }
 
         private void Update()
@@ -47,6 +46,7 @@ namespace OEPFramework.unityEngine.future
         protected override void OnRun()
         {
             Request();
+            LoopOn(Loops.UPDATE, Update);
             Play();
         }
 
