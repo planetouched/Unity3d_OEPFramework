@@ -37,6 +37,9 @@ namespace OEPFramework.unityEngine
             List<Action<object>> list;
             if (!items.TryGetValue(category, out list)) return;
             list.Remove(method);
+			
+			if (list.Count == 0)
+                items.Remove(category);
         }
 
         public static void Call(string category, object obj = null)
