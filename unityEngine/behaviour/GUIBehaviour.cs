@@ -21,6 +21,7 @@ namespace OEPFramework.unityEngine.behaviour
         {
             external = true;
             gameObject = go;
+			rectTransform = gameObject.GetComponent<RectTransform>();
         }
 
         protected GUIBehaviour(string prefabPath, RectTransform parent)
