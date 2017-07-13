@@ -1,4 +1,5 @@
-﻿using OEPFramework.unityEngine.behaviour;
+﻿using System.Collections.Generic;
+using OEPFramework.unityEngine.behaviour;
 using OEPFramework.unityEngine.loop;
 using UnityEngine;
 
@@ -11,12 +12,33 @@ namespace OEPFramework.unityEngine.future
 
         private readonly string url;
         private readonly int tryCount;
-        private int resendCounter;
-        private readonly int version;
+        private readonly WWWForm form;
+        private readonly byte[] data;
+        private readonly Dictionary<string, string> headers;
+        private Hash128? hash128;
+        private readonly uint crc32;
 
-        public WWWFuture(string url, int version = 0, int tryCount = 1)
+        private int resendCounter;
+
+        public WWWFuture(string url, WWWForm form, int tryCount = 1)
         {
-            this.version = version;
+            this.url = url;
+            this.form = form;
+            this.tryCount = tryCount;
+        }
+
+        public WWWFuture(string url, int tryCount = 1, Hash128? version = null, uint crc32 = 0)
+        {
+            this.url = url;
+            this.tryCount = tryCount;
+            hash128 = version;
+            this.crc32 = crc32;
+        }
+
+        public WWWFuture(string url, byte[] data, Dictionary<string, string> headers, int tryCount = 1)
+        {
+            this.data = data;
+            this.headers = headers;
             this.url = url;
             this.tryCount = tryCount;
         }
@@ -25,7 +47,7 @@ namespace OEPFramework.unityEngine.future
         {
             if (!request.isDone) return;
             error = request.error;
-            if (error == null || (error != null && !Request()))
+            if (string.IsNullOrEmpty(error) || !string.IsNullOrEmpty(error) && !Request())
                 Complete();
         }
 
@@ -36,7 +58,23 @@ namespace OEPFramework.unityEngine.future
 
             if (resendCounter++ < tryCount)
             {
-                request = version == 0 ? new WWW(url) : WWW.LoadFromCacheOrDownload(url, version);
+                if (form != null)
+                {
+                    request = new WWW(url, form);
+                    return true;
+                }
+
+                if (data != null && headers != null)
+                {
+                    request = new WWW(url, data, headers);
+                    return true;
+                }
+
+                if (hash128 == null)
+                    request = new WWW(url);
+                else
+                    request = crc32 == 0 ? WWW.LoadFromCacheOrDownload(url, hash128.Value) : WWW.LoadFromCacheOrDownload(url, hash128.Value, crc32);
+
                 return true;
             }
 

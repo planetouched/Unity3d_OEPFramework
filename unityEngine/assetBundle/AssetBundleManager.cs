@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Assets.framework.core;
 using OEPFramework.common;
 using OEPFramework.common.future;
 using OEPFramework.unityEngine.assetBundle.future;
@@ -57,20 +58,15 @@ namespace OEPFramework.unityEngine.assetBundle
             }
         }
 
-        public AssetBundlesRepository Repository
-        {
-            get { return repository; }
-        }
-
+        public AssetBundlesRepository repository { get; private set; }
         private readonly Dictionary<string, LoadBundlePromise> loading = new Dictionary<string, LoadBundlePromise>();
         private readonly Dictionary<string, AssetBundleRef> loaded = new Dictionary<string, AssetBundleRef>();
-        private readonly AssetBundlesRepository repository;
-        private readonly string assetBundlesUrl;
+        public string assetBundlesUrl { get; private set; }
 
-        public AssetBundleManager(RawNode repository, string assetBundlesUrl)
+        public AssetBundleManager(RawNode repositoryNode, string assetBundlesUrl)
         {
             this.assetBundlesUrl = assetBundlesUrl;
-            this.repository = new AssetBundlesRepository(repository);
+            repository = new AssetBundlesRepository(repositoryNode);
         }
 
         public T GetAsset<T>(string assetBundle) where T : Object
@@ -168,7 +164,8 @@ namespace OEPFramework.unityEngine.assetBundle
                     }
 
                     //first load
-                    var loader = new LoadBundlePromise(assetBundle, assetBundlesUrl, assetBundleNode.parentNode != null, repository[assetBundle].version, async);
+                    var node = repository[assetBundle];
+                    var loader = new LoadBundlePromise(assetBundle, assetBundlesUrl, assetBundleNode.parentNode != null, async, node.version, node.crc32);
                     loading.Add(assetBundle, loader);
                     loaded.Add(assetBundle, new AssetBundleRef(assetBundle, assetBundleNode.parentNode != null));
                     string bundle = assetBundle;

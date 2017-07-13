@@ -11,7 +11,6 @@ namespace OEPFramework.unityEngine.assetBundle.future
     public class LoadBundlePromise : Future, IProcess
     {
         private readonly string assetBundleName;
-        private readonly int version;
         private readonly string url;
 
         private WWWFuture wwwFuture;
@@ -19,6 +18,8 @@ namespace OEPFramework.unityEngine.assetBundle.future
         public AssetBundle assetBundle { get; private set; }
         public WWW request { get; private set; }
         private readonly bool async;
+        readonly Hash128? version;
+        private readonly uint crc32;
 
         public float loadingProgress { get { return wwwFuture.request.progress; } }
         public float unpackProgress { get { return unpackBundlePromise.asyncOperation.progress; } }
@@ -26,9 +27,11 @@ namespace OEPFramework.unityEngine.assetBundle.future
         public bool isComplete { get; private set; }
         public bool dependency { get; private set; }
 
-        public LoadBundlePromise(string assetBundleName, string url, bool dependency, int version = 0, bool async = true)
+        public LoadBundlePromise(string assetBundleName, string url, bool dependency, bool async = true, Hash128? version = null, uint crc32 = 0)
         {
             SetAsPromise();
+            this.crc32 = crc32;
+            this.version = version;
             this.async = async;
             this.assetBundleName = assetBundleName;
             this.version = version;
@@ -44,7 +47,7 @@ namespace OEPFramework.unityEngine.assetBundle.future
         private IEnumerator<IFuture> LoadingProcess()
         {
             Debug.Log("AssetBundle load: " + url + assetBundleName);
-            wwwFuture = new WWWFuture(url + assetBundleName, version, Int32.MaxValue);
+            wwwFuture = new WWWFuture(url + assetBundleName, Int32.MaxValue, version, crc32);
             yield return wwwFuture.Run();
 
             assetBundle = wwwFuture.request.assetBundle;
