@@ -109,6 +109,16 @@ namespace OEPFramework.unityEngine.assetBundle
             return Resources.UnloadUnusedAssets();
         }
 
+        public int GetLoadedPackedSize()
+        {
+            int size = 0;
+            foreach (var name in loaded.Keys)
+            {
+                size += repository[name].packedSize;
+            }
+            return size;
+        }
+
         public void TryUnload(string mainAssetBundle)
         {
             var node = new DependenceNode(mainAssetBundle, null);
