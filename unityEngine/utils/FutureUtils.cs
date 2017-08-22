@@ -8,6 +8,11 @@ namespace OEPFramework.unityEngine.utils
 {
     public static class FutureUtils
     {
+        public static IFuture Run(Action method)
+        {
+            return new FutureTask(method);
+        }
+
         public static IFuture Coroutine(Func<IEnumerator<IFuture>> func)
         {
             return new CoroutineFuture(func);

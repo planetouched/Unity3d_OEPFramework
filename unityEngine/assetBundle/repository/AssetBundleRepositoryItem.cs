@@ -1,4 +1,4 @@
-﻿using Assets.framework.core;
+﻿using OEPFramework.common;
 using UnityEngine;
 
 namespace OEPFramework.unityEngine.assetBundle.repository

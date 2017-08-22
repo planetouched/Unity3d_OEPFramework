@@ -1,6 +1,5 @@
-﻿using OEPFramework.common.future;
-using OEPFramework.common.service;
-using OEPFramework.unityEngine.utils;
+﻿using OEPFramework.common.service;
+using OEPFramework.common.service.future;
 using UnityEngine;
 
 namespace OEPFramework.unityEngine.assetBundle
@@ -14,11 +13,11 @@ namespace OEPFramework.unityEngine.assetBundle
         private AsyncOperation lastAsyncOperation;
         private int packedSize;
 
-        public override IFuture Start()
+        public override ManualStateFuture Start()
         {
             CheckState();
             GEvent.Attach(TRY_UNLOAD, OnTryUnload, null);
-            return startFuture = FutureUtils.GetEmptyCompletedFuture();
+            return startFuture = GetEmptyCompletedFuture();
         }
 
         public AssetBundleUnloadService(AssetBundleManager manager, int unloadPackedSizeInBytes)
@@ -32,20 +31,20 @@ namespace OEPFramework.unityEngine.assetBundle
             packedSize = sizeInBytes;
         }
 
-        public override IFuture Stop()
+        public override ManualStateFuture Stop()
         {
             CheckState();
             StopShedule();
             GEvent.Detach(TRY_UNLOAD, OnTryUnload);
-            return stopFuture = FutureUtils.GetEmptyCompletedFuture();
+            return stopFuture = GetEmptyCompletedFuture();
         }
 
-        public override IFuture Destroy()
+        public override ManualStateFuture Destroy()
         {
             CheckState();
             StopShedule();
             GEvent.Detach(TRY_UNLOAD, OnTryUnload);
-            return destroyFuture = FutureUtils.GetEmptyCompletedFuture();
+            return destroyFuture = GetEmptyCompletedFuture();
         }
 
         public void StartSchedule(float period)
