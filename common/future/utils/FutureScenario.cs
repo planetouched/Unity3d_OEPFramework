@@ -10,6 +10,8 @@ namespace OEPFramework.common.future.utils
         public event Action<bool> onComplete;
         public bool isRun { get; private set; }
         public bool isCancelled { get; private set; }
+        public bool isEmpty { get { return compositeFutures.Count == 1 && compositeFutures[0].futuresCount == 0; } }
+
         public FutureScenario()
         {
             Init();
@@ -79,6 +81,7 @@ namespace OEPFramework.common.future.utils
 
         public void Cancel()
         {
+            if (isCancelled) return;
             isCancelled = true;
             var cpy = new List<CompositeFuture>(compositeFutures);
             compositeFutures.Clear();
