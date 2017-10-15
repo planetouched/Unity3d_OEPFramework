@@ -4,11 +4,11 @@ namespace OEPFramework.common.service.future
 {
     public class ManualStateFuture : ThreadSafeFuture
     {
-        public int manualState { get; private set; }
+        public int state { get; private set; }
 
         public void SetState(int state)
         {
-            manualState = state;
+            this.state = state;
         }
         protected override void OnRun()
         {

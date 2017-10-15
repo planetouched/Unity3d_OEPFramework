@@ -6,6 +6,5 @@ namespace OEPFramework.common.service
     {
         ManualStateFuture Start();
         ManualStateFuture Stop();
-        ManualStateFuture Destroy();
     }
 }

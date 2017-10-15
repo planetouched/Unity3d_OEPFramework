@@ -11,6 +11,9 @@ namespace OEPFramework.service.socketService
         public event Action<SocketClient, byte[]> onIncomingData;
         private Pipeline pipeline;
 
+        private ManualStateFuture startFuture;
+        private ManualStateFuture stopFuture;
+
         private SocketService(SocketClient socketClient)
         {
             this.socketClient = socketClient;
@@ -32,7 +35,7 @@ namespace OEPFramework.service.socketService
 
         public override ManualStateFuture Start()
         {
-            CheckState();
+            startFuture = base.Start();
             startFuture = new ManualStateFuture();
             socketClient.Connect();
             socketClient.onIncomingData += OnIncomingData;
@@ -42,28 +45,24 @@ namespace OEPFramework.service.socketService
         }
         public override ManualStateFuture Stop()
         {
-            CheckState();
-            stopFuture = new ManualStateFuture();
+            stopFuture = base.Stop();
             socketClient.Disconnect();
             socketClient.onIncomingData -= OnIncomingData;
             return stopFuture;
-        }
-
-        public override ManualStateFuture Destroy()
-        {
-            return Stop();
         }
 
         private void OnDisconnect()
         {
             socketClient.onDisconnect -= OnDisconnect;
             stopFuture.Complete();
+            stopFuture = null;
         }
 
         private void OnConnect()
         {
             socketClient.onConnect -= OnConnect;
             startFuture.Complete();
+            startFuture = null;
         }
     }
 }

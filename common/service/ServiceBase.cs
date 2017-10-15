@@ -3,32 +3,62 @@ using OEPFramework.common.service.future;
 
 namespace OEPFramework.common.service
 {
+    public enum ServiceState
+    {
+        Start, Stop
+    }
+
     public abstract class ServiceBase : IService
     {
-        protected ManualStateFuture startFuture;
-        protected ManualStateFuture stopFuture;
-        protected ManualStateFuture destroyFuture;
+        public ServiceState state { get; protected set; }
+        private ManualStateFuture currentFuture;
 
-        protected void CheckState()
+        protected ServiceBase()
         {
-            if (startFuture != null && startFuture.wasRun)
-                throw new Exception("Service starts...");
-            if (stopFuture != null && stopFuture.wasRun)
-                throw new Exception("Service stops...");
-            if (destroyFuture != null && destroyFuture.wasRun)
-                throw new Exception("Service destroyed...");
+            state = ServiceState.Stop;
         }
 
-        public abstract ManualStateFuture Start();
-        public abstract ManualStateFuture Stop();
-        public abstract ManualStateFuture Destroy();
-
-        protected ManualStateFuture GetEmptyCompletedFuture()
+        void Check()
         {
-            var f = new ManualStateFuture();
-            f.Complete();
-            return f;
+            if (currentFuture != null)
+                throw new Exception("Service locked");
         }
 
+        public virtual ManualStateFuture Start()
+        {
+            if (state == ServiceState.Start)
+                throw new Exception("Service already started");
+
+            Check();
+
+            currentFuture = new ManualStateFuture();
+            currentFuture.AddListener(f =>
+            {
+                if (f.isDone)
+                {
+                    state = ServiceState.Start;
+                }
+                currentFuture = null;
+            });
+
+            return currentFuture;
+        }
+
+        public virtual ManualStateFuture Stop()
+        {
+            if (state == ServiceState.Stop)
+                throw new Exception("Service already stopped");
+
+            Check();
+
+            state = ServiceState.Stop;
+            currentFuture = new ManualStateFuture();
+            currentFuture.AddListener(f =>
+            {
+                currentFuture = null;
+            });
+
+            return currentFuture;
+        }
     }
 }
