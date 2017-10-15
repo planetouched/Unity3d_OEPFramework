@@ -9,8 +9,6 @@ namespace OEPFramework.unityEngine
 {
     public sealed class Timer
     {
-        public static string EVENT_TIMER_PAUSE = GEvent.GetUniqueCategory();
-
         public delegate void OnTimeUp(object o);
         public delegate void OnTimeUpVoid();
         private static readonly List<Timer> timers = new List<Timer>();
@@ -22,7 +20,6 @@ namespace OEPFramework.unityEngine
         private object firedObj;
         private bool work;
         private bool once;
-        private static DateTime pauseTime;
         private static DateTime lastTime;
         private bool realtime;
         private IDroppableItem dropper;
@@ -113,9 +110,6 @@ namespace OEPFramework.unityEngine
             timeStep = sec;
             work = true;
 
-            if (realtime)
-                GEvent.Attach(EVENT_TIMER_PAUSE, OnPause, null);
-
             if (timerDropper != null)
             {
                 dropper = timerDropper;
@@ -123,14 +117,6 @@ namespace OEPFramework.unityEngine
             }
 
             SyncHelper.Add(() => timers.Add(this), Loops.TIMER);
-        }
-
-        private void OnPause(object pause)
-        {
-            if ((bool)pause)
-                pauseTime = DateTime.UtcNow;
-            else
-                timeElapsed += (float)(DateTime.UtcNow - pauseTime).TotalSeconds;
         }
 
         public static void Process()
@@ -166,9 +152,6 @@ namespace OEPFramework.unityEngine
 
             onTimeUpEvent = null;
             onTimeUpVoidEvent = null;
-
-            if (realtime)
-                GEvent.Detach(EVENT_TIMER_PAUSE, OnPause);
 
             if (dropper != null)
                 dropper.onDrop -= Drop;
