@@ -43,6 +43,8 @@ namespace OEPFramework.unityEngine.assetBundle
             }
         }
 
+        public int loadedPackedSize { get; private set; }
+
         internal class DependenceNode
         {
             public DependenceNode parentNode;
@@ -96,7 +98,7 @@ namespace OEPFramework.unityEngine.assetBundle
                         pair.Value.assetBundle.Unload(true);
                         pair.Value.request.Dispose();
                     }
-
+                    loadedPackedSize -= repository[pair.Key].packedSize;
                     remove.Add(pair.Key);
                     Debug.Log("Unload: " + pair.Key);
                 }
@@ -106,16 +108,6 @@ namespace OEPFramework.unityEngine.assetBundle
                 loaded.Remove(key);
 
             return Resources.UnloadUnusedAssets();
-        }
-
-        public int GetLoadedPackedSize()
-        {
-            int size = 0;
-            foreach (var name in loaded.Keys)
-            {
-                size += repository[name].packedSize;
-            }
-            return size;
         }
 
         public void TryUnload(string mainAssetBundle)
@@ -181,6 +173,7 @@ namespace OEPFramework.unityEngine.assetBundle
 
                     loader.AddListener(future =>
                     {
+                        loadedPackedSize += repository[bundle].packedSize;
                         loading.Remove(bundle);
                         var ab = loaded[bundle];
                         ab.allAssets = loader.GetAssets();

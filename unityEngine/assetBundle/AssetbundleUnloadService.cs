@@ -15,9 +15,8 @@ namespace OEPFramework.unityEngine.assetBundle
 
         public override ManualStateFuture Start()
         {
-            CheckState();
             GEvent.Attach(TRY_UNLOAD, OnTryUnload, null);
-            return startFuture = GetEmptyCompletedFuture();
+            return base.Start();
         }
 
         public AssetBundleUnloadService(AssetBundleManager manager, int unloadPackedSizeInBytes)
@@ -33,18 +32,9 @@ namespace OEPFramework.unityEngine.assetBundle
 
         public override ManualStateFuture Stop()
         {
-            CheckState();
             StopShedule();
             GEvent.Detach(TRY_UNLOAD, OnTryUnload);
-            return stopFuture = GetEmptyCompletedFuture();
-        }
-
-        public override ManualStateFuture Destroy()
-        {
-            CheckState();
-            StopShedule();
-            GEvent.Detach(TRY_UNLOAD, OnTryUnload);
-            return destroyFuture = GetEmptyCompletedFuture();
+            return base.Stop();
         }
 
         public void StartSchedule(float period)
@@ -72,7 +62,7 @@ namespace OEPFramework.unityEngine.assetBundle
 
         public void TryUnload()
         {
-            if (assetBundleManager.GetLoadedPackedSize() >= packedSize)
+            if (assetBundleManager.loadedPackedSize >= packedSize)
                 ForceTryUnload();
         }
 
