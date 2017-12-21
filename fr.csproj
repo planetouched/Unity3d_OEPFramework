@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1620EFA7-F120-4348-8530-5C0A98D81F27}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>OEPFramework</RootNamespace>
+    <AssemblyName>OEPFramework</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="common\byteBuf\ByteBuffBase.cs" />
+    <Compile Include="common\byteBuf\ByteBufReader.cs" />
+    <Compile Include="common\byteBuf\ByteBufWriter.cs" />
+    <Compile Include="common\future\coroutine\Coroutine1Future.cs" />
+    <Compile Include="common\future\coroutine\Coroutine2Future.cs" />
+    <Compile Include="common\future\coroutine\Coroutine3Future.cs" />
+    <Compile Include="common\future\coroutine\Coroutine4Future.cs" />
+    <Compile Include="common\future\coroutine\CoroutineFuture.cs" />
+    <Compile Include="common\future\coroutine\CoroutineFutureBase.cs" />
+    <Compile Include="common\future\DummyBreakFuture.cs" />
+    <Compile Include="common\future\Future.cs" />
+    <Compile Include="common\future\FutureBase.cs" />
+    <Compile Include="common\future\FutureTask.cs" />
+    <Compile Include="common\future\IFuture.cs" />
+    <Compile Include="common\future\ThreadSafeFuture.cs" />
+    <Compile Include="common\future\utils\CompositeFuture.cs" />
+    <Compile Include="common\future\utils\FutureQueue.cs" />
+    <Compile Include="common\future\utils\FutureScenario.cs" />
+    <Compile Include="common\future\utils\threadsafe\FutureWatcher.cs" />
+    <Compile Include="common\IProcess.cs" />
+    <Compile Include="common\Lazy.cs" />
+    <Compile Include="common\pipeline\IPipelineHandler.cs" />
+    <Compile Include="common\pipeline\Pipeline.cs" />
+    <Compile Include="common\pipeline\PipelineHandlerBase.cs" />
+    <Compile Include="common\pool\IObjectPool.cs" />
+    <Compile Include="common\pool\IPooled.cs" />
+    <Compile Include="common\pool\ObjectPool.cs" />
+    <Compile Include="common\pool\Pooled.cs" />
+    <Compile Include="common\RawNode.cs" />
+    <Compile Include="common\service\future\ManualStateFuture.cs" />
+    <Compile Include="common\service\IService.cs" />
+    <Compile Include="common\service\ServiceBase.cs" />
+    <Compile Include="common\service\ServiceManager.cs" />
+    <Compile Include="common\StateMachine.cs" />
+    <Compile Include="common\thread\FixedThreadsExecutor.cs" />
+    <Compile Include="common\thread\IExecutor.cs" />
+    <Compile Include="common\thread\SingleThreadExecutor.cs" />
+    <Compile Include="common\Tuple.cs" />
+    <Compile Include="common\utils\SingletonManager.cs" />
+    <Compile Include="common\WeakRef.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="service\socketService\IReceiveHandler.cs" />
+    <Compile Include="service\socketService\MessageFactory.cs" />
+    <Compile Include="service\socketService\message\MessageBase.cs" />
+    <Compile Include="service\socketService\message\ReceivableMessageBase.cs" />
+    <Compile Include="service\socketService\message\SendableMessageBase.cs" />
+    <Compile Include="service\socketService\pipeline\ByteToMessageDecoder.cs" />
+    <Compile Include="service\socketService\pipeline\MessageBuilder.cs" />
+    <Compile Include="service\socketService\pipeline\PlayerHandlerBase.cs" />
+    <Compile Include="service\socketService\SocketClient.cs" />
+    <Compile Include="service\socketService\SocketService.cs" />
+    <Compile Include="unityEngine\assetBundle\AssetBundleManager.cs" />
+    <Compile Include="unityEngine\assetBundle\AssetbundleUnloadService.cs" />
+    <Compile Include="unityEngine\assetBundle\future\CascadeLoadingPromise.cs" />
+    <Compile Include="unityEngine\assetBundle\future\LoadBundlePromise.cs" />
+    <Compile Include="unityEngine\assetBundle\future\ProcessFuture.cs" />
+    <Compile Include="unityEngine\assetBundle\future\UnpackBundlePromise.cs" />
+    <Compile Include="unityEngine\assetBundle\ProcessChecker.cs" />
+    <Compile Include="unityEngine\assetBundle\repository\AssetBundleRepositoryItem.cs" />
+    <Compile Include="unityEngine\assetBundle\repository\AssetBundlesRepository.cs" />
+    <Compile Include="unityEngine\assetBundle\Unloader.cs" />
+    <Compile Include="unityEngine\assetBundle\СascadeLoading.cs" />
+    <Compile Include="unityEngine\behaviour\ControlLoopBehaviour.cs" />
+    <Compile Include="unityEngine\behaviour\FutureBehaviour.cs" />
+    <Compile Include="unityEngine\behaviour\GUIBehaviour.cs" />
+    <Compile Include="unityEngine\behaviour\IControllable.cs" />
+    <Compile Include="unityEngine\behaviour\ILoopable.cs" />
+    <Compile Include="unityEngine\behaviour\IPlayable.cs" />
+    <Compile Include="unityEngine\behaviour\LoopBehaviour.cs" />
+    <Compile Include="unityEngine\CachedComponents.cs" />
+    <Compile Include="unityEngine\extension\Extensions.cs" />
+    <Compile Include="unityEngine\future\DelayFuture.cs" />
+    <Compile Include="unityEngine\future\UpdateLoopFuture.cs" />
+    <Compile Include="unityEngine\future\WaitFuture.cs" />
+    <Compile Include="unityEngine\future\WaitSignalFuture.cs" />
+    <Compile Include="unityEngine\future\WWWFuture.cs" />
+    <Compile Include="unityEngine\GEvent.cs" />
+    <Compile Include="unityEngine\loop\EngineLoop.cs" />
+    <Compile Include="unityEngine\loop\EngineLoopManager.cs" />
+    <Compile Include="unityEngine\loop\Loops.cs" />
+    <Compile Include="unityEngine\RaycastEvent.cs" />
+    <Compile Include="unityEngine\Timer.cs" />
+    <Compile Include="unityEngine\transit\ControlLoopTransit.cs" />
+    <Compile Include="unityEngine\transit\LoopTransit.cs" />
+    <Compile Include="unityEngine\utils\ColorUtils.cs" />
+    <Compile Include="unityEngine\utils\FutureUtils.cs" />
+    <Compile Include="unityEngine\utils\SyncHelper.cs" />
+    <Compile Include="unityEngine\_base\DroppableItemBase.cs" />
+    <Compile Include="unityEngine\_base\IDroppableItem.cs" />
+    <Compile Include="utils\MiniJSON.cs" />
+    <Compile Include="utils\ReferenceCounter.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

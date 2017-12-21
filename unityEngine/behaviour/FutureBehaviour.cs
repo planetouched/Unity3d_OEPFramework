@@ -11,7 +11,7 @@ namespace OEPFramework.unityEngine.behaviour
         private readonly int hashCode;
 
         private readonly ControlLoopTransit controlLoopTransit;
-        public event Action onDrop;
+        public event Action<IDroppableItem> onDrop;
 
         public bool dropped { get { return controlLoopTransit.dropped; } }
         public bool initialized { get { return controlLoopTransit.initialized; } }
@@ -74,7 +74,7 @@ namespace OEPFramework.unityEngine.behaviour
             controlLoopTransit.Drop();
 
             if (onDrop != null)
-                onDrop();
+                onDrop((IDroppableItem)this);
             onDrop = null;
         }
     }

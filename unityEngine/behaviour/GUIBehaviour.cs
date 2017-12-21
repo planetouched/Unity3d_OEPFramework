@@ -5,7 +5,7 @@ using Object = UnityEngine.Object;
 
 namespace OEPFramework.unityEngine.behaviour
 {
-    public abstract class GUIBehaviour : ControlLoopBehaviour
+    public abstract partial class GUIBehaviour : ControlLoopBehaviour
     {
         private readonly string prefabPath;
         private RectTransform parent;
@@ -66,7 +66,7 @@ namespace OEPFramework.unityEngine.behaviour
                 if (parent != null)
                 {
                     gameObject.SetActive(false);
-                    gameObject.transform.SetParent(parent);
+                    gameObject.transform.SetParent(parent, false);
                     gameObject.SetActive(true);
                 }
             }

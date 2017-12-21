@@ -8,6 +8,7 @@ namespace OEPFramework.unityEngine
         private Transform _transform;
         private RectTransform _rectTransform;
         private Renderer _renderer;
+        private SpriteRenderer _spriteRenderer;
         private Camera _camera;
         private Collider _collider;
         private Collider2D _collider2D;
@@ -21,6 +22,7 @@ namespace OEPFramework.unityEngine
         public RectTransform rectTransform { get { return _rectTransform ?? (_rectTransform = _go.GetComponent<RectTransform>()); } }
         public Transform transform { get { return _transform ?? (_transform = _go.transform); } }
         public Renderer renderer { get { return _renderer ?? (_renderer = _go.GetComponent<Renderer>()); } }
+        public SpriteRenderer spriteRenderer { get { return _spriteRenderer ?? (_spriteRenderer = _go.GetComponent<SpriteRenderer>()); } }
         public Camera camera { get { return _camera ?? (_camera = _go.GetComponent<Camera>()); } }
         public Collider collider { get { return _collider ?? (_collider = _go.GetComponent<Collider>()); } }
         public Collider2D collider2D { get { return _collider2D ?? (_collider2D = _go.GetComponent<Collider2D>()); } }
@@ -43,6 +45,7 @@ namespace OEPFramework.unityEngine
             _rigidbody2D = null;
             _audioSource = null;
             _particleSystem = null;
+            _spriteRenderer = null;
         }
         
         public void SetGameObject(GameObject go)

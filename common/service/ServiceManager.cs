@@ -23,17 +23,12 @@ namespace OEPFramework.common.service
             var service = Get<T>();
             if (service != null)
             {
-                service.Destroy();
                 services.Remove(typeof (T));
             }
         }
 
         public static void RemoveAll()
         {
-            foreach (var service in services)
-            {
-                service.Value.Destroy();
-            }
             services.Clear();
         }
     }

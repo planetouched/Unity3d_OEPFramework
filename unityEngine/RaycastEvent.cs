@@ -183,7 +183,7 @@ namespace OEPFramework.unityEngine
 
             if (detacher != null)
             {
-                detacher.onDrop += () =>
+                detacher.onDrop += obj =>
                 {
                     RemoveLayerHandler(layer, handler, type);
                 };
@@ -221,7 +221,7 @@ namespace OEPFramework.unityEngine
 
             if (detacher != null)
             {
-                detacher.onDrop += () =>
+                detacher.onDrop += obj =>
                 {
                     RemoveTagHandler(tag, handler, type);
                 };
@@ -260,7 +260,7 @@ namespace OEPFramework.unityEngine
 
             if (detacher != null)
             {
-                detacher.onDrop += () =>
+                detacher.onDrop += obj =>
                 {
                     RemoveGameObjectHandler(go, handler, type);
                 };

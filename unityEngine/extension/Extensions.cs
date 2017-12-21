@@ -17,5 +17,18 @@ namespace OEPFramework.unityEngine.extension
             components.SetGameObject(go);
             return components;
         }
+		
+		public static void SetLayerRecursive(this GameObject go, int layer)
+        {
+            go.layer = layer;
+            int count = go.transform.childCount;
+            for (int i = 0; i < count; i++)
+            {
+                Transform t = go.transform.GetChild(i);
+                t.gameObject.layer = layer;
+                if (t.childCount > 0)
+                    SetLayerRecursive(t.gameObject, layer);
+            }
+        }
     }
 }

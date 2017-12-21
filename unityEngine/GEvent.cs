@@ -25,7 +25,7 @@ namespace OEPFramework.unityEngine
 
             if (detacher != null)
             {
-                detacher.onDrop += () =>
+                detacher.onDrop += obj =>
                 {
                     Detach(category, method);
                 };

@@ -12,7 +12,7 @@ namespace OEPFramework.unityEngine._base
         IDroppableItem
     {
         public bool dropped { get; protected set; }
-        public event Action onDrop;
+        public event Action<IDroppableItem> onDrop;
 
         public virtual void Drop()
         {
@@ -20,7 +20,7 @@ namespace OEPFramework.unityEngine._base
             dropped = true;
 
             if (onDrop != null)
-                onDrop();
+                onDrop(this);
             onDrop = null;
         }
     }
