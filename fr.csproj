@@ -108,6 +108,8 @@
     <Compile Include="unityEngine\assetBundle\repository\AssetBundlesRepository.cs" />
     <Compile Include="unityEngine\assetBundle\Unloader.cs" />
     <Compile Include="unityEngine\assetBundle\СascadeLoading.cs" />
+    <Compile Include="unityEngine\audio\AudioPlayer.cs" />
+    <Compile Include="unityEngine\audio\future\PlayAudioFuture.cs" />
     <Compile Include="unityEngine\behaviour\ControlLoopBehaviour.cs" />
     <Compile Include="unityEngine\behaviour\FutureBehaviour.cs" />
     <Compile Include="unityEngine\behaviour\GUIBehaviour.cs" />
