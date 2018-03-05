@@ -11,6 +11,8 @@ namespace OEPFramework.common.future.utils.threadsafe
 
         public void AddFuture(IFuture future)
         {
+            if (future == null) return;
+
             lock (locker)
             {
                 if (futures.Contains(future)) return;

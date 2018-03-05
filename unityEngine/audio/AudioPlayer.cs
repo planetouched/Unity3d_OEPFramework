@@ -142,11 +142,6 @@ namespace OEPFramework.unityEngine.audio
             if (sourceData.current != null)
                 sourceData.current.Cancel();
 
-            if (clip != null)
-                sourceData.current = new PlayAudioFuture(sourceData.source, clip);
-            else
-                sourceData.current = new PlayAudioFuture(sourceData.source, clips);
-
             sourceData.current = clip != null ? new PlayAudioFuture(sourceData.source, clip) : new PlayAudioFuture(sourceData.source, clips);
             sourceData.current.AddListener(f => { sourceData.current = null; });
             sourceData.current.Run();

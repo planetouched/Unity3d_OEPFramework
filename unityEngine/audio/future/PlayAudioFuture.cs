@@ -3,7 +3,7 @@ using OEPFramework.unityEngine.behaviour;
 using OEPFramework.unityEngine.loop;
 using UnityEngine;
 
-namespace OEPFramework.unityEngine.audio.future
+namespace Assets.game.common.audio.future
 {
     public class PlayAudioFuture : FutureBehaviour
     {
@@ -30,6 +30,12 @@ namespace OEPFramework.unityEngine.audio.future
 
         protected override void OnRun()
         {
+            if (audioSource == null)
+            {
+                Cancel();
+                return;
+            }
+
             if (scenario != null)
             {
                 scenario.onComplete += cancel =>
@@ -45,7 +51,6 @@ namespace OEPFramework.unityEngine.audio.future
                     audioSource.clip = clip;
 
                 audioSource.Play();
-
                 LoopOn(Loops.UPDATE, Update);
                 Play();
             }
@@ -69,10 +74,13 @@ namespace OEPFramework.unityEngine.audio.future
 
             if (scenario == null)
             {
-                audioSource.Stop();
+                if (audioSource != null)
+                {
+                    audioSource.Stop();
 
-                if (clip != null)
-                    audioSource.clip = null;
+                    if (clip != null)
+                        audioSource.clip = null;
+                }
             }
             else
             {
