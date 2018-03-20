@@ -131,9 +131,9 @@
     <Compile Include="unityEngine\manager\DroppableManager.cs" />
     <Compile Include="unityEngine\RaycastEvent.cs" />
     <Compile Include="unityEngine\Timer.cs" />
+    <Compile Include="unityEngine\transit\CollisionTransit.cs" />
     <Compile Include="unityEngine\transit\ControlLoopTransit.cs" />
     <Compile Include="unityEngine\transit\LoopTransit.cs" />
-    <Compile Include="unityEngine\utils\ColorUtils.cs" />
     <Compile Include="unityEngine\utils\FutureUtils.cs" />
     <Compile Include="unityEngine\utils\SyncHelper.cs" />
     <Compile Include="unityEngine\_base\DroppableItemBase.cs" />
