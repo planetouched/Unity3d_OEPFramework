@@ -11,8 +11,21 @@ namespace OEPFramework.unityEngine._base
 #endif
         IDroppableItem
     {
+        public static int globalHashCode;
+
+        private readonly int hashCode;
         public bool dropped { get; protected set; }
         public event Action<IDroppableItem> onDrop;
+
+        protected DroppableItemBase()
+        {
+            hashCode = globalHashCode++;
+        }
+
+        public override int GetHashCode()
+        {
+            return hashCode;
+        }
 
         public virtual void Drop()
         {

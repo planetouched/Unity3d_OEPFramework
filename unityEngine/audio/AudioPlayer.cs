@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.game.common.audio.future;
 using OEPFramework.common.future.utils.threadsafe;
-using OEPFramework.unityEngine.audio.future;
 using OEPFramework.unityEngine._base;
 using UnityEngine;
 
@@ -27,7 +27,7 @@ namespace OEPFramework.unityEngine.audio
         public AudioPlayer(string sourceGroupId, Transform parent = null)
         {
             sourceGroup = new GameObject(sourceGroupId);
-            sourceGroup.transform.SetParent(parent);
+            sourceGroup.transform.SetParent(parent, false);
             audioPlayers.Add(this);
         }
 
@@ -73,7 +73,7 @@ namespace OEPFramework.unityEngine.audio
             return 0.5f;
         }
 
-        static bool IsMuted(int layer)
+        public static bool IsMuted(int layer)
         {
             return muteSettings.ContainsKey(layer) && muteSettings[layer];
         }
@@ -84,7 +84,7 @@ namespace OEPFramework.unityEngine.audio
                 throw new Exception("Dropped");
 
             var go = new GameObject(key);
-            go.transform.SetParent(sourceGroup.transform);
+            go.transform.SetParent(sourceGroup.transform, false);
             var source = go.AddComponent<AudioSource>();
             source.mute = IsMuted(layer);
             source.volume = GetVolume(layer);

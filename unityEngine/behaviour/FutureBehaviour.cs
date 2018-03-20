@@ -7,7 +7,6 @@ namespace OEPFramework.unityEngine.behaviour
 {
     public abstract class FutureBehaviour : Future, IControllable, IDroppableItem, ILoopable
     {
-        static int globalHashCode;
         private readonly int hashCode;
 
         private readonly ControlLoopTransit controlLoopTransit;
@@ -17,7 +16,7 @@ namespace OEPFramework.unityEngine.behaviour
         public bool initialized { get { return controlLoopTransit.initialized; } }
         protected FutureBehaviour()
         {
-            hashCode = globalHashCode++;
+            hashCode = DroppableItemBase.globalHashCode++;
             controlLoopTransit = new ControlLoopTransit();
             controlLoopTransit.onDrop += onDrop;
             controlLoopTransit.onPlay = OnPlay;
@@ -32,6 +31,7 @@ namespace OEPFramework.unityEngine.behaviour
         protected virtual void OnInitialize() { }
         protected virtual void OnPause() { }
         protected virtual void OnPlay() { }
+
 
         public override int GetHashCode()
         {

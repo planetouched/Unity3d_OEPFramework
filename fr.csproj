@@ -128,6 +128,7 @@
     <Compile Include="unityEngine\loop\EngineLoop.cs" />
     <Compile Include="unityEngine\loop\EngineLoopManager.cs" />
     <Compile Include="unityEngine\loop\Loops.cs" />
+    <Compile Include="unityEngine\manager\DroppableManager.cs" />
     <Compile Include="unityEngine\RaycastEvent.cs" />
     <Compile Include="unityEngine\Timer.cs" />
     <Compile Include="unityEngine\transit\ControlLoopTransit.cs" />
@@ -140,5 +141,6 @@
     <Compile Include="utils\MiniJSON.cs" />
     <Compile Include="utils\ReferenceCounter.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

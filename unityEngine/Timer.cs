@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using OEPFramework.unityEngine.loop;
 using OEPFramework.unityEngine.utils;
 using OEPFramework.unityEngine._base;
-#if REFVIEW
-using OEPFramework.utils;
-#endif
 using UnityEngine;
 
 namespace OEPFramework.unityEngine
 {
-    public sealed class Timer
-#if REFVIEW
-    : ReferenceCounter
-#endif
+    public sealed class Timer : DroppableItemBase
     {
         public delegate void OnTimeUp(object o);
         public delegate void OnTimeUpVoid();
@@ -157,8 +151,10 @@ namespace OEPFramework.unityEngine
             Drop();
         }
 
-        public void Drop()
+        public override void Drop()
         {
+            if (dropped) return;
+
             if (dropper != null)
                 dropper.onDrop -= InternalDrop;
             dropper = null;
@@ -169,6 +165,8 @@ namespace OEPFramework.unityEngine
             onTimeUpVoidEvent = null;
 
             SyncHelper.Add(() => timers.Remove(this), Loops.TIMER);
+
+            base.Drop();
         }
     }
 }
