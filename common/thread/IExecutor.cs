@@ -1,7 +1,7 @@
 ﻿using System;
 using Assets.OEPFramework.future;
 
-namespace Assets.game.common.thread
+namespace Assets.common.thread
 {
     public interface IExecutor
     {

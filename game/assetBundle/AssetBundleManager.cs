@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Assets.common;
 using Assets.game.assetBundle.future;
 using Assets.game.assetBundle.repository;
 using Assets.game.common;

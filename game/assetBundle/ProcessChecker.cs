@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Assets.common.utils;
 using Assets.game.assetBundle.future;
-using Assets.game.common.utils;
 using Assets.OEPFramework.future;
 using Assets.OEPFramework.future.utils.threadsafe;
 

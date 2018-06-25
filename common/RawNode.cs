@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.game.common
+namespace Assets.common
 {
     public class RawNode
     {

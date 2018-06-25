@@ -1,4 +1,4 @@
-﻿namespace Assets.game.common.pool
+﻿namespace Assets.common.pool
 {
     public interface IObjectPool
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.game.common
+namespace Assets.common
 {
     public class WeakRef<T> where T : class
     {

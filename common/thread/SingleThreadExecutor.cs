@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Assets.OEPFramework.future;
 
-namespace Assets.game.common.thread
+namespace Assets.common.thread
 {
     public class SingleThreadExecutor : IExecutor
     {

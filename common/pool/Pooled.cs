@@ -2,7 +2,7 @@
 using OEPFramework.utils;
 #endif
 
-namespace Assets.game.common.pool
+namespace Assets.common.pool
 {
     public abstract class Pooled :
     #if REFVIEW

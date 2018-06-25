@@ -1,4 +1,4 @@
-﻿namespace Assets.game.common
+﻿namespace Assets.common
 {
     public class Tuple<T1, T2>
     {

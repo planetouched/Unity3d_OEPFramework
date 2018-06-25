@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.game.common.byteBuf
+namespace Assets.common.byteBuf
 {
     public class ByteBufReader : ByteBuffBase
     {

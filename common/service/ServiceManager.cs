@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.game.common.service
+namespace Assets.common.service
 {
     public static class ServiceManager
     {

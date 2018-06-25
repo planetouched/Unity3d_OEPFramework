@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.game.common.byteBuf
+namespace Assets.common.byteBuf
 {
     public class ByteBufWriter : ByteBuffBase
     {

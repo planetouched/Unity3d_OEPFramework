@@ -1,4 +1,4 @@
-﻿namespace Assets.game.common.pipeline
+﻿namespace Assets.common.pipeline
 {
     public interface IPipelineHandler
     {

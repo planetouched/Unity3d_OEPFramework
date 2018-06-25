@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Assets.OEPFramework.future;
 
-namespace Assets.game.common
+namespace Assets.common
 {
     public class StateMachine<T>
     {

@@ -1,6 +1,6 @@
 ﻿using Assets.OEPFramework.future;
 
-namespace Assets.game.common.service
+namespace Assets.common.service
 {
     public enum ServiceState
     {

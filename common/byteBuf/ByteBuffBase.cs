@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 
-namespace Assets.game.common.byteBuf
+namespace Assets.common.byteBuf
 {
     public abstract class ByteBuffBase
     {

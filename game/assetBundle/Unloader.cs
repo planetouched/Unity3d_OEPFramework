@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Assets.game.common.utils;
+using Assets.common.utils;
 
 namespace Assets.game.assetBundle
 {

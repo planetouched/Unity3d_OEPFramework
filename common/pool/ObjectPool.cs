@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.game.common.pool
+namespace Assets.common.pool
 {
     public class ObjectPool<T> : IObjectPool where T : class
     {

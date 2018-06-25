@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Assets.common;
 using Assets.game.common;
 
 namespace Assets.game.assetBundle.repository
