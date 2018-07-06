@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.common;
 using Assets.game.audio.future;
+using Assets.OEPFramework.unityEngine;
 using Assets.OEPFramework.unityEngine._base;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -12,6 +14,9 @@ namespace Assets.game.audio
         public static readonly List<AudioPlayer> audioPlayers = new List<AudioPlayer>();
         private static readonly Dictionary<int, bool> muteSettings = new Dictionary<int, bool>();
         private static readonly Dictionary<int, float> volumeSettings = new Dictionary<int, float>();
+
+        public static string MUTE = GEvent.GetUniqueCategory();
+        public static string SET_VOLUME = GEvent.GetUniqueCategory();
 
         public class AudioSourceData
         {
@@ -45,6 +50,8 @@ namespace Assets.game.audio
                         data.source.mute = mute;
                 }
             }
+
+            GEvent.Call(MUTE, new Tuple<int, bool>(layer, mute));
         }
 
         public static void SetVolume(int layer, float volume)
@@ -62,6 +69,8 @@ namespace Assets.game.audio
                         data.source.volume = volume;
                 }
             }
+
+            GEvent.Call(SET_VOLUME, new Tuple<int, float>(layer, volume));
         }
 
         public static float GetVolume(int layer)
@@ -132,19 +141,19 @@ namespace Assets.game.audio
             audioSourceData.Clear();
         }
 
-        public AudioFutureBase Play(string sourceKey, AudioClip[] clips)
+        public AudioFutureBase Play(string sourceKey, AudioClip[] clips, bool start = true)
         {
             if (clips == null) return null;
-            return InnerPlay(sourceKey, null, clips);
+            return InnerPlay(sourceKey, null, clips, start);
         }
 
-        public AudioFutureBase Play(string sourceKey, AudioClip clip)
+        public AudioFutureBase Play(string sourceKey, AudioClip clip, bool start = true)
         {
             if (clip == null) return null;
-            return InnerPlay(sourceKey, clip, null);
+            return InnerPlay(sourceKey, clip, null, start);
         }
 
-        public AudioFutureBase InnerPlay(string sourceKey, AudioClip clip, AudioClip[] clips)
+        private AudioFutureBase InnerPlay(string sourceKey, AudioClip clip, AudioClip[] clips, bool start)
         {
             if (dropped)
                 throw new Exception("Dropped");
@@ -159,7 +168,12 @@ namespace Assets.game.audio
 
             sourceData.current = clip != null ? new AudioFuture(sourceData.source, clip) : (AudioFutureBase)new SequenceAudioFuture(sourceData.source, clips);
             sourceData.current.AddListener(f => { sourceData.current = null; });
-            sourceData.current.Run();
+
+            if (start)
+            {
+                sourceData.current.Run();
+            }
+
             return sourceData.current;
         }
 
