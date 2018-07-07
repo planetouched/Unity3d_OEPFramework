@@ -1,14 +1,10 @@
-﻿using Assets.common.service;
-using Assets.OEPFramework.future;
-using Assets.OEPFramework.unityEngine;
+﻿using Assets.OEPFramework.unityEngine;
 using UnityEngine;
 
 namespace Assets.game.assetBundle
 {
-    public class AssetBundleUnloadService : IService
+    public class AssetBundleUnloadService
     {
-        public ServiceState state { get; private set; }
-
         public static string TRY_UNLOAD = GEvent.GetUniqueCategory();
 
         private readonly AssetBundleManager assetBundleManager;
@@ -22,7 +18,6 @@ namespace Assets.game.assetBundle
             this.cleanPeriod = cleanPeriod;
             assetBundleManager = manager;
             packedSize = unloadPackedSizeInBytes;
-            state = ServiceState.Stopped;
         }
 
         public void SetUnloadPacketSize(int sizeInBytes)
@@ -31,22 +26,18 @@ namespace Assets.game.assetBundle
         }
 
 
-        public IFuture Start()
+        public void Start()
         {
             if (cleanPeriod > 0)
                 StartSchedule(cleanPeriod);
 
             GEvent.Attach(TRY_UNLOAD, OnTryUnload, null);
-            state = ServiceState.Working;
-            return null;
         }
 
-        public IFuture Stop()
+        public void Stop()
         {
             StopShedule();
             GEvent.Detach(TRY_UNLOAD, OnTryUnload);
-            state = ServiceState.Stopped;
-            return null;
         }
 
         public void StartSchedule(float period)
