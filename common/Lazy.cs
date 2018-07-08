@@ -5,9 +5,8 @@ namespace Assets.common
     public class Lazy<T>
     {
         private T value;
-        private bool created;
 
-        public bool isCreated { get { return created; } }
+        public bool isCreated { get; private set; }
         private Func<T> initFunc;
         public Action<T> onCreate  { get; set; }
 
@@ -23,12 +22,12 @@ namespace Assets.common
 
         public T GetValue()
         {
-            if (created)
+            if (isCreated)
                 return value;
 
             value = initFunc();
             initFunc = null;
-            created = true;
+            isCreated = true;
             
             if (onCreate != null)
                 onCreate(value);
