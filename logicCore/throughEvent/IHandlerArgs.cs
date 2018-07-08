@@ -1,4 +1,4 @@
-﻿namespace Assets.logicCore.events
+﻿namespace Assets.logicCore.throughEvent
 {
     public interface IHandlerArgs
     {

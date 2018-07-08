@@ -1,4 +1,4 @@
-﻿namespace Assets.logicCore.models
+﻿namespace Assets.logicCore.model
 {
     public interface ISerialize
     {

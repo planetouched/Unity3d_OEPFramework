@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using Assets.logicCore.contexts;
-using Assets.logicCore.models;
 
-namespace Assets.logicCore.events
+namespace Assets.logicCore.throughEvent
 {
     public class Event
     {
@@ -23,9 +21,9 @@ namespace Assets.logicCore.events
 
         public delegate void EventHandler(CoreParams cp, IHandlerArgs args);
 
-        readonly Dictionary<EventCategory, List<KeyValuePair<int, EventHandler>>> handlers = new Dictionary<EventCategory, List<KeyValuePair<int, EventHandler>>>();
+        readonly Dictionary<IEventCategory, List<KeyValuePair<int, EventHandler>>> handlers = new Dictionary<IEventCategory, List<KeyValuePair<int, EventHandler>>>();
 
-        void InnerAttach(EventCategory category, EventHandler func)
+        void InnerAttach(IEventCategory category, EventHandler func)
         {
             List<KeyValuePair<int, EventHandler>> value;
             if (handlers.TryGetValue(category, out value))
@@ -37,13 +35,13 @@ namespace Assets.logicCore.events
             }
         }
 
-        public void Attach(EventCategory category, EventHandler func)
+        public void Attach(IEventCategory category, EventHandler func)
         {
             attachId = globalAttachId++;
             InnerAttach(category, func);
         }
 
-        void InnerDetach(EventCategory category, EventHandler func)
+        void InnerDetach(IEventCategory category, EventHandler func)
         {
             List<KeyValuePair<int, EventHandler>> list;
             if (handlers.TryGetValue(category, out list))
@@ -64,15 +62,15 @@ namespace Assets.logicCore.events
             }
         }
 
-        public void Detach(EventCategory category, EventHandler func)
+        public void Detach(IEventCategory category, EventHandler func)
         {
             InnerDetach(category, func);
         }
 
-        public static void Call(EventCategory category, List<IModel> models, IHandlerArgs args, IContext context)
+        public static void Call(IEventCategory category, List<IEventSource> path, IHandlerArgs args)
         {
             var toCall = new List<KeyValuePair<int, EventHandler>>();
-            foreach (var model in models)
+            foreach (var model in path)
             {
                 List<KeyValuePair<int, EventHandler>> tmp;
                 if (model.GetEvent().handlers.TryGetValue(category, out tmp))
@@ -85,11 +83,10 @@ namespace Assets.logicCore.events
                 toCall.Sort(comparer);
 
             var eventCallStack = new EventCallStack();
-            eventCallStack.Set(models, true);
+            eventCallStack.Set(path, true);
 
             CoreParams cp;
             cp.stack = eventCallStack;
-            cp.context = context;
             cp.category = category;
 
             switch (toCall.Count)

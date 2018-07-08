@@ -1,11 +1,11 @@
-﻿namespace Assets.logicCore.events
+﻿namespace Assets.logicCore.throughEvent
 {
-    public class EventCategory
+    public class EventCategory : IEventCategory
     {
         private static int id;
         private readonly int hashCode;
-        public string description { get; private set; }
-        
+        public string description { get; }
+
         public EventCategory(string description = null)
         {
             hashCode = id++;
