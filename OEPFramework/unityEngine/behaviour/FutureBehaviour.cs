@@ -74,7 +74,7 @@ namespace Assets.OEPFramework.unityEngine.behaviour
             controlLoopTransit.Drop();
 
             if (onDrop != null)
-                onDrop((IDroppableItem)this);
+                onDrop(this);
             onDrop = null;
         }
     }

@@ -31,7 +31,7 @@ namespace Assets.OEPFramework.unityEngine.future
         {
             if (isCancelled)
             {
-                delayFuture.Cancel();                
+                delayFuture.Cancel();
             }
 
             if (timer != null)

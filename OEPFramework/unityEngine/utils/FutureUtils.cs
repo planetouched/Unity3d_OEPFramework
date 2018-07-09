@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.OEPFramework.future;
 using Assets.OEPFramework.future.coroutine;
+using Assets.OEPFramework.future.utils;
 using Assets.OEPFramework.unityEngine.future;
 
 namespace Assets.OEPFramework.unityEngine.utils
@@ -56,6 +57,11 @@ namespace Assets.OEPFramework.unityEngine.utils
         public static IFuture UpdateLoop(Action<UpdateLoopFuture> updateAction)
         {
             return new UpdateLoopFuture(updateAction);
+        }
+
+        public static IFuture FutureScenario(FutureScenario futureScenario)
+        {
+            return new FutureScenarioFuture(futureScenario);
         }
     }
 }
