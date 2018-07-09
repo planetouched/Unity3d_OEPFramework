@@ -7,11 +7,11 @@ namespace OEPFramework
     {
         static void Main(string[] args)
         {
-            var rnd = new LRandom(1);
+            var rnd = new FastRandom(0);
 
             int[] r = new int[100];
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 1000000; i++)
             {
                 int result = rnd.NextInt(0, 100);
                 r[result]++;
