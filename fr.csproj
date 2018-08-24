@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1620EFA7-F120-4348-8530-5C0A98D81F27}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>Assets</RootNamespace>
     <AssemblyName>OEPFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
@@ -45,12 +45,30 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="common\random\FastRandom.cs" />
+    <Compile Include="common\random\LRandom.cs" />
     <Compile Include="game\audio\future\AudioFuture.cs" />
     <Compile Include="game\audio\future\AudioFutureBase.cs" />
     <Compile Include="game\audio\future\SequenceAudioFuture.cs" />
     <Compile Include="common\byteBuf\ByteBuffBase.cs" />
     <Compile Include="common\byteBuf\ByteBufReader.cs" />
     <Compile Include="common\byteBuf\ByteBufWriter.cs" />
+    <Compile Include="game\GameLoop.cs" />
+    <Compile Include="game\preloader\AppStart.cs" />
+    <Compile Include="logicCore\collection\ChildrenCollection.cs" />
+    <Compile Include="logicCore\contexts\IContext.cs" />
+    <Compile Include="logicCore\throughEvent\CoreParams.cs" />
+    <Compile Include="logicCore\throughEvent\Event.cs" />
+    <Compile Include="logicCore\throughEvent\EventCallStack.cs" />
+    <Compile Include="logicCore\throughEvent\EventCategory.cs" />
+    <Compile Include="logicCore\model\EventSource.cs" />
+    <Compile Include="logicCore\throughEvent\IEventSource.cs" />
+    <Compile Include="logicCore\throughEvent\IEventCategory.cs" />
+    <Compile Include="logicCore\throughEvent\IHandlerArgs.cs" />
+    <Compile Include="logicCore\collection\IChild.cs" />
+    <Compile Include="logicCore\model\IEntity.cs" />
+    <Compile Include="logicCore\model\ISerialize.cs" />
+    <Compile Include="logicCore\model\Entity.cs" />
     <Compile Include="OEPFramework\future\coroutine\Coroutine1Future.cs" />
     <Compile Include="OEPFramework\future\coroutine\Coroutine2Future.cs" />
     <Compile Include="OEPFramework\future\coroutine\Coroutine3Future.cs" />
@@ -77,8 +95,6 @@
     <Compile Include="common\pool\ObjectPool.cs" />
     <Compile Include="common\pool\Pooled.cs" />
     <Compile Include="common\RawNode.cs" />
-    <Compile Include="common\service\IService.cs" />
-    <Compile Include="common\service\ServiceManager.cs" />
     <Compile Include="common\StateMachine.cs" />
     <Compile Include="common\thread\FixedThreadsExecutor.cs" />
     <Compile Include="common\thread\IExecutor.cs" />
@@ -86,6 +102,8 @@
     <Compile Include="common\Tuple.cs" />
     <Compile Include="common\utils\SingletonManager.cs" />
     <Compile Include="common\WeakRef.cs" />
+    <Compile Include="OEPFramework\unityEngine\future\FutureScenarioFuture.cs" />
+    <Compile Include="OEPFramework\unityEngine\future\SyncLoopFuture.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="game\assetBundle\AssetBundleManager.cs" />

@@ -63,5 +63,10 @@ namespace Assets.OEPFramework.unityEngine.utils
         {
             return new FutureScenarioFuture(futureScenario);
         }
+
+        public static IFuture SyncLoop(int loopType)
+        {
+            return new SyncLoopFuture(loopType);
+        }
     }
 }
