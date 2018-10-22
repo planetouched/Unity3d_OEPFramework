@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 #if REFVIEW
 using OEPFramework.utils;
@@ -32,7 +33,7 @@ namespace Assets.OEPFramework.future
         protected FutureBase()
         {
             syncRoot = new object();
-            hashCode = globalHashCode++;
+            hashCode = Interlocked.Increment(ref globalHashCode);
         }
 
         protected void CallRunHandlers()

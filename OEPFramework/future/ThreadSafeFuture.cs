@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Threading;
 
 namespace Assets.OEPFramework.future
 {
     public abstract class ThreadSafeFuture : IFuture
     {
-
         static int globalHashCode;
         private readonly int hashCode;
 
@@ -20,7 +20,7 @@ namespace Assets.OEPFramework.future
         protected ThreadSafeFuture ()
         {
             syncRoot = new object();
-            hashCode = globalHashCode++;
+            hashCode = Interlocked.Increment(ref globalHashCode);
         }
 
         public override int GetHashCode()

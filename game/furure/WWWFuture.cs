@@ -47,8 +47,17 @@ namespace Assets.game.furure
         {
             if (!request.isDone) return;
             error = request.error;
-            if (string.IsNullOrEmpty(error) || !string.IsNullOrEmpty(error) && !Request())
+
+            if (string.IsNullOrEmpty(error))
+            {
                 Complete();
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(error) && !Request())
+            {
+                Cancel();
+            }
         }
 
         bool Request()
