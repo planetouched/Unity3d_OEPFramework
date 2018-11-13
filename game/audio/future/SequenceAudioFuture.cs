@@ -9,7 +9,6 @@ namespace Assets.game.audio.future
     {
         private IFuture coroutine;
         private readonly AudioClip[] clips;
-        private readonly AudioSource audioSource;
 
         public SequenceAudioFuture(AudioSource audioSource, AudioClip[] clips)
         {
