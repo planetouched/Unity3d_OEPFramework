@@ -130,7 +130,7 @@
     <Compile Include="OEPFramework\unityEngine\future\UpdateLoopFuture.cs" />
     <Compile Include="OEPFramework\unityEngine\future\WaitFuture.cs" />
     <Compile Include="OEPFramework\unityEngine\future\WaitSignalFuture.cs" />
-    <Compile Include="game\furure\WWWFuture.cs" />
+    <Compile Include="game\future\WWWFuture.cs" />
     <Compile Include="OEPFramework\unityEngine\GEvent.cs" />
     <Compile Include="OEPFramework\unityEngine\loop\EngineLoop.cs" />
     <Compile Include="OEPFramework\unityEngine\loop\EngineLoopManager.cs" />

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.game.furure;
+using Assets.game.future;
 using Assets.OEPFramework.future;
 using Assets.OEPFramework.unityEngine.utils;
 using UnityEngine;
