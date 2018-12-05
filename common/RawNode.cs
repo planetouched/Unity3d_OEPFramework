@@ -6,54 +6,35 @@ namespace Assets.common
     public class RawNode
     {
         public static RawNode emptyNode = new RawNode();
-        static readonly List<object> emptyList = new List<object>();
         
-        public string id { get; private set; }
-        private readonly object rawData;
+        public string nodeKey { get; private set; }
         public int nodesCount { get { return dictionary.Count; } }
-        private KeyValuePair<string, RawNode>[] _sortedCache;
-        private KeyValuePair<string, RawNode>[] _unsortedCache;
 
-        public RawNode(object rawData)
+        private readonly object _rawData;
+        private KeyValuePair<string, RawNode>[] sortedCache;
+        private KeyValuePair<string, RawNode>[] unsortedCache;
+
+        public RawNode(object rawData = null, string nodeKey = null)
         {
-            this.rawData = rawData;
-        }
-
-        private RawNode()
-        {
-        }
-
-        public RawNode(params object [] args)
-        {
-            if (args == null || args.Length == 0 || args.Length % 2 == 1)
-                throw new Exception("CreateParams Invalid params");
-
-            var tmp = new Dictionary<string, object>();
-            for (int i = 0; i < args.Length; i += 2)
-            {
-                tmp.Add((string)args[i], args[i + 1]);
-            }
-            rawData = tmp;
+            _rawData = rawData;
+            this.nodeKey = nodeKey;
         }
 
         public object GetRawData()
         {
-            return rawData;
+            return _rawData;
         }
-
-        #region setNode
 
         public void SetValue<T>(string key, T value)
         {
             dictionary[key] = value;
         }
 
-        #endregion
         #region getNode
-        public int GetInt(string key, int defaultValue = 0)
+        public virtual int GetInt(string key, int defaultValue = 0)
         {
             object value;
-            if (rawData != null && dictionary.TryGetValue(key, out value))
+            if (_rawData != null && dictionary.TryGetValue(key, out value))
                 return Convert.ToInt32(value);
             return defaultValue;
         }
@@ -61,15 +42,15 @@ namespace Assets.common
         public uint GetUInt(string key, uint defaultValue = 0)
         {
             object value;
-            if (rawData != null && dictionary.TryGetValue(key, out value))
+            if (_rawData != null && dictionary.TryGetValue(key, out value))
                 return Convert.ToUInt32(value);
             return defaultValue;
         }
 
-        public long GetLong(string key, long defaultValue = 0)
+        public virtual long GetLong(string key, long defaultValue = 0)
         {
             object value;
-            if (rawData != null && dictionary.TryGetValue(key, out value))
+            if (_rawData != null && dictionary.TryGetValue(key, out value))
                 return (long)value;
             return defaultValue;
         }
@@ -77,7 +58,7 @@ namespace Assets.common
         public float GetFloat(string key, float defaultValue = 0)
         {
             object value;
-            if (rawData != null && dictionary.TryGetValue(key, out value))
+            if (_rawData != null && dictionary.TryGetValue(key, out value))
                 return Convert.ToSingle(value);
             return defaultValue;
         }
@@ -85,7 +66,7 @@ namespace Assets.common
         public double GetDouble(string key, double defaultValue = 0)
         {
             object value;
-            if (rawData != null && dictionary.TryGetValue(key, out value))
+            if (_rawData != null && dictionary.TryGetValue(key, out value))
                 return Convert.ToDouble(value);
             return defaultValue;
         }
@@ -93,161 +74,170 @@ namespace Assets.common
         public string GetString(string key, string defaultValue = "")
         {
             object value;
-            if (rawData != null && dictionary.TryGetValue(key, out value))
-                //return (string)value;
-                return value.ToString();
+            if (_rawData != null && dictionary.TryGetValue(key, out value))
+                return value != null ? value.ToString() : defaultValue;
             return defaultValue;
+        }
+
+        public bool IsString(string key)
+        {
+            object value;
+            if (_rawData != null && dictionary.TryGetValue(key, out value))
+                return value is string;
+            return false;
         }
 
         public bool GetBool(string key, bool defaultValue = false)
         {
             object value;
-            if (rawData != null && dictionary.TryGetValue(key, out value))
-                //return (bool)value;
+            if (_rawData != null && dictionary.TryGetValue(key, out value))
                 return Convert.ToBoolean(value);
             return defaultValue;
         }
-
         #endregion
-        #region getSelf
 
+        #region getSelf
         public int ToInt()
         {
-            return rawData != null ? Convert.ToInt32(rawData) : 0;
+            return _rawData != null ? Convert.ToInt32(_rawData) : 0;
         }
 
         public long ToLong()
         {
-            return rawData != null ? (long)rawData : 0;
+            return _rawData != null ? (long)_rawData : 0;
         }
         
         public float ToFloat()
         {
-            return rawData != null ? Convert.ToSingle(rawData) : 0;
+            return _rawData != null ? Convert.ToSingle(_rawData) : 0;
         }
         
         public double ToDouble()
         {
-            return rawData != null ? Convert.ToDouble(rawData) : 0;
+            return _rawData != null ? Convert.ToDouble(_rawData) : 0;
         }
 
         public override string ToString()
         {
-            return rawData != null ? rawData.ToString() : "";
+            return _rawData != null ? _rawData.ToString() : "";
         }
         #endregion
-        #region getArray
 
-        public int[] GetIntArray(string key)
+        #region getArray
+        public int[] GetIntArray(string key, int[] defaultValue = null)
         {
+            defaultValue = defaultValue ?? new int[0];
             object value = null;
-            if (rawData != null)
+            if (_rawData != null)
                 dictionary.TryGetValue(key, out value);
-            return new RawNode(value).GetIntArray();
+            return value == null ? defaultValue : new RawNode(value).GetIntArray();
         }
 
         public int[] GetIntArray()
         {
-            if (rawData == null) return new int[0];
+            if (_rawData == null) return new int[0];
             var ret = new List<int>();
-            foreach (var e in (List<object>)rawData)
+            foreach (var e in (List<object>)_rawData)
                 ret.Add(Convert.ToInt32(e));
             return ret.ToArray();
         }
 
-        public float[] GetFloatArray(string key)
+        public float[] GetFloatArray(string key, float[] defaultValue = null)
         {
+            defaultValue = defaultValue ?? new float[0];
             object value = null;
-            if (rawData != null)
+            if (_rawData != null)
                 dictionary.TryGetValue(key, out value);
 
-            return new RawNode(value).GetFloatArray();
+            return value == null ? defaultValue : new RawNode(value).GetFloatArray();
         }
 
         public float[] GetFloatArray()
         {
-            if (rawData == null) return new float[0];
+            if (_rawData == null) return new float[0];
             var ret = new List<float>();
-            foreach (var e in (List<object>)rawData)
+            foreach (var e in (List<object>)_rawData)
                 ret.Add(Convert.ToSingle(e));
             return ret.ToArray();
         }
 
-        public double[] GetDoubleArray(string key)
+        public double[] GetDoubleArray(string key, double[] defaultValue = null)
         {
+            defaultValue = defaultValue ?? new double[0];
             object value = null;
-            if (rawData != null)
+            if (_rawData != null)
                 dictionary.TryGetValue(key, out value);
 
-            return new RawNode(value).GetDoubleArray();
+            return value == null ? defaultValue : new RawNode(value).GetDoubleArray();
         }
 
         public double[] GetDoubleArray()
         {
-            if (rawData == null) return new double[0];
+            if (_rawData == null) return new double[0];
             var ret = new List<double>();
-            foreach (var e in (List<object>)rawData)
+            foreach (var e in (List<object>)_rawData)
                 ret.Add(Convert.ToDouble(e));
             return ret.ToArray();
         }
 
-        public string[] GetStringArray(string key)
+        public string[] GetStringArray(string key, string[] defaultValue = null)
         {
+            defaultValue = defaultValue ?? new string[0];
             object value = null;
-            if (rawData != null)
+            if (_rawData != null)
                 dictionary.TryGetValue(key, out value);
 
-            return new RawNode(value).GetStringArray();
+            return value == null ? defaultValue : new RawNode(value).GetStringArray();
         }
 
         public string[] GetStringArray()
         {
-            if (rawData == null) return new string[0];
+            if (_rawData == null) return new string[0];
             var ret = new List<string>();
-            foreach (var e in (List<object>)rawData)
+            foreach (var e in (List<object>)_rawData)
                 ret.Add(Convert.ToString(e));
             return ret.ToArray();
         }
 
-        public List<Dictionary<string, object>> GetObjectArray(string key)
+        public List<Dictionary<string, object>> GetObjectArray(string key, List<Dictionary<string, object>> defaultValue = null)
         {
+            defaultValue = defaultValue ?? new List<Dictionary<string, object>>();
             object value = null;
-            if (rawData != null)
+            if (_rawData != null)
                 dictionary.TryGetValue(key, out value);
 
-            return new RawNode(value).GetObjectArray();
+            return value == null ? defaultValue : new RawNode(value).GetObjectArray();
         }
 
         public List<Dictionary<string, object>> GetObjectArray()
         {
-            if (rawData == null) return new List<Dictionary<string, object>>();
+            if (_rawData == null) return new List<Dictionary<string, object>>();
             var ret = new List<Dictionary<string, object>>();
-            foreach (var e in (List<object>)rawData)
+            foreach (var e in (List<object>)_rawData)
                 ret.Add((Dictionary<string, object>)e);
             return ret;
         }
-
         #endregion
 
         public IEnumerable<KeyValuePair<string, RawNode>> GetSortedCollection()
         {
             if (dictionary != null)
             {
-                if (_sortedCache == null)
+                if (sortedCache == null)
                 {
                     var keys = new string[dictionary.Count];
-                    _sortedCache = new KeyValuePair<string, RawNode>[keys.Length];
+                    sortedCache = new KeyValuePair<string, RawNode>[keys.Length];
                     dictionary.Keys.CopyTo(keys, 0);
                     Array.Sort(keys, StringComparer.InvariantCulture);
 
                     for (int i = 0; i < keys.Length; i++)
                     {
                         var key = keys[i];
-                        _sortedCache[i] = new KeyValuePair<string, RawNode>(key, new RawNode(dictionary[key]));
+                        sortedCache[i] = new KeyValuePair<string, RawNode>(key, new RawNode(dictionary[key]));
                     }
                 }
 
-                foreach (var pair in _sortedCache)
+                foreach (var pair in sortedCache)
                     yield return pair;
             }
         }
@@ -256,15 +246,15 @@ namespace Assets.common
         {
             if (dictionary != null)
             {
-                if (_unsortedCache == null)
+                if (unsortedCache == null)
                 {
-                    _unsortedCache = new KeyValuePair<string, RawNode>[dictionary.Count];
+                    unsortedCache = new KeyValuePair<string, RawNode>[dictionary.Count];
                     int idx = 0;
                     foreach (var pair in dictionary)
-                        _unsortedCache[idx++] = new KeyValuePair<string, RawNode>(pair.Key, new RawNode(pair.Value));
+                        unsortedCache[idx++] = new KeyValuePair<string, RawNode>(pair.Key, new RawNode(pair.Value));
                 }
 
-                foreach (var pair in _unsortedCache)
+                foreach (var pair in unsortedCache)
                     yield return pair;
             }
         }
@@ -272,34 +262,36 @@ namespace Assets.common
         public RawNode GetNode(string key, char separator = '/')
         {
             //ключ может быть путем
-            if (rawData != null)
+            if (_rawData != null)
             {
                 string[] path = key.Split(separator);
+
                 object value;
                 if (dictionary.TryGetValue(path[0], out value))
                 {
-                    var node = new RawNode(value) { id = path[0] };
+                    var node = new RawNode(value, path[0]);
+
                     for (int i = 1; i < path.Length; i++)
                     {
                         if (node.dictionary.ContainsKey(path[i]))
                         {
                             node = node.GetNode(path[i]);
-                            node.id = path[i];
                         }
                         else
                         {
-                            return emptyNode;
+                            return new RawNode(null, path[i]);
                         }
                     }
                     return node;
                 }
             }
-            return new RawNode { id = key };
+
+            return new RawNode(null, key);
         }
 
         public bool IsInit()
         {
-            return rawData != null;
+            return _rawData != null;
         }
         
         public bool CheckKey(string key)
@@ -309,16 +301,16 @@ namespace Assets.common
 
         public RawNode GetNode(int index)
         {
-            return rawData != null ? new RawNode(array[index]) : emptyNode;
+            return _rawData != null ? new RawNode(array[index]) : emptyNode;
         }
 
         public List<object> array
         {
             get
             {
-                if (rawData == null)
-                    return emptyList;
-                return (List<object>) rawData;
+                if (_rawData == null)
+                    return new List<object>();
+                return (List<object>) _rawData;
             }
         }
 
@@ -326,9 +318,9 @@ namespace Assets.common
         {
             get
             {
-                if (rawData == null)
+                if (_rawData == null)
                     return new Dictionary<string, object>();
-                return (Dictionary<string, object>) rawData;
+                return _rawData as Dictionary<string, object>;
             }
         }
 
