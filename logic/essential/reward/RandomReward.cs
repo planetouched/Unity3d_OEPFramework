@@ -22,11 +22,17 @@ namespace Assets.logic.essential.reward
             probability = rawNode.GetDouble("probability");
         }
 
-        protected override IRewardResult OnAward()
+        public override IRewardResult Calculate()
         {
             var check = random.NextDouble() <= probability;
-            var result = check ? new WrappedRewardResult(type, innerReward.Award()) : new RewardResult(null);
+            var result = check ? new WrappedRewardResult(type, innerReward.Calculate()) : new RewardResult();
             return result;
+        }
+
+        public override IRewardResult Award(IRewardResult rewardResult)
+        {
+            innerReward.Award(((WrappedRewardResult)rewardResult).rewardResult);
+            return rewardResult;
         }
     }
 }

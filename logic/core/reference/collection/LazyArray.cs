@@ -38,7 +38,7 @@ namespace Assets.logic.core.reference.collection
 
         public override IEnumerator<KeyValuePair<int, TValue>> GetEnumerator()
         {
-            for (int i = 0; i < GetNode().array.Count; i++)
+            for (int i = 0; i < Count(); i++)
                 yield return new KeyValuePair<int, TValue>(i, GetDescription(i));
         }
     }

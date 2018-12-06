@@ -32,6 +32,11 @@ namespace Assets.logic.core.reference.dataSource
 
         public abstract TDescription GetDescription(TKey collectionKey);
 
+        public int Count()
+        {
+            return GetNode().nodesCount;
+        }
+
         public RawNode GetNode()
         {
             return node;

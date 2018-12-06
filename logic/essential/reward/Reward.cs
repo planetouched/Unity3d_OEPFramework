@@ -24,18 +24,26 @@ namespace Assets.logic.essential.reward
             }
             else
             {
-                path = Path.Create(GetContext(), node.GetNode("path"));
+                if (node.CheckKey("path"))
+                {
+                    path = Path.Create(GetContext(), node.GetNode("path"));
+                }
             }
         }
 
         public IRewardResult Award()
         {
-            return OnAward();
+            return Award(Calculate());
         }
 
-        protected virtual IRewardResult OnAward()
+        public virtual IRewardResult Award(IRewardResult rewardResult)
         {
-            return new RewardResult(null);
+            return null;
+        }
+
+        public virtual IRewardResult Calculate()
+        {
+            return new RewardResult();
         }
 
         protected Path RewardPath()

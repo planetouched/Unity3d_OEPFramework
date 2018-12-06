@@ -6,5 +6,7 @@ namespace Assets.logic.essential.reward
     {
         string type { get; }
         IRewardResult Award();
+        IRewardResult Award(IRewardResult rewardResult);
+        IRewardResult Calculate();
     }
 }
