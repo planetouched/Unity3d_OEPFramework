@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Assets.logic.core.model;
 
 namespace Assets.logic.core.util
@@ -22,8 +21,8 @@ namespace Assets.logic.core.util
 
             return dict;
         }
-
-        public static IList<object> Array<T>(IEnumerable<T> collection) where T : ISerialize
+        
+        public static IList<object> SerializeArray<T>(IEnumerable<T> collection) where T : ISerialize
         {
             var list = new List<object>();
 
@@ -34,6 +33,5 @@ namespace Assets.logic.core.util
 
             return list;
         }
-
     }
 }

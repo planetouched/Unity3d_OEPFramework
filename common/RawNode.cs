@@ -8,7 +8,7 @@ namespace Assets.common
         public static RawNode emptyNode = new RawNode();
         
         public string nodeKey { get; private set; }
-        public int nodesCount { get { return dictionary.Count; } }
+        public int nodesCount { get { return array != null ? array.Count : dictionary.Count; } }
 
         private readonly object _rawData;
         private KeyValuePair<string, RawNode>[] sortedCache;
@@ -199,9 +199,9 @@ namespace Assets.common
             return ret.ToArray();
         }
 
-        public List<Dictionary<string, object>> GetObjectArray(string key, List<Dictionary<string, object>> defaultValue = null)
+        public Dictionary<string, object> [] GetObjectArray(string key, Dictionary<string, object>[] defaultValue = null)
         {
-            defaultValue = defaultValue ?? new List<Dictionary<string, object>>();
+            defaultValue = defaultValue ?? new Dictionary<string, object>[0];
             object value = null;
             if (_rawData != null)
                 dictionary.TryGetValue(key, out value);
@@ -209,14 +209,52 @@ namespace Assets.common
             return value == null ? defaultValue : new RawNode(value).GetObjectArray();
         }
 
-        public List<Dictionary<string, object>> GetObjectArray()
+        public Dictionary<string, object>[] GetObjectArray()
         {
-            if (_rawData == null) return new List<Dictionary<string, object>>();
+            if (_rawData == null)
+                return new Dictionary<string, object>[0];
+
             var ret = new List<Dictionary<string, object>>();
-            foreach (var e in (List<object>)_rawData)
-                ret.Add((Dictionary<string, object>)e);
-            return ret;
+
+            foreach (var e in (List<object>) _rawData)
+            {
+                ret.Add((Dictionary<string, object>) e);
+            }
+
+            return ret.ToArray();
         }
+
+        public RawNode[] GetRawNodeArray(string key, RawNode[] defaultValue = null)
+        {
+            defaultValue = defaultValue ?? new RawNode[0];
+
+            object value = null;
+
+            if (_rawData != null)
+            {
+                dictionary.TryGetValue(key, out value);
+            }
+
+            return value == null ? defaultValue : new RawNode(value).GetRawNodeArray();
+        }
+
+        public RawNode[] GetRawNodeArray(RawNode[] defaultValue = null)
+        {
+            if (_rawData == null)
+            {
+                return new RawNode[0];
+            }
+
+            var ret = new List<RawNode>();
+
+            foreach (var e in (List<object>) _rawData)
+            {
+                ret.Add(new RawNode(e));
+            }
+
+            return ret.ToArray();
+        }
+
         #endregion
 
         public IEnumerable<KeyValuePair<string, RawNode>> GetSortedCollection()
