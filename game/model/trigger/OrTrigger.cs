@@ -1,26 +1,26 @@
 using Assets.common;
-using Assets.game.model.triggers._base;
+using Assets.game.model.trigger._base;
 using Assets.logic.core.context;
 using Assets.logic.core.throughEvent;
 
-namespace Assets.game.model.triggers
+namespace Assets.game.model.trigger
 {
-    public class AndTrigger : CompositeTrigger
+    public class OrTrigger : CompositeTrigger
     {
-        public AndTrigger(RawNode initNode, TriggerDescription description, TriggerCategories categories, IContext context)
+        public OrTrigger(RawNode initNode, TriggerDescription description, TriggerCategories categories, IContext context)
             : base(initNode, description, categories, context)
         {
         }
 
         protected override void OnActivated()
         {
+            triggers.Attach(triggers.categories.completed, OnTriggerCompleted);
             foreach (var triggerPair in triggers)
             {
                 var trigger = triggerPair.Value;
                 trigger.Activate();
             }
 
-            triggers.Attach(triggers.categories.completed, OnTriggerCompleted);
             CheckCompleted();
         }
 
@@ -34,13 +34,11 @@ namespace Assets.game.model.triggers
             foreach (var triggerPair in triggers)
             {
                 var trigger = triggerPair.Value;
-                if (!trigger.completed)
+                if (trigger.completed)
                 {
-                    return;
+                    Complete();
                 }
             }
-
-            Complete();
         }
 
         protected override void OnDeactivated()

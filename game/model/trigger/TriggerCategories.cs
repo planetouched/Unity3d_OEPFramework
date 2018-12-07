@@ -1,6 +1,6 @@
 using Assets.logic.core.throughEvent;
 
-namespace Assets.game.model.triggers
+namespace Assets.game.model.trigger
 {
     public class TriggerCategories
     {

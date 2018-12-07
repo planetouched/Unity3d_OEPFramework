@@ -2,7 +2,7 @@
 using Assets.logic.core.context;
 using Assets.logic.core.reference.dataSource;
 
-namespace Assets.game.model.triggers
+namespace Assets.game.model.trigger
 {
     public class TriggerDataSource : DataSourceDescriptionBase<TriggerDescription>
     {

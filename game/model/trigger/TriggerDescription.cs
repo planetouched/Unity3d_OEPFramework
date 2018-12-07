@@ -4,7 +4,7 @@ using Assets.logic.core.factories;
 using Assets.logic.core.reference.description;
 using Assets.logic.essential.reward;
 
-namespace Assets.game.model.triggers
+namespace Assets.game.model.trigger
 {
     public class TriggerDescription : SelectableDescriptionBase
     {

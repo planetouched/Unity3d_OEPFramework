@@ -1,11 +1,11 @@
 using Assets.common;
-using Assets.game.model.triggers._base;
+using Assets.game.model.trigger._base;
 using Assets.logic.core.context;
 using Assets.logic.core.factories;
 using Assets.logic.core.model;
 using Assets.logic.core.reference.dataSource;
 
-namespace Assets.game.model.triggers
+namespace Assets.game.model.trigger
 {
     public class TriggerCollection : ReferenceCollectionBase<Trigger, TriggerDescription>
     {

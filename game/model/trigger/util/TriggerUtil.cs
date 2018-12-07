@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Assets.game.model.triggers._base;
+using Assets.game.model.trigger._base;
 
-namespace Assets.game.model.triggers.util
+namespace Assets.game.model.trigger.util
 {
     static class TriggerUtil
     {

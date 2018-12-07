@@ -1,11 +1,11 @@
 ﻿using Assets.common;
-using Assets.game.model.triggers._base;
+using Assets.game.model.trigger._base;
 using Assets.logic.core.context;
 using Assets.logic.core.util;
 using Assets.logic.essential.path;
 using Assets.logic.essential.reward.result;
 
-namespace Assets.game.model.triggers.reward
+namespace Assets.game.model.trigger.reward
 {
     public class TriggerRewardResult : RewardResult
     {

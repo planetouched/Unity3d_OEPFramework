@@ -3,7 +3,7 @@ using Assets.logic.core.context;
 using Assets.logic.core.model;
 using Assets.logic.core.util;
 
-namespace Assets.game.model.triggers._base
+namespace Assets.game.model.trigger._base
 {
     public class Trigger : ReferenceModelBase<TriggerDescription>
     {
