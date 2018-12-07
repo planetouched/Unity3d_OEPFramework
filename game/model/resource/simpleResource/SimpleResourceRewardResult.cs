@@ -26,7 +26,7 @@ namespace Assets.game.model.resource.simpleResource
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict("type", type, "path", Path.GetPath(resource), "amount", amount);
+            return SerializeUtil.Dict().SetArgs("type", type, "path", Path.StringPath(resource), "amount", amount);
         }
     }
 }

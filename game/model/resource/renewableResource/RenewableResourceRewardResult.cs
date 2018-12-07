@@ -6,7 +6,7 @@ using Assets.logic.essential.reward.result;
 
 namespace Assets.game.model.resource.renewableResource
 {
-    internal class RenewableResourceRewardResult : RewardResult
+    public class RenewableResourceRewardResult : RewardResult
     {
         public RenewableResource resource { get; private set; }
         public int amount { get; private set; }
@@ -26,7 +26,7 @@ namespace Assets.game.model.resource.renewableResource
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict("type", type, "path", Path.GetPath(resource), "amount", amount);
+            return SerializeUtil.Dict().SetArgs("type", type, "path", Path.StringPath(resource), "amount", amount);
         }
     }
 }

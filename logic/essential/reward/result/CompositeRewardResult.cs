@@ -28,7 +28,7 @@ namespace Assets.logic.essential.reward.result
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict("type", type, "results", SerializeUtil.SerializeArray(results));
+            return SerializeUtil.Dict().SetArgs("type", type, "results", SerializeUtil.SerializeArray(results));
         }
     }
 }

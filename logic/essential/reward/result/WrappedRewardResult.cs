@@ -22,7 +22,7 @@ namespace Assets.logic.essential.reward.result
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict("type", type, "result", rewardResult.Serialize());
+            return SerializeUtil.Dict().SetArgs("type", type, "result", rewardResult.Serialize());
         }
     }
 }

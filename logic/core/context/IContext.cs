@@ -4,6 +4,6 @@ namespace Assets.logic.core.context
 {
     public interface IContext : IChildren
     {
-        T GetChild<T>(string key);
+        T GetChild<T>(string collectionKey);
     }
 }

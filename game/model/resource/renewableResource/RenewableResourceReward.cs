@@ -1,5 +1,6 @@
 ﻿using Assets.common;
 using Assets.logic.core.context;
+using Assets.logic.core.factories;
 using Assets.logic.essential.amount;
 using Assets.logic.essential.reward;
 using Assets.logic.essential.reward.result;
@@ -13,6 +14,7 @@ namespace Assets.game.model.resource.renewableResource
         public RenewableResourceReward(RawNode node, IContext context)
             : base(node, context)
         {
+            amount = FactoryManager.Build<Amount>(node.GetNode("amount"), context);
         }
 
         public override IRewardResult Calculate()

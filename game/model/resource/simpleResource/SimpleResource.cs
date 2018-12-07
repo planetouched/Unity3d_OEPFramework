@@ -34,7 +34,7 @@ namespace Assets.game.model.resource.simpleResource
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict("amount", amount);
+            return SerializeUtil.Dict().SetArgs("amount", amount);
         }
     }
 }

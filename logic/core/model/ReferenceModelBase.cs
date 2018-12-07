@@ -29,31 +29,31 @@ namespace Assets.logic.core.model
             return children ?? (children = new Dictionary<string, IModel>());
         }
 
-        public void AddChild(string key, IModel model)
+        public void AddChild(string collectionKey, IModel model)
         {
-            GetChildren().Add(key, model);
+            GetChildren().Add(collectionKey, model);
             model.SetParent(this);
         }
 
-        public IModel GetChild(string key)
+        public IModel GetChild(string collectionKey)
         {
-            return GetChildren()[key];
+            return GetChildren()[collectionKey];
         }
 
-        public void RemoveChild(string key)
+        public void RemoveChild(string collectionKey)
         {
             if (children == null) return;
 
-            if (children.ContainsKey(key))
+            if (children.ContainsKey(collectionKey))
             {
-                GetChild(key).SetParent(null);
-                children.Remove(key);
+                GetChild(collectionKey).SetParent(null);
+                children.Remove(collectionKey);
             }
         }
 
-        public bool Exist(string key)
+        public bool Exist(string collectionKey)
         {
-            return children.ContainsKey(key);
+            return children.ContainsKey(collectionKey);
         }
 
         public int Count()

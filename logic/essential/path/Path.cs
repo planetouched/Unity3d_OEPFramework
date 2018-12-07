@@ -17,7 +17,7 @@ namespace Assets.logic.essential.path
             this.result = result;
         }
 
-        public static string GetPath(IModel model)
+        public static string StringPath(IModel model)
         {
             return string.Join(".", GetSeparatedPath(model));
         }
@@ -153,7 +153,7 @@ namespace Assets.logic.essential.path
 
         public override string ToString()
         {
-            return GetPath(result.GetSelf());
+            return StringPath(result.GetSelf());
         }
     }
 }

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using Assets.logic.core.context;
+using Assets.logic.core.util;
 
 namespace Assets.logic.core.model
 {
-    public class CollectionBase<TModel> : ModelBase, IChildren where TModel : IModel
+    public class CollectionBase<TModel> : ModelBase, IEnumerable<KeyValuePair<string, TModel>>, IChildren where TModel : IModel
     {
         private IOrderedDictionary children;
 
@@ -15,10 +16,7 @@ namespace Assets.logic.core.model
 
         public virtual TModel this[string collectionKey]
         {
-            get
-            {
-                return (TModel)InnerGetChildren()[collectionKey];
-            }
+            get { return (TModel)InnerGetChildren()[collectionKey]; }
         }
 
         private IDictionary InnerGetChildren()
@@ -26,31 +24,31 @@ namespace Assets.logic.core.model
             return children ?? (children = new OrderedDictionary());
         }
 
-        public void AddChild(string key, IModel model)
+        public void AddChild(string collectionKey, IModel model)
         {
-            InnerGetChildren().Add(key, model);
+            InnerGetChildren().Add(collectionKey, model);
             model.SetParent(this);
         }
 
-        public virtual IModel GetChild(string key)
+        public virtual IModel GetChild(string collectionKey)
         {
-            return (IModel)InnerGetChildren()[key];
+            return (IModel)InnerGetChildren()[collectionKey];
         }
 
-        public void RemoveChild(string key)
+        public void RemoveChild(string collectionKey)
         {
             if (children == null) return;
 
-            if (children.Contains(key))
+            if (children.Contains(collectionKey))
             {
-                GetChild(key).SetParent(null);
-                children.Remove(key);
+                GetChild(collectionKey).SetParent(null);
+                children.Remove(collectionKey);
             }
         }
 
-        public bool Exist(string key)
+        public bool Exist(string collectionKey)
         {
-            return children.Contains(key);
+            return children.Contains(collectionKey);
         }
 
         public int Count()
@@ -58,24 +56,13 @@ namespace Assets.logic.core.model
             return children.Count;
         }
 
-        public IEnumerable<KeyValuePair<string, TModel>> GetCollection()
-        {
-            if (children != null)
-            {
-                foreach (DictionaryEntry pair in children)
-                {
-                    yield return new KeyValuePair<string, TModel>((string) pair.Key, (TModel) pair.Value);
-                }
-            }
-        }
-
         public override object Serialize()
         {
-            var result = new Dictionary<string, object>();
+            var result = SerializeUtil.Dict();
 
-            foreach (var pair in GetCollection())
+            foreach (var pair in GetOnlyInitializedCollectionItems())
             {
-                object serialized = pair.Value.Serialize();
+                var serialized = pair.Value.Serialize();
 
                 if (serialized != null)
                 {
@@ -92,12 +79,36 @@ namespace Assets.logic.core.model
 
             if (children == null) return;
 
-            foreach (var pair in GetCollection())
+            foreach (var pair in GetOnlyInitializedCollectionItems())
             {
                 pair.Value.Destroy();
             }
 
             children.Clear();
+        }
+
+        private IEnumerable<KeyValuePair<string, TModel>> GetOnlyInitializedCollectionItems()
+        {
+            if (children != null)
+            {
+                foreach (TModel item in children)
+                {
+                    yield return new KeyValuePair<string, TModel>(item.key, item);
+                }
+            }
+        }
+
+        public virtual IEnumerator<KeyValuePair<string, TModel>> GetEnumerator()
+        {
+            foreach (var pair in GetOnlyInitializedCollectionItems())
+            {
+                yield return pair;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

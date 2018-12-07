@@ -2,10 +2,10 @@
 {
     public interface IChildren
     {
-        IModel GetChild(string key);
-        void AddChild(string key, IModel model);
-        void RemoveChild(string key);
-        bool Exist(string key);
+        IModel GetChild(string collectionKey);
+        void AddChild(string collectionKey, IModel model);
+        void RemoveChild(string collectionKey);
+        bool Exist(string collectionKey);
         int Count();
     }
 }

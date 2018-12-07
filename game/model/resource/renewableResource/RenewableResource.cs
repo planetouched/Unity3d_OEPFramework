@@ -13,7 +13,6 @@ namespace Assets.game.model.resource.renewableResource
         private int innerAmount;
 
         public RenewableResourceCategories categories { get; private set; }
-        public RenewableResourceDescription description { get; private set; }
         public int amount { get { return InnerGetAmount(); } }
 
         public RenewableResource(RawNode initNode, RenewableResourceDescription description, RenewableResourceCategories categories, IContext context)
@@ -42,21 +41,21 @@ namespace Assets.game.model.resource.renewableResource
 
             lastUpdateTime = Time.GetUnixTime();
             int oldAmount = innerAmount;
-            innerAmount = value > description.maximum ? description.maximum : value;
+            innerAmount = value > GetDescription().maximum ? GetDescription().maximum : value;
 
             Call(categories.changed, new RenewableResourceHandlerArgs { oldAmount = oldAmount, newAmount = innerAmount });
         }
 
         void Recount()
         {
-            if (innerAmount >= description.renewableMaximum) return;
+            if (innerAmount >= GetDescription().renewableMaximum) return;
             var currentTime = Time.GetUnixTime();
 
-            var newAmount = innerAmount + (int)(currentTime - lastUpdateTime) / description.recoveryTime * description.recoveryStep;
-            lastUpdateTime = currentTime - (currentTime - lastUpdateTime) % description.recoveryTime;
+            var newAmount = innerAmount + (int)(currentTime - lastUpdateTime) / GetDescription().recoveryTime * GetDescription().recoveryStep;
+            lastUpdateTime = currentTime - (currentTime - lastUpdateTime) % GetDescription().recoveryTime;
 
-            if (newAmount >= description.renewableMaximum && innerAmount <= description.renewableMaximum)
-                newAmount = description.renewableMaximum;
+            if (newAmount >= GetDescription().renewableMaximum && innerAmount <= GetDescription().renewableMaximum)
+                newAmount = GetDescription().renewableMaximum;
 
             innerAmount = newAmount;
         }
@@ -74,7 +73,7 @@ namespace Assets.game.model.resource.renewableResource
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict("amount", amount, "ts", lastUpdateTime);
+            return SerializeUtil.Dict().SetArgs("amount", amount, "ts", lastUpdateTime);
         }
     }
 }

@@ -3,6 +3,7 @@ using Assets.common;
 using Assets.logic.core.context;
 using Assets.logic.core.reference.dataSource;
 using Assets.logic.core.reference.description;
+using Assets.logic.core.util;
 
 namespace Assets.logic.core.model
 {
@@ -42,12 +43,10 @@ namespace Assets.logic.core.model
             }
         }
 
-        public override IModel GetChild(string key)
+        public override IModel GetChild(string collectionKey)
         {
-            return this[key];
+            return this[collectionKey];
         }
-
-        protected abstract TModel Factory(RawNode initNode, TDescription description, IContext context);
 
         public IEnumerable<string> GetUnsortedKeys()
         {
@@ -60,5 +59,39 @@ namespace Assets.logic.core.model
             foreach (var pair in dataSource.GetNode().GetSortedCollection())
                 yield return pair.Key;
         }
+
+        public override IEnumerator<KeyValuePair<string, TModel>> GetEnumerator()
+        {
+            foreach (var sortedKey in GetSortedKeys())
+            {
+                yield return new KeyValuePair<string, TModel>(sortedKey, this[sortedKey]);
+            }
+        }
+
+        public override object Serialize()
+        {
+            var dict = SerializeUtil.Dict();
+
+            foreach (var unsortedKey in GetUnsortedKeys())
+            {
+                if (Exist(unsortedKey))
+                {
+                    var serialized = this[unsortedKey].Serialize();
+
+                    if (serialized != null)
+                    {
+                        dict.Add(unsortedKey, serialized);
+                    }
+                }
+                else
+                {
+                    dict.Add(unsortedKey, initNode.GetNode(unsortedKey));
+                }
+            }
+
+            return dict;
+        }
+
+        protected abstract TModel Factory(RawNode initNode, TDescription description, IContext context);
     }
 }
