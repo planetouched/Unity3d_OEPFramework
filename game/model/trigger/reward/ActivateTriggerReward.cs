@@ -15,7 +15,7 @@ namespace Assets.game.model.trigger.reward
 
         public override IRewardResult Calculate()
         {
-            var trigger = RewardPath().result.GetSelf<Trigger>();
+            var trigger = RewardPath().GetSelf<Trigger>();
             return new TriggerRewardResult(type, trigger);
         }
 

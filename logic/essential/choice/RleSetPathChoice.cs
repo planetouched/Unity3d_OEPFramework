@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.common;
 using Assets.logic.core.context;
+using Assets.logic.core.throughEvent;
 using Assets.logic.essential.path;
 using Random = Assets.logic.essential.random.Random;
 
@@ -27,15 +28,15 @@ namespace Assets.logic.essential.choice
                 length += (int)pair[1];
         }
 
-        public override Path GetPath()
+        public override ModelsPath GetPath()
         {
-            var rnd = randomPath.result.GetSelf<Random>();
+            var rnd = randomPath.GetSelf<Random>();
             int pos = rnd.Range(0, length);
             int currentPos = 0;
             foreach (object[] pair in list)
             {
                 if (pos >= currentPos && pos < currentPos + (int)pair[1])
-                    return Path.Create(GetContext(), (string)pair[0], rnd);
+                    return PathUtil.ModelsPath(GetContext(), (string)pair[0], rnd);
                 currentPos += (int)pair[1];
             }
 

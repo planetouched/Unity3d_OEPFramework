@@ -23,7 +23,7 @@ namespace Assets.game.model.resource.simpleResource
             if (path == null)
                 return new RewardResult();
 
-            var simpleResource = path.result.GetSelf<SimpleResource>();
+            var simpleResource = path.GetSelf<SimpleResource>();
             int value = amount.Number();
             return new SimpleResourceRewardResult(type, simpleResource, value, GetContext());
         }

@@ -1,9 +1,9 @@
-﻿using Assets.logic.essential.path;
+﻿using Assets.logic.core.throughEvent;
 
 namespace Assets.logic.essential.choice
 {
     public interface IPathChoice
     {
-        Path GetPath();
+        ModelsPath GetPath();
     }
 }

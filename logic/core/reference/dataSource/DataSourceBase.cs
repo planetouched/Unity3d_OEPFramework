@@ -30,6 +30,8 @@ namespace Assets.logic.core.reference.dataSource
             }
         }
 
+        public abstract IEnumerator<KeyValuePair<TKey, TDescription>> GetEnumerator();
+
         public abstract TDescription GetDescription(TKey collectionKey);
 
         public int Count()
@@ -40,16 +42,6 @@ namespace Assets.logic.core.reference.dataSource
         public RawNode GetNode()
         {
             return node;
-        }
-
-        public abstract IEnumerator<KeyValuePair<TKey, TDescription>> GetEnumerator();
-
-        public IEnumerable<TDescription> All()
-        {
-            foreach (var item in items)
-            {
-                yield return item.Value;
-            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()

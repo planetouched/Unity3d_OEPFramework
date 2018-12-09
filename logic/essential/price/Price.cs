@@ -1,6 +1,7 @@
 ﻿using Assets.common;
 using Assets.logic.core.context;
 using Assets.logic.core.reference.description;
+using Assets.logic.core.throughEvent;
 using Assets.logic.essential.path;
 
 namespace Assets.logic.essential.price
@@ -9,7 +10,7 @@ namespace Assets.logic.essential.price
     {
         public string type { get; private set; }
         public int amount { get; private set; }
-        private Path cache;
+        private ModelsPath cache;
 
         public Price(RawNode node, IContext context) : base(node, context)
         {
@@ -17,9 +18,9 @@ namespace Assets.logic.essential.price
             amount = node.GetInt("amount");
         }
 
-        public Path GetPath()
+        public ModelsPath GetPath()
         {
-            return cache ?? (cache = Path.Create(GetContext(), node.GetNode("path")));
+            return cache ?? (cache = PathUtil.ModelsPath(GetContext(), node.GetString("path"), null));
         }
 
         public virtual bool Check()

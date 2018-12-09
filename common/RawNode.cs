@@ -257,6 +257,22 @@ namespace Assets.common
 
         #endregion
 
+        public IEnumerable<string> GetSortedKeys()
+        {
+            foreach (var pair in GetSortedCollection())
+            {
+                yield return pair.Key;
+            }
+        }
+
+        public IEnumerable<string> GetUnsortedKeys()
+        {
+            foreach (var pair in GetUnsortedCollection())
+            {
+                yield return pair.Key;
+            }
+        }
+
         public IEnumerable<KeyValuePair<string, RawNode>> GetSortedCollection()
         {
             if (dictionary != null)
@@ -297,7 +313,7 @@ namespace Assets.common
             }
         }
         
-        public RawNode GetNode(string key, char separator = '/')
+        public RawNode GetNode(string key, char separator = '.')
         {
             //ключ может быть путем
             if (_rawData != null)

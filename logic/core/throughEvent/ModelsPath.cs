@@ -4,7 +4,7 @@ using Assets.logic.core.model;
 
 namespace Assets.logic.core.throughEvent
 {
-    public class EventCallStack
+    public class ModelsPath
     {
         private Dictionary<Type, IModel> stack;
         private List<IModel> models;
@@ -40,6 +40,23 @@ namespace Assets.logic.core.throughEvent
                 }
             }
             return (T)stack[typeof(T)];
+        }
+
+        public override string ToString()
+        {
+            if (models.Count == 0)
+            {
+                return string.Empty;
+            }
+
+            string path = models[0].key + ".";
+
+            for (int i = 1; i < models.Count; i++)
+            {
+                path += models[i].key + (i < models.Count - 1 ? "." : string.Empty);
+            }
+
+            return path;
         }
     }
 }

@@ -2,6 +2,7 @@
 using Assets.logic.core.context;
 using Assets.logic.core.factories;
 using Assets.logic.core.reference.description;
+using Assets.logic.core.throughEvent;
 using Assets.logic.essential.choice;
 using Assets.logic.essential.path;
 using Assets.logic.essential.reward.result;
@@ -12,7 +13,7 @@ namespace Assets.logic.essential.reward
     {
         public string type { get; private set; }
         private readonly IPathChoice choice;
-        private readonly Path path;
+        private readonly ModelsPath path;
 
         public Reward(RawNode node, IContext context = null) : base(node, context)
         {
@@ -26,7 +27,7 @@ namespace Assets.logic.essential.reward
             {
                 if (node.CheckKey("path"))
                 {
-                    path = Path.Create(GetContext(), node.GetNode("path"));
+                    path = PathUtil.ModelsPath(GetContext(), node.GetNode("path"));
                 }
             }
         }
@@ -46,7 +47,7 @@ namespace Assets.logic.essential.reward
             return new RewardResult();
         }
 
-        protected Path RewardPath()
+        protected ModelsPath RewardPath()
         {
             return choice != null ? choice.GetPath() : path;
         }

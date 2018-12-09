@@ -1,10 +1,10 @@
-﻿using Assets.logic.essential.path;
+﻿using Assets.logic.core.throughEvent;
 
 namespace Assets.logic.essential.price
 {
     public interface IPrice
     {
-        Path GetPath();
+        ModelsPath GetPath();
         string type { get; }
         int amount { get; }
         bool Check();

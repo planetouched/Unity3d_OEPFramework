@@ -11,13 +11,13 @@ namespace Assets.game.model.resource.renewableResource
 
         public RenewableResourceRequirement(RawNode node, IContext context) : base(node, context)
         {
-            renewableResource = GetPath().result.GetSelf<RenewableResource>();
+            renewableResource = GetPath().GetSelf<RenewableResource>();
             amount = node.GetInt("amount");
         }
 
         public override bool Check()
         {
-            var res = GetPath().result.GetSelf<RenewableResource>();
+            var res = GetPath().GetSelf<RenewableResource>();
             return res.amount >= amount;
         }
     }

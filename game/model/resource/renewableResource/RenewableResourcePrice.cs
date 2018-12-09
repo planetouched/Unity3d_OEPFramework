@@ -12,13 +12,13 @@ namespace Assets.game.model.resource.renewableResource
 
         public override bool Check()
         {
-            return GetPath().result.GetSelf<RenewableResource>().amount >= amount;
+            return GetPath().GetSelf<RenewableResource>().amount >= amount;
         }
 
         public override void Pay()
         {
             if (!Check()) return;
-            GetPath().result.GetSelf<RenewableResource>().Increment(-amount);
+            GetPath().GetSelf<RenewableResource>().Increment(-amount);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Assets.game.model.resource.simpleResource
 
         public SimpleResourceRequirement(RawNode node, IContext context) : base(node, context)
         {
-            resource = GetPath().result.GetSelf<SimpleResource>();
+            resource = GetPath().GetSelf<SimpleResource>();
             amount = node.GetInt("amount");
         }
 

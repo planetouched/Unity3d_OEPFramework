@@ -1,11 +1,11 @@
-﻿using Assets.logic.essential.path;
+﻿using Assets.logic.core.throughEvent;
 
 namespace Assets.logic.essential.requirement
 {
     public interface IRequirement
     {
         string type { get; }
-        Path GetPath();
+        ModelsPath GetPath();
         bool Check();
     }
 }

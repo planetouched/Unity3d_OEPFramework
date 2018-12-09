@@ -19,7 +19,7 @@ namespace Assets.logic.essential.amount
             probability = node.GetDouble("probability");
             critical = node.GetInt("critical");
             regular = node.GetInt("regular");
-            random = Path.Create(GetContext(), node.GetString("random"), null).result.GetSelf<Random>();
+            random = PathUtil.ModelsPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
         }
 
         public override int Number()

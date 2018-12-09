@@ -10,7 +10,7 @@ namespace Assets.game.model.resource.simpleResource
 
         public SimpleResourcePrice(RawNode node, IContext context) : base(node, context)
         {
-            resource = GetPath().result.GetSelf<SimpleResource>();
+            resource = GetPath().GetSelf<SimpleResource>();
         }
 
         public override bool Check()

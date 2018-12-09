@@ -81,7 +81,7 @@ namespace Assets.logic.core.throughEvent
             if (toCall.Count > 1)
                 toCall.Sort(comparer);
 
-            var eventCallStack = new EventCallStack();
+            var eventCallStack = new ModelsPath();
             eventCallStack.Set(models, true);
 
             CoreParams cp;

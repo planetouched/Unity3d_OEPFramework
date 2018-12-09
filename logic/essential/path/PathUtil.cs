@@ -8,91 +8,46 @@ using Random = Assets.logic.essential.random.Random;
 
 namespace Assets.logic.essential.path
 {
-    public class Path
+    public static class PathUtil
     {
-        public EventCallStack result { get; private set; }
-
-        private Path(EventCallStack result)
-        {
-            this.result = result;
-        }
-
         public static string StringPath(IModel model)
         {
             return string.Join(".", GetSeparatedPath(model));
         }
 
-        public static string[] GetSeparatedPath(IModel model)
+        private static string[] GetSeparatedPath(IModel model)
         {
             var models = model.GetModelPath(false);
-            var sPath = new List<string>();
+            var arr = new string[models.Count];
             for (int i = models.Count - 1; i >= 0; i--)
             {
-                var current = models[i];
-                sPath.Add(current.key);
+                arr[i] = models[i].key;
             }
-            return sPath.ToArray();
+            return arr;
         }
 
-        public static Path Create(IContext context, RawNode node)
+        public static ModelsPath ModelsPath(IContext context, RawNode node)
         {
-            string path = node.CheckKey("selector") ? node.GetString("selector") : node.ToString();
-            IList<string[]> parts = Init(path);
+            string path = node.CheckKey("path") ? node.GetString("path") : node.ToString();
+            Random random = null;
 
             if (node.CheckKey("random"))
             {
-                Path randomPath = Create(context, node.GetString("random"), null);
-                return GetRandomResult(context, parts, randomPath.result.GetSelf<Random>());
+                random = ModelsPath(context, node.GetString("random"), null).GetSelf<Random>();
             }
 
-            return GetResult(context, parts);
+            return GetResult(context, GetParts(path), random);
         }
 
-        public static Path Create(IContext context, string path, Random random)
+        public static ModelsPath ModelsPath(IContext context, string path, Random random)
         {
-            IList<string[]> parts = Init(path);
-
-            if (random == null)
-            {
-                return GetResult(context, parts);
-            }
-
-            return GetRandomResult(context, parts, random);
+            return GetResult(context, GetParts(path), random);
         }
 
-        private static Path GetResult(IContext context, IList<string[]> parts)
+        private static ModelsPath GetResult(IContext context, IList<string[]> parts, Random random)
         {
             var models = new List<IModel>();
-            var result = new EventCallStack();
-
-            IReferenceModel model = null;
-
-            for (int i = 0; i < parts.Count; i++)
-            {
-                IReferenceCollection collection;
-
-                if (i == 0)
-                {
-                    collection = (IReferenceCollection)context.GetChild(parts[0][0]);
-                }
-                else
-                {
-                    collection = (IReferenceCollection)model.GetChild(parts[i][0]);
-                }
-
-                model = (IReferenceModel)collection.GetChild(parts[i][1]);
-                models.Add(collection);
-                models.Add(model);
-            }
-
-            result.Set(models, false);
-            return new Path(result);
-        }
-
-        private static Path GetRandomResult(IContext context, IList<string[]> parts, Random random)
-        {
-            var models = new List<IModel>();
-            var result = new EventCallStack();
+            var result = new ModelsPath();
 
             for (int i = 0; i < parts.Count; i++)
             {
@@ -136,10 +91,10 @@ namespace Assets.logic.essential.path
             }
 
             result.Set(models, false);
-            return new Path(result);
+            return result;
         }
 
-        private static IList<string[]> Init(string path)
+        private static IList<string[]> GetParts(string path)
         {
             var selectors = new List<string[]>();
             string[] parts = path.Split('.');
@@ -151,9 +106,36 @@ namespace Assets.logic.essential.path
             return selectors;
         }
 
-        public override string ToString()
+        public static RawNode RawNodePath(IContext context, string path, Random random)
         {
-            return StringPath(result.GetSelf());
+            var parts = GetParts(path);
+
+            RawNode current = context.repositoryNode;
+
+            for (int i = 0; i < parts.Count; i++)
+            {
+                current = current.GetNode(parts[i][0]);
+
+                if (SelectPathUtil.IsSimple(parts[i][1]))
+                {
+                    current = current.GetNode(parts[i][1]);
+                }
+                else
+                {
+                    var allKeys = new List<string>();
+                    allKeys.AddRange(current.GetSortedKeys());
+                    var affectedKeys = SelectPathUtil.GetAffectedKeys(parts[i][1], allKeys);
+                    if (affectedKeys.Count == 0)
+                    {
+                        return null;
+                    }
+
+                    var selectedKey = affectedKeys[random.Range(0, affectedKeys.Count)];
+                    current = current.GetNode(selectedKey);
+                }
+            }
+
+            return current;
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Assets.logic.core.throughEvent
     public struct CoreParams
     {
         public IContext context;
-        public EventCallStack stack;
+        public ModelsPath stack;
         public EventCategory category;
     }
 }

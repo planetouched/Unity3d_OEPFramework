@@ -26,7 +26,7 @@ namespace Assets.game.model.resource.renewableResource
                 return new RewardResult();
             }
 
-            var renewableResource = path.result.GetSelf<RenewableResource>();
+            var renewableResource = path.GetSelf<RenewableResource>();
             int value = amount.Number();
             return new RenewableResourceRewardResult(type, renewableResource, value, GetContext());
         }
