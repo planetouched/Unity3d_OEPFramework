@@ -5,18 +5,23 @@ using Assets.logic.core.reference.description;
 
 namespace Assets.logic.core.model
 {
-    public abstract class ReferenceModelBase<TDescription> : ModelBase, IReferenceModel where TDescription : ISelectableDescription
+    public abstract class ReferenceModelBase<TCategories, TDescription> : ModelBase, IReferenceModel
+        where TDescription : ISelectableDescription
+        where TCategories : class
     {
-        public ISelectableDescription description { get; private set; }
+        public ISelectableDescription description { get; protected set; }
+        public TCategories categories { get; protected set; }
+
         public bool selectable { get; private set; }
         protected RawNode initNode;
         private IDictionary<string, IModel> children;
 
-        protected ReferenceModelBase(RawNode initNode, TDescription description, IContext context) : base(context)
+        protected ReferenceModelBase(RawNode initNode, TCategories categories, TDescription description, IContext context) : base(context)
         {
             key = description.key;
             this.initNode = initNode;
             this.description = description;
+            this.categories = categories;
         }
 
         public TDescription GetDescription()

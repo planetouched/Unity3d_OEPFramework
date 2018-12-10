@@ -2,7 +2,7 @@
 {
     public class CounterTriggerData
     {
-        public int newAdditionCount { get; set; }
-        public int oldAdditionCount { get; set; }
+        public int newAdditionalCount { get; set; }
+        public int oldAdditionalCount { get; set; }
     }
 }

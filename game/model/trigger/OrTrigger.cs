@@ -7,8 +7,8 @@ namespace Assets.game.model.trigger
 {
     public class OrTrigger : CompositeTrigger
     {
-        public OrTrigger(RawNode initNode, TriggerDescription description, TriggerCategories categories, IContext context)
-            : base(initNode, description, categories, context)
+        public OrTrigger(RawNode initNode, TriggerCategories categories, TriggerDescription description, IContext context)
+            : base(initNode, categories, description, context)
         {
         }
 

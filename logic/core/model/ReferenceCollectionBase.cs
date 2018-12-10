@@ -7,20 +7,22 @@ using Assets.logic.core.util;
 
 namespace Assets.logic.core.model
 {
-    public abstract class ReferenceCollectionBase<TModel, TDescription> : CollectionBase<TModel>, IReferenceCollection
+    public abstract class ReferenceCollectionBase<TModel, TCategories, TDescription> : CollectionBase<TModel>, IReferenceCollection
         where TDescription : ISelectableDescription
+        where TCategories : class
         where TModel : IModel
     {
 
+        public TCategories categories { get; protected set; }
         private readonly IDataSource<string, TDescription> dataSource;
-
         private readonly RawNode initNode;
 
-        protected ReferenceCollectionBase(RawNode initNode, IContext context, IDataSource<string, TDescription> dataSource) : base(context, null)
+        protected ReferenceCollectionBase(RawNode initNode, TCategories categories, IContext context, IDataSource<string, TDescription> dataSource) : base(context, null)
         {
             key = dataSource.key;
             this.initNode = initNode;
             this.dataSource = dataSource;
+            this.categories = categories;
         }
 
         public override TModel this[string collectionKey]
@@ -35,7 +37,7 @@ namespace Assets.logic.core.model
                 }
 
                 var description = dataSource.GetDescription(collectionKey);
-                model = Factory(initNode.GetNode(collectionKey), description, GetContext());
+                model = Factory(initNode.GetNode(collectionKey), description);
                 AddChild(collectionKey, model);
                 model.Initialization();
 
@@ -92,6 +94,6 @@ namespace Assets.logic.core.model
             return dict;
         }
 
-        protected abstract TModel Factory(RawNode initNode, TDescription description, IContext context);
+        protected abstract TModel Factory(RawNode initNode, TDescription description);
     }
 }

@@ -5,15 +5,15 @@ using Assets.logic.core.reference.dataSource;
 
 namespace Assets.logic.essential.random
 {
-    public class RandomCollection : ReferenceCollectionBase<Random, RandomDescription>
+    public class RandomCollection : ReferenceCollectionBase<Random, RandomCategories, RandomDescription>
     {
-        public RandomCollection(RawNode initNode, IContext context, IDataSource<string, RandomDescription> dataSource) : base(initNode, context, dataSource)
+        public RandomCollection(RawNode initNode, RandomCategories categories, IContext context, IDataSource<string, RandomDescription> dataSource) : base(initNode, categories, context, dataSource)
         {
         }
 
-        protected override Random Factory(RawNode initNode, RandomDescription description, IContext context)
+        protected override Random Factory(RawNode initNode, RandomDescription description)
         {
-            return new Random(initNode, description, context);
+            return new Random(initNode, categories, description, GetContext());
         }
     }
 }

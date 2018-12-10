@@ -7,12 +7,12 @@ using Assets.logic.essential.random.implementation;
 
 namespace Assets.logic.essential.random
 {
-    public class Random : ReferenceModelBase<RandomDescription>, IRandom
+    public class Random : ReferenceModelBase<RandomCategories, RandomDescription>, IRandom
     {
         private int seed;
         private readonly IRandomImplementation random;
 
-        public Random(RawNode initNode, RandomDescription description, IContext context) : base(initNode, description, context)
+        public Random(RawNode initNode, RandomCategories categories, RandomDescription description, IContext context) : base(initNode, categories, description, context)
         {
             seed = initNode.GetInt("seed");
             random = (IRandomImplementation)FactoryManager.Build(typeof(IRandomImplementation), description.type);
@@ -28,9 +28,9 @@ namespace Assets.logic.essential.random
             return random.NextDouble(ref seed, incSeed);
         }
 
-        public int NextInt(bool incSeed = true)
+        public int NextInt(int exclusiveMax = int.MaxValue, bool incSeed = true)
         {
-            return random.NextInt(ref seed, incSeed);
+            return random.NextInt(ref seed, exclusiveMax, incSeed);
         }
 
         public int Range(int inclusiveMin, int exclusiveMax, bool incSeed = true)

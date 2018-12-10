@@ -313,30 +313,15 @@ namespace Assets.common
             }
         }
         
-        public RawNode GetNode(string key, char separator = '.')
+        public RawNode GetNode(string key)
         {
             //ключ может быть путем
             if (_rawData != null)
             {
-                string[] path = key.Split(separator);
-
                 object value;
-                if (dictionary.TryGetValue(path[0], out value))
+                if (dictionary.TryGetValue(key, out value))
                 {
-                    var node = new RawNode(value, path[0]);
-
-                    for (int i = 1; i < path.Length; i++)
-                    {
-                        if (node.dictionary.ContainsKey(path[i]))
-                        {
-                            node = node.GetNode(path[i]);
-                        }
-                        else
-                        {
-                            return new RawNode(null, path[i]);
-                        }
-                    }
-                    return node;
+                    return new RawNode(value, key);
                 }
             }
 
@@ -382,6 +367,9 @@ namespace Assets.common
         {
             if (node == null)
                 return this;
+
+            sortedCache = null;
+            unsortedCache = null;
 
             var toAddDictionary = dictionary;
             var addDictionary = node.dictionary;

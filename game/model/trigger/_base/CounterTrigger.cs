@@ -10,8 +10,8 @@ namespace Assets.game.model.trigger._base
         public int maxCount { get; private set; }
         public int additionalCount { get; private set; }
 
-        protected CounterTrigger(RawNode initNode, TriggerDescription description, TriggerCategories categories, IContext context) 
-            : base(initNode, description, categories, context)
+        protected CounterTrigger(RawNode initNode, TriggerCategories categories, TriggerDescription description, IContext context) 
+            : base(initNode, categories, description, context)
         {
             count = initNode.GetInt("count");
             additionalCount = initNode.GetInt("additional-count");
@@ -32,7 +32,7 @@ namespace Assets.game.model.trigger._base
         {
             int oldCount = additionalCount;
             additionalCount = amount;
-            Call(categories.update, new TriggerHandlerArgs { triggerData = new CounterTriggerData { newAdditionCount = additionalCount, oldAdditionCount = oldCount } });
+            Call(categories.update, new TriggerHandlerArgs { triggerData = new CounterTriggerData { newAdditionalCount = additionalCount, oldAdditionalCount = oldCount } });
         }
 
         public override object Serialize()

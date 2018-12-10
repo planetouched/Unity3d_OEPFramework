@@ -8,8 +8,8 @@ namespace Assets.game.model.trigger._base
     {
         public TriggerCollection triggers { get; private set; }
 
-        protected CompositeTrigger(RawNode initNode, TriggerDescription description, TriggerCategories categories, IContext context) 
-            : base(initNode, description, categories, context)
+        protected CompositeTrigger(RawNode initNode, TriggerCategories categories, TriggerDescription description, IContext context) 
+            : base(initNode, categories, description, context)
         {
             triggers = new TriggerCollection(initNode.GetNode("triggers"), categories, context, new TriggerDataSource(description.GetNode().GetNode("triggers"), context));
         }

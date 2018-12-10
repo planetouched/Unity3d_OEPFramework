@@ -5,14 +5,12 @@ using Assets.logic.core.util;
 
 namespace Assets.game.model.trigger._base
 {
-    public class Trigger : ReferenceModelBase<TriggerDescription>
+    public class Trigger : ReferenceModelBase<TriggerCategories, TriggerDescription>
     {
-        public TriggerCategories categories { get; private set; }
-
         public bool completed { get; private set; }
         public bool activated { get; private set; }
 
-        public Trigger(RawNode initNode, TriggerDescription description, TriggerCategories categories, IContext context): base(initNode, description, context)
+        public Trigger(RawNode initNode, TriggerCategories categories, TriggerDescription description, IContext context): base(initNode, categories, description, context)
         {
             this.categories = categories;
             activated = initNode.GetBool("activated");
