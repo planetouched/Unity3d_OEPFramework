@@ -5,18 +5,20 @@ namespace Assets.game.model.trigger.util
 {
     static class TriggerUtil
     {
-        public static Trigger[] Decomposite(Trigger tr, List<Trigger> triggers = null)
+        public static Trigger[] Decomposite(Trigger trigger, List<Trigger> triggers = null)
         {
             if (triggers == null)
                 triggers = new List<Trigger>();
 
-            if (tr is CompositeTrigger cr)
+            var ct = trigger as CompositeTrigger;
+
+            if (ct != null)
             {
-                foreach (var r in cr.triggers)
+                foreach (var r in ct.triggers)
                     Decomposite(r.Value, triggers);
             }
             else
-                triggers.Add(tr);
+                triggers.Add(trigger);
 
             return triggers.ToArray();
         }

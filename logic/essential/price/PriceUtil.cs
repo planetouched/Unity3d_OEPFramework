@@ -9,7 +9,9 @@ namespace Assets.logic.essential.price
             if (prices == null)
                 prices = new List<IPrice>();
 
-            if (price is CompositePrice cp)
+            var cp = price as CompositePrice;
+
+            if (cp != null)
             {
                 foreach (var pr in cp.prices)
                     Decomposite(pr.Value, prices);

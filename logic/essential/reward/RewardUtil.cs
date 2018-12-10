@@ -10,11 +10,15 @@ namespace Assets.logic.essential.reward
             if (rewards == null)
                 rewards = new List<IReward>();
 
-            if (reward is WrappedReward wr)
+            var wr = reward as WrappedReward;
+
+            if (wr != null)
                 Decomposite(wr.innerReward, rewards);
             else
             {
-                if (reward is CompositeReward cr)
+                var cr = reward as CompositeReward;
+
+                if (cr != null)
                 {
                     foreach (var r in cr.rewards)
                         Decomposite(r.Value, rewards);
@@ -31,11 +35,15 @@ namespace Assets.logic.essential.reward
             if (rewards == null)
                 rewards = new List<IRewardResult>();
 
-            if (reward is WrappedRewardResult wr)
+            var wr = reward as WrappedRewardResult;
+
+            if (wr != null)
                 DecompositeResult(wr.rewardResult, rewards);
             else
             {
-                if (reward is CompositeRewardResult cr)
+                var cr = reward as CompositeRewardResult;
+
+                if (cr != null)
                 {
                     foreach (var r in cr.results)
                         DecompositeResult(r, rewards);
