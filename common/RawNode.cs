@@ -142,6 +142,24 @@ namespace Assets.common
             return ret.ToArray();
         }
 
+        public uint[] GetUIntArray(string key, uint[] defaultValue = null)
+        {
+            defaultValue = defaultValue ?? new uint[0];
+            object value = null;
+            if (_rawData != null)
+                dictionary.TryGetValue(key, out value);
+            return value == null ? defaultValue : new RawNode(value).GetUIntArray();
+        }
+
+        public uint[] GetUIntArray()
+        {
+            if (_rawData == null) return new uint[0];
+            var ret = new List<uint>();
+            foreach (var e in (List<object>)_rawData)
+                ret.Add(Convert.ToUInt32(e));
+            return ret.ToArray();
+        }
+
         public float[] GetFloatArray(string key, float[] defaultValue = null)
         {
             defaultValue = defaultValue ?? new float[0];
@@ -315,7 +333,6 @@ namespace Assets.common
         
         public RawNode GetNode(string key)
         {
-            //ключ может быть путем
             if (_rawData != null)
             {
                 object value;
@@ -348,8 +365,11 @@ namespace Assets.common
             get
             {
                 if (_rawData == null)
+                {
                     return new List<object>();
-                return (List<object>) _rawData;
+                }
+
+                return (List<object>)_rawData;
             }
         }
 
@@ -358,8 +378,11 @@ namespace Assets.common
             get
             {
                 if (_rawData == null)
+                {
                     return new Dictionary<string, object>();
-                return _rawData as Dictionary<string, object>;
+                }
+
+                return (Dictionary<string, object>)_rawData;
             }
         }
 

@@ -51,7 +51,7 @@ namespace Assets.game.audio
                 }
             }
 
-            GEvent.Call(MUTE, new Tuple<int, bool>(layer, mute));
+            GEvent.Call(MUTE, new KeyValuePair<int, bool>(layer, mute));
         }
 
         public static void SetVolume(int layer, float volume)
@@ -70,7 +70,7 @@ namespace Assets.game.audio
                 }
             }
 
-            GEvent.Call(SET_VOLUME, new Tuple<int, float>(layer, volume));
+            GEvent.Call(SET_VOLUME, new KeyValuePair<int, float>(layer, volume));
         }
 
         public static float GetVolume(int layer)

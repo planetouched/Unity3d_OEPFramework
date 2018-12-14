@@ -25,12 +25,12 @@ namespace Assets.common.utils
             return obj;
         }
 
-        public static List<Tuple<Type, object>> RemoveAll()
+        public static IList<KeyValuePair<Type, object>> RemoveAll()
         {
-            var list = new List<Tuple<Type, object>>();
+            var list = new List<KeyValuePair<Type, object>>();
 
             foreach (var pair in singletones)
-                list.Add(new Tuple<Type, object>(pair.Key, pair.Value));
+                list.Add(pair);
 
             singletones.Clear();
             return list;
