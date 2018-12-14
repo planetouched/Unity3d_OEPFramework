@@ -4,7 +4,7 @@ using Assets.logic.core.reference.dataSource;
 
 namespace Assets.logic.essential.random
 {
-    public class RandomDataSource : DataSourceDescriptionBase<RandomDescription>
+    public class RandomDataSource : DataSourceSelectableBase<RandomDescription>
     {
         public RandomDataSource(RawNode node, IContext context = null) : base(node, context)
         {

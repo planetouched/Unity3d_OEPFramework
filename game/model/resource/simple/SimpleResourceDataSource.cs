@@ -4,7 +4,7 @@ using Assets.logic.core.reference.dataSource;
 
 namespace Assets.game.model.resource.simple
 {
-    public class SimpleResourceDataSource : DataSourceDescriptionBase<SimpleResourceDescription>
+    public class SimpleResourceDataSource : DataSourceSelectableBase<SimpleResourceDescription>
     {
         public SimpleResourceDataSource(RawNode node, IContext context) : base(node, context)
         {

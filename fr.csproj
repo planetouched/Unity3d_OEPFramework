@@ -123,7 +123,7 @@
     <Compile Include="logic\core\reference\collection\LazyArray.cs" />
     <Compile Include="logic\core\reference\collection\LazyDictionary.cs" />
     <Compile Include="logic\core\reference\dataSource\DataSourceBase.cs" />
-    <Compile Include="logic\core\reference\dataSource\DataSourceDescriptionBase.cs" />
+    <Compile Include="logic\core\reference\dataSource\DataSourceSelectableBase.cs" />
     <Compile Include="logic\core\reference\dataSource\IDataSource.cs" />
     <Compile Include="logic\core\reference\description\DescriptionBase.cs" />
     <Compile Include="logic\core\reference\description\IDescription.cs" />

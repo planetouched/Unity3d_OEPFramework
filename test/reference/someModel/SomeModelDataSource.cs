@@ -4,7 +4,7 @@ using Assets.logic.core.reference.dataSource;
 
 namespace Assets.test.reference.someModel
 {
-    public class SomeModelDataSource : DataSourceDescriptionBase<SomeModelDescription>
+    public class SomeModelDataSource : DataSourceSelectableBase<SomeModelDescription>
     {
         public SomeModelDataSource(RawNode node, IContext context = null) : base(node, context)
         {
