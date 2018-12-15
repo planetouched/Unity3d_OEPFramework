@@ -4,7 +4,7 @@ using logic.core.reference.dataSource;
 
 namespace game.model.deal
 {
-    public class DealDataSource : DataSourceSelectableBase<DealDescription>
+    public class DealDataSource : SelectableDataSourceBase<DealDescription>
     {
         public DealDataSource(RawNode node, IContext context = null) : base(node, context)
         {

@@ -4,7 +4,7 @@ using logic.core.reference.dataSource;
 
 namespace game.model.resource.renewable
 {
-    public class RenewableResourceDataSource : DataSourceSelectableBase<RenewableResourceDescription>
+    public class RenewableResourceDataSource : SelectableDataSourceBase<RenewableResourceDescription>
     {
         public RenewableResourceDataSource(RawNode node, IContext context) : base(node, context)
         {

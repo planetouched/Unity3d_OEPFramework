@@ -4,7 +4,7 @@ using logic.core.reference.dataSource;
 
 namespace game.model.trigger
 {
-    public class TriggerDataSource : DataSourceSelectableBase<TriggerDescription>
+    public class TriggerDataSource : SelectableDataSourceBase<TriggerDescription>
     {
         public TriggerDataSource(RawNode node, IContext context = null) : base(node, context)
         {

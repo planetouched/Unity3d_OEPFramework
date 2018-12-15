@@ -4,7 +4,7 @@ using logic.core.reference.dataSource;
 
 namespace game.model.resource.limited
 {
-    public class LimitedResourceDataSource : DataSourceSelectableBase<LimitedResourceDescription>
+    public class LimitedResourceDataSource : SelectableDataSourceBase<LimitedResourceDescription>
     {
         public LimitedResourceDataSource(RawNode node, IContext context = null) : base(node, context)
         {

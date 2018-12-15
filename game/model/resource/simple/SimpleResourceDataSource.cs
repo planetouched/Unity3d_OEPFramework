@@ -4,7 +4,7 @@ using logic.core.reference.dataSource;
 
 namespace game.model.resource.simple
 {
-    public class SimpleResourceDataSource : DataSourceSelectableBase<SimpleResourceDescription>
+    public class SimpleResourceDataSource : SelectableDataSourceBase<SimpleResourceDescription>
     {
         public SimpleResourceDataSource(RawNode node, IContext context) : base(node, context)
         {

@@ -54,13 +54,17 @@ namespace logic.core.model
         public IEnumerable<string> GetUnsortedKeys()
         {
             foreach (var pair in dataSource.GetNode().GetUnsortedCollection())
+            {
                 yield return pair.Key;
+            }
         }
 
         public IEnumerable<string> GetSortedKeys()
         {
             foreach (var pair in dataSource.GetNode().GetSortedCollection())
+            {
                 yield return pair.Key;
+            }
         }
 
         public override IEnumerator<KeyValuePair<string, TModel>> GetEnumerator()

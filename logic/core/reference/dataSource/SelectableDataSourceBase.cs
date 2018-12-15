@@ -5,11 +5,11 @@ using logic.core.reference.description;
 
 namespace logic.core.reference.dataSource
 {
-    public abstract class DataSourceSelectableBase<TDescription> : DataSourceBase<string, TDescription> where TDescription : ISelectableDescription
+    public abstract class SelectableDataSourceBase<TDescription> : DataSourceBase<string, TDescription> where TDescription : ISelectableDescription
     {
         private KeyValuePair<string, TDescription>[] sortedCache;
 
-        protected DataSourceSelectableBase(RawNode node, IContext context = null) : base(node, context)
+        protected SelectableDataSourceBase(RawNode node, IContext context = null) : base(node, context)
         {
         }
 
