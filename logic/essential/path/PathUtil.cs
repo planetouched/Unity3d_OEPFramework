@@ -19,9 +19,9 @@ namespace Assets.logic.essential.path
         {
             var models = model.GetModelPath(false);
             var arr = new string[models.Count];
-            for (int i = models.Count - 1; i >= 0; i--)
+            for (int i = 0; i < arr.Length; i++)
             {
-                arr[i] = models[i].key;
+                arr[arr.Length - i - 1] = models[i].key;
             }
             return arr;
         }

@@ -34,7 +34,7 @@ namespace Assets.logic.core.reference.dataSource
 
             value = Factory(GetNode().GetNode(collectionKey));
             items.Add(collectionKey, value);
-            value.Initialization();
+            //value.Initialization();
             sortedCache = null;
 
             return value;

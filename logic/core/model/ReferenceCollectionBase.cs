@@ -39,6 +39,7 @@ namespace Assets.logic.core.model
                 var description = dataSource.GetDescription(collectionKey);
                 model = Factory(initNode.GetNode(collectionKey), description);
                 AddChild(collectionKey, model);
+                description.Initialization();
                 model.Initialization();
 
                 return model;
