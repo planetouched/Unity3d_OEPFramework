@@ -1,7 +1,7 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
+﻿using common;
+using logic.core.context;
 
-namespace Assets.logic.essential.reward.result
+namespace logic.essential.reward.result
 {
     public class RewardResult : IRewardResult
     {

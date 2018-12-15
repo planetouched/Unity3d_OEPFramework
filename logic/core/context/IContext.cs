@@ -1,7 +1,7 @@
-﻿using Assets.common;
-using Assets.logic.core.model;
+﻿using common;
+using logic.core.model;
 
-namespace Assets.logic.core.context
+namespace logic.core.context
 {
     public interface IContext : IChildren
     {

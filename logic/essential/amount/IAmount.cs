@@ -1,4 +1,4 @@
-﻿namespace Assets.logic.essential.amount
+﻿namespace logic.essential.amount
 {
     public interface IAmount
     {

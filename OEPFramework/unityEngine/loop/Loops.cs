@@ -1,4 +1,4 @@
-﻿namespace Assets.OEPFramework.unityEngine.loop
+﻿namespace OEPFramework.unityEngine.loop
 {
     public static partial class Loops
     {

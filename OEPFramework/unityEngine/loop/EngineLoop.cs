@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Assets.OEPFramework.unityEngine.behaviour;
+using OEPFramework.unityEngine.behaviour;
 
-namespace Assets.OEPFramework.unityEngine.loop
+namespace OEPFramework.unityEngine.loop
 {
     public class EngineLoop
     {
@@ -55,13 +55,13 @@ namespace Assets.OEPFramework.unityEngine.loop
         {
             Sync.Process(loopType);
             
-            //если были добавлены из циклов другого типа
+            //РµСЃР»Рё Р±С‹Р»Рё РґРѕР±Р°РІР»РµРЅС‹ РёР· С†РёРєР»РѕРІ РґСЂСѓРіРѕРіРѕ С‚РёРїР°
             ModifyIfNeeded();
 
-            //вызов существующих циклов
+            //РІС‹Р·РѕРІ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС… С†РёРєР»РѕРІ
             InnerCall(items);
 
-            //вызов новых добавленых циклов
+            //РІС‹Р·РѕРІ РЅРѕРІС‹С… РґРѕР±Р°РІР»РµРЅС‹С… С†РёРєР»РѕРІ
             for (;;)
             {
                 var newLoops = ModifyIfNeeded();

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.OEPFramework.unityEngine._base;
+using OEPFramework.unityEngine._base;
 
-namespace Assets.OEPFramework.unityEngine
+namespace OEPFramework.unityEngine
 {
     public static class GEvent
     {

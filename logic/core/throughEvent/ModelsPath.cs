@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.logic.core.model;
+using logic.core.model;
 
-namespace Assets.logic.core.throughEvent
+namespace logic.core.throughEvent
 {
     public class ModelsPath
     {

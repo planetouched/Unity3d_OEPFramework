@@ -1,8 +1,8 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.factories;
+﻿using common;
+using logic.core.context;
+using logic.core.factories;
 
-namespace Assets.logic.essential.reward
+namespace logic.essential.reward
 {
     public abstract class WrappedReward : Reward
     {

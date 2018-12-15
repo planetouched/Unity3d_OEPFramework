@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using Assets.logic.core.context;
-using Assets.logic.core.util;
+using logic.core.context;
+using logic.core.util;
 
-namespace Assets.logic.core.model
+namespace logic.core.model
 {
     public class CollectionBase<TModel> : ModelBase, IEnumerable<KeyValuePair<string, TModel>>, IChildren where TModel : IModel
     {

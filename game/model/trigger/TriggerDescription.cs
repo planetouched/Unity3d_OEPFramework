@@ -1,10 +1,10 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.factories;
-using Assets.logic.core.reference.description;
-using Assets.logic.essential.reward;
+﻿using common;
+using logic.core.context;
+using logic.core.factories;
+using logic.core.reference.description;
+using logic.essential.reward;
 
-namespace Assets.game.model.trigger
+namespace game.model.trigger
 {
     public class TriggerDescription : SelectableDescriptionBase
     {

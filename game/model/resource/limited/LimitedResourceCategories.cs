@@ -1,6 +1,6 @@
-﻿using Assets.logic.core.throughEvent;
+﻿using logic.core.throughEvent;
 
-namespace Assets.game.model.resource.limited
+namespace game.model.resource.limited
 {
     public class LimitedResourceCategories
     {

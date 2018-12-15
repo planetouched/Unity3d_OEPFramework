@@ -1,13 +1,13 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.factories;
-using Assets.logic.core.reference.description;
-using Assets.logic.core.throughEvent;
-using Assets.logic.essential.choice;
-using Assets.logic.essential.path;
-using Assets.logic.essential.reward.result;
+﻿using common;
+using logic.core.context;
+using logic.core.factories;
+using logic.core.reference.description;
+using logic.core.throughEvent;
+using logic.essential.choice;
+using logic.essential.path;
+using logic.essential.reward.result;
 
-namespace Assets.logic.essential.reward
+namespace logic.essential.reward
 {
     public class Reward : DescriptionBase, IReward
     {

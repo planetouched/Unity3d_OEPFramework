@@ -1,8 +1,8 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.essential.price;
+﻿using common;
+using logic.core.context;
+using logic.essential.price;
 
-namespace Assets.game.model.resource.renewable
+namespace game.model.resource.renewable
 {
     public class RenewableResourcePrice : Price
     {

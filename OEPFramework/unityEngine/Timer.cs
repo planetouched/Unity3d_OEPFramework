@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.OEPFramework.unityEngine.loop;
-using Assets.OEPFramework.unityEngine._base;
+using OEPFramework.unityEngine.loop;
+using OEPFramework.unityEngine._base;
 using UnityEngine;
 
-namespace Assets.OEPFramework.unityEngine
+namespace OEPFramework.unityEngine
 {
     public sealed class Timer : DroppableItemBase
     {

@@ -1,9 +1,9 @@
 ﻿using System;
-using Assets.OEPFramework.future;
-using Assets.OEPFramework.unityEngine.transit;
-using Assets.OEPFramework.unityEngine._base;
+using OEPFramework.future;
+using OEPFramework.unityEngine.transit;
+using OEPFramework.unityEngine._base;
 
-namespace Assets.OEPFramework.unityEngine.behaviour
+namespace OEPFramework.unityEngine.behaviour
 {
     public abstract class FutureBehaviour : Future, IControllable, IDroppableItem, ILoopable
     {

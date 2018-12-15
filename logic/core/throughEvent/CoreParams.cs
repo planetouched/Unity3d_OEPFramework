@@ -1,6 +1,6 @@
-﻿using Assets.logic.core.context;
+﻿using logic.core.context;
 
-namespace Assets.logic.core.throughEvent
+namespace logic.core.throughEvent
 {
     public struct CoreParams
     {

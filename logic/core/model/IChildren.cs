@@ -1,4 +1,4 @@
-﻿namespace Assets.logic.core.model
+﻿namespace logic.core.model
 {
     public interface IChildren
     {

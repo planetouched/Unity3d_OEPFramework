@@ -1,8 +1,8 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.reference.collection;
+﻿using common;
+using logic.core.context;
+using logic.core.reference.collection;
 
-namespace Assets.logic.essential.price
+namespace logic.essential.price
 {
     public class CompositePrice : Price
     {

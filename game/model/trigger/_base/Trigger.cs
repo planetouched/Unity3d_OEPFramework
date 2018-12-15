@@ -1,9 +1,9 @@
-using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.model;
-using Assets.logic.core.util;
+using common;
+using logic.core.context;
+using logic.core.model;
+using logic.core.util;
 
-namespace Assets.game.model.trigger._base
+namespace game.model.trigger._base
 {
     public class Trigger : ReferenceModelBase<TriggerCategories, TriggerDescription>
     {

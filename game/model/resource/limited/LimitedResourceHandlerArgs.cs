@@ -1,4 +1,4 @@
-﻿namespace Assets.game.model.resource.limited
+﻿namespace game.model.resource.limited
 {
     public class LimitedResourceHandlerArgs
     {

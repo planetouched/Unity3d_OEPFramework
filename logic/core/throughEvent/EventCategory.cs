@@ -1,4 +1,4 @@
-﻿namespace Assets.logic.core.throughEvent
+﻿namespace logic.core.throughEvent
 {
     public class EventCategory
     {

@@ -1,8 +1,8 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.essential.requirement;
+﻿using common;
+using logic.core.context;
+using logic.essential.requirement;
 
-namespace Assets.game.model.resource.simple
+namespace game.model.resource.simple
 {
     public class SimpleResourceRequirement : Requirement
     {

@@ -1,8 +1,8 @@
 ﻿using System;
-using Assets.OEPFramework.unityEngine.loop;
-using Assets.OEPFramework.unityEngine._base;
+using OEPFramework.unityEngine.loop;
+using OEPFramework.unityEngine._base;
 
-namespace Assets.OEPFramework.unityEngine.behaviour
+namespace OEPFramework.unityEngine.behaviour
 {
     public abstract class LoopBehaviour : DroppableItemBase, ILoopable
     {

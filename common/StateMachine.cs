@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.OEPFramework.future;
+using OEPFramework.future;
 
-namespace Assets.common
+namespace common
 {
     public class StateMachine<T>
     {

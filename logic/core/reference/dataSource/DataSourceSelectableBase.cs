@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.reference.description;
+using common;
+using logic.core.context;
+using logic.core.reference.description;
 
-namespace Assets.logic.core.reference.dataSource
+namespace logic.core.reference.dataSource
 {
     public abstract class DataSourceSelectableBase<TDescription> : DataSourceBase<string, TDescription> where TDescription : ISelectableDescription
     {

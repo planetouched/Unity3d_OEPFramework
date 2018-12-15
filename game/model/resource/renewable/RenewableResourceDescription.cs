@@ -1,8 +1,8 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.reference.description;
+﻿using common;
+using logic.core.context;
+using logic.core.reference.description;
 
-namespace Assets.game.model.resource.renewable
+namespace game.model.resource.renewable
 {
     public class RenewableResourceDescription : SelectableDescriptionBase
     {

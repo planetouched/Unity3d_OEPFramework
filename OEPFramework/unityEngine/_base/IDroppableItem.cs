@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.OEPFramework.unityEngine._base
+namespace OEPFramework.unityEngine._base
 {
     public interface IDroppableItem
     {

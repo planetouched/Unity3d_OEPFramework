@@ -1,9 +1,9 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.reference.collection;
-using Assets.logic.essential.reward.result;
+﻿using common;
+using logic.core.context;
+using logic.core.reference.collection;
+using logic.essential.reward.result;
 
-namespace Assets.logic.essential.reward
+namespace logic.essential.reward
 {
     public class CompositeReward : Reward
     {

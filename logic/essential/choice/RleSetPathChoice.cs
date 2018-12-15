@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.throughEvent;
-using Assets.logic.essential.path;
-using Random = Assets.logic.essential.random.Random;
+using common;
+using logic.core.context;
+using logic.core.throughEvent;
+using logic.essential.path;
+using Random = logic.essential.random.Random;
 
-namespace Assets.logic.essential.choice
+namespace logic.essential.choice
 {
     public class RleSetPathChoice : PathChoice
     {

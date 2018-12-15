@@ -1,13 +1,13 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.factories;
-using Assets.logic.core.reference.description;
-using Assets.logic.essential.price;
-using Assets.logic.essential.requirement;
-using Assets.logic.essential.reward;
-using Assets.logic.essential.reward.result;
+﻿using common;
+using logic.core.context;
+using logic.core.factories;
+using logic.core.reference.description;
+using logic.essential.price;
+using logic.essential.requirement;
+using logic.essential.reward;
+using logic.essential.reward.result;
 
-namespace Assets.game.model.deal
+namespace game.model.deal
 {
     public class DealDescription : SelectableDescriptionBase
     {

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-
-#if UNITY_EDITOR
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
+#if UNITY_EDITOR
+
 #endif
 
-namespace Assets.OEPFramework.unityEngine.loop
+namespace OEPFramework.unityEngine.loop
 {
     public static class EngineLoopManager
     {

@@ -4,7 +4,7 @@
 using OEPFramework.utils;
 #endif
 
-namespace Assets.OEPFramework.unityEngine._base
+namespace OEPFramework.unityEngine._base
 {
     public abstract class DroppableItemBase :
 #if REFVIEW

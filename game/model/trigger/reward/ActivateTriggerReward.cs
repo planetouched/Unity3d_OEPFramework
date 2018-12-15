@@ -1,10 +1,10 @@
-using Assets.common;
-using Assets.game.model.trigger._base;
-using Assets.logic.core.context;
-using Assets.logic.essential.reward;
-using Assets.logic.essential.reward.result;
+using common;
+using game.model.trigger._base;
+using logic.core.context;
+using logic.essential.reward;
+using logic.essential.reward.result;
 
-namespace Assets.game.model.trigger.reward
+namespace game.model.trigger.reward
 {
     public class ActivateTriggerReward : Reward
     {

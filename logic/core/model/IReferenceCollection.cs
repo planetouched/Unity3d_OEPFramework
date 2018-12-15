@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Assets.logic.core.model
+namespace logic.core.model
 {
     public interface IReferenceCollection : IModel, IChildren
     {

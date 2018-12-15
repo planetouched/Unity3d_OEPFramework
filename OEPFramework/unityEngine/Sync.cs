@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.OEPFramework.unityEngine
+namespace OEPFramework.unityEngine
 {
     public static class Sync
     {

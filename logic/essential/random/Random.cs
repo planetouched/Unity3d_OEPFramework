@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.factories;
-using Assets.logic.core.model;
-using Assets.logic.essential.random.implementation;
+using common;
+using logic.core.context;
+using logic.core.factories;
+using logic.core.model;
+using logic.essential.random.implementation;
 
-namespace Assets.logic.essential.random
+namespace logic.essential.random
 {
     public class Random : ReferenceModelBase<RandomCategories, RandomDescription>, IRandom
     {

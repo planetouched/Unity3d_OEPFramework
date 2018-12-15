@@ -1,4 +1,4 @@
-﻿namespace Assets.logic.essential.random.implementation
+﻿namespace logic.essential.random.implementation
 {
     public interface IRandomImplementation
     {

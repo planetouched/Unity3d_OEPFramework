@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.common.utils
+namespace common.utils
 {
     public static class SingletonManager
     {

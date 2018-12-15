@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Assets.OEPFramework.unityEngine.behaviour
+namespace OEPFramework.unityEngine.behaviour
 {
     public abstract partial class GUIBehaviour : ControlLoopBehaviour
     {

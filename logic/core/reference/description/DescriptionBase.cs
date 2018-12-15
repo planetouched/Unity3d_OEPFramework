@@ -1,7 +1,7 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
+﻿using common;
+using logic.core.context;
 
-namespace Assets.logic.core.reference.description
+namespace logic.core.reference.description
 {
     public abstract class DescriptionBase : IDescription
     {

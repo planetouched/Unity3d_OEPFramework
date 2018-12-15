@@ -1,6 +1,6 @@
-﻿using Assets.logic.core.throughEvent;
+﻿using logic.core.throughEvent;
 
-namespace Assets.game.model.resource.simple
+namespace game.model.resource.simple
 {
     public class SimpleResourceCategories
     {

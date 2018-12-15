@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.logic.essential.time
+namespace logic.essential.time
 {
     public static class Time
     {

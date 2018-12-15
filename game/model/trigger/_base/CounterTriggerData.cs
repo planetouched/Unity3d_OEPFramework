@@ -1,4 +1,4 @@
-﻿namespace Assets.game.model.trigger._base
+﻿namespace game.model.trigger._base
 {
     public class CounterTriggerData
     {

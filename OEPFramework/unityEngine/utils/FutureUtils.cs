@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.OEPFramework.future;
-using Assets.OEPFramework.future.coroutine;
-using Assets.OEPFramework.future.utils;
-using Assets.OEPFramework.unityEngine.future;
+using OEPFramework.future;
+using OEPFramework.future.coroutine;
+using OEPFramework.future.utils;
+using OEPFramework.unityEngine.future;
 
-namespace Assets.OEPFramework.unityEngine.utils
+namespace OEPFramework.unityEngine.utils
 {
     public static class FutureUtils
     {

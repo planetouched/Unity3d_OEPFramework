@@ -1,8 +1,8 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.reference.dataSource;
+﻿using common;
+using logic.core.context;
+using logic.core.reference.dataSource;
 
-namespace Assets.game.model.trigger
+namespace game.model.trigger
 {
     public class TriggerDataSource : DataSourceSelectableBase<TriggerDescription>
     {

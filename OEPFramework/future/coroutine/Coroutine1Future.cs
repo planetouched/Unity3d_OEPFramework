@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.OEPFramework.future.coroutine
+namespace OEPFramework.future.coroutine
 {
     public class CoroutineFuture<T1> : CoroutineFutureBase
     {

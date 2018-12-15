@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.factories;
-using Assets.logic.core.reference.dataSource;
-using Assets.logic.core.reference.description;
+using common;
+using logic.core.context;
+using logic.core.factories;
+using logic.core.reference.dataSource;
+using logic.core.reference.description;
 
-namespace Assets.logic.core.reference.collection
+namespace logic.core.reference.collection
 {
     public class LazyArray<TValue> : DataSourceBase<int, TValue> where TValue : IDescription
     {

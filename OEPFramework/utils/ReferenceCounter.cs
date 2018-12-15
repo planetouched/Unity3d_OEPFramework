@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.OEPFramework.utils
+namespace OEPFramework.utils
 {
     public class ReferenceCounter
     {

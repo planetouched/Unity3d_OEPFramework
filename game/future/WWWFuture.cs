@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Assets.OEPFramework.unityEngine.behaviour;
-using Assets.OEPFramework.unityEngine.loop;
+using OEPFramework.unityEngine.behaviour;
+using OEPFramework.unityEngine.loop;
 using UnityEngine;
 
-namespace Assets.game.future
+namespace game.future
 {
     public class WWWFuture : FutureBehaviour
     {

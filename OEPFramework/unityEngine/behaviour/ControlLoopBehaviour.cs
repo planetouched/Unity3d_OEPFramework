@@ -1,4 +1,4 @@
-﻿namespace Assets.OEPFramework.unityEngine.behaviour
+﻿namespace OEPFramework.unityEngine.behaviour
 {
     public abstract class ControlLoopBehaviour : LoopBehaviour, IControllable
     {

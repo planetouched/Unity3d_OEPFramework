@@ -1,6 +1,6 @@
-﻿using Assets.logic.core.throughEvent;
+﻿using logic.core.throughEvent;
 
-namespace Assets.logic.essential.requirement
+namespace logic.essential.requirement
 {
     public interface IRequirement
     {

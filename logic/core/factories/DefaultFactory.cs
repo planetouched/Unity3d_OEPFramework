@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.logic.core.factories
+namespace logic.core.factories
 {
     public class DefaultFactory : IDefaultFactory
     {

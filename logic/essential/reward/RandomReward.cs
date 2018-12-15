@@ -1,10 +1,10 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.essential.path;
-using Assets.logic.essential.random;
-using Assets.logic.essential.reward.result;
+﻿using common;
+using logic.core.context;
+using logic.essential.path;
+using logic.essential.random;
+using logic.essential.reward.result;
 
-namespace Assets.logic.essential.reward
+namespace logic.essential.reward
 {
     public class RandomReward : WrappedReward
     {

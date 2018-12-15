@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Assets.logic.essential.reward.result;
+using logic.essential.reward.result;
 
-namespace Assets.logic.essential.reward
+namespace logic.essential.reward
 {
     public static class RewardUtil
     {

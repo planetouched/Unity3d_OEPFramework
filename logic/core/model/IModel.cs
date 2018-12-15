@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Assets.logic.core.context;
-using Assets.logic.core.throughEvent;
+using logic.core.context;
+using logic.core.throughEvent;
 
-namespace Assets.logic.core.model
+namespace logic.core.model
 {
     public interface IModel : IEventSource, ISerialize, IHasContext
     {

@@ -1,10 +1,10 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.reference.description;
-using Assets.logic.core.throughEvent;
-using Assets.logic.essential.path;
+﻿using common;
+using logic.core.context;
+using logic.core.reference.description;
+using logic.core.throughEvent;
+using logic.essential.path;
 
-namespace Assets.logic.essential.price
+namespace logic.essential.price
 {
     public class Price : DescriptionBase, IPrice
     {

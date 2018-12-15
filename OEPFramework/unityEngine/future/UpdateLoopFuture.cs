@@ -1,8 +1,8 @@
 ﻿using System;
-using Assets.OEPFramework.unityEngine.behaviour;
-using Assets.OEPFramework.unityEngine.loop;
+using OEPFramework.unityEngine.behaviour;
+using OEPFramework.unityEngine.loop;
 
-namespace Assets.OEPFramework.unityEngine.future
+namespace OEPFramework.unityEngine.future
 {
     public class UpdateLoopFuture : FutureBehaviour
     {

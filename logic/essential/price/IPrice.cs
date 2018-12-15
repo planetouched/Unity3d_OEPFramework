@@ -1,6 +1,6 @@
-﻿using Assets.logic.core.throughEvent;
+﻿using logic.core.throughEvent;
 
-namespace Assets.logic.essential.price
+namespace logic.essential.price
 {
     public interface IPrice
     {

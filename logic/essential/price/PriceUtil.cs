@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Assets.logic.essential.price
+namespace logic.essential.price
 {
     public static class PriceUtil
     {

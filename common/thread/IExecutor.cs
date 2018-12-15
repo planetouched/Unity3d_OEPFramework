@@ -1,7 +1,7 @@
 ﻿using System;
-using Assets.OEPFramework.future;
+using OEPFramework.future;
 
-namespace Assets.common.thread
+namespace common.thread
 {
     public interface IExecutor
     {

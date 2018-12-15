@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace Assets.logic.essential.path
+namespace logic.essential.path
 {
     static class SelectPathUtil
     {

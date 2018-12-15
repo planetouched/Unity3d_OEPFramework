@@ -1,6 +1,6 @@
-﻿using Assets.logic.core.throughEvent;
+﻿using logic.core.throughEvent;
 
-namespace Assets.game.model.resource.renewable
+namespace game.model.resource.renewable
 {
     public class RenewableResourceCategories
     {

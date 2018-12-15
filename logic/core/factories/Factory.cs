@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.logic.core.factories
+namespace logic.core.factories
 {
     public class Factory : IFactory
     {

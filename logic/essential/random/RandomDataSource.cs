@@ -1,8 +1,8 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.reference.dataSource;
+﻿using common;
+using logic.core.context;
+using logic.core.reference.dataSource;
 
-namespace Assets.logic.essential.random
+namespace logic.essential.random
 {
     public class RandomDataSource : DataSourceSelectableBase<RandomDescription>
     {

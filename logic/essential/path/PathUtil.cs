@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.model;
-using Assets.logic.core.throughEvent;
-using Random = Assets.logic.essential.random.Random;
+using common;
+using logic.core.context;
+using logic.core.model;
+using logic.core.throughEvent;
+using Random = logic.essential.random.Random;
 
-namespace Assets.logic.essential.path
+namespace logic.essential.path
 {
     public static class PathUtil
     {

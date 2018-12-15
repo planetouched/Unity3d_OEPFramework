@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.common;
-using Assets.logic.core.context;
+using common;
+using logic.core.context;
 
-namespace Assets.logic.core.factories
+namespace logic.core.factories
 {
     public static class FactoryManager
     {

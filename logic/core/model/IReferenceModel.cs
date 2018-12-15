@@ -1,6 +1,6 @@
-﻿using Assets.logic.core.reference.description;
+﻿using logic.core.reference.description;
 
-namespace Assets.logic.core.model
+namespace logic.core.model
 {
     public interface IReferenceModel : IModel, IChildren
     {

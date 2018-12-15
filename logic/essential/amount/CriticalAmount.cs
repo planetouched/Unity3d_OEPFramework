@@ -1,9 +1,9 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.essential.path;
-using Assets.logic.essential.random;
+﻿using common;
+using logic.core.context;
+using logic.essential.path;
+using logic.essential.random;
 
-namespace Assets.logic.essential.amount
+namespace logic.essential.amount
 {
     public class CriticalAmount : Amount
     {

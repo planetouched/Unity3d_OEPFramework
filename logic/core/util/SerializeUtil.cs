@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Assets.logic.core.model;
+using logic.core.model;
 
-namespace Assets.logic.core.util
+namespace logic.core.util
 {
     public static class SerializeUtil
     {

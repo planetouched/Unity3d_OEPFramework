@@ -1,10 +1,10 @@
-﻿using Assets.common;
-using Assets.game.model.trigger._base;
-using Assets.logic.core.context;
-using Assets.logic.core.throughEvent;
-using Assets.logic.core.util;
+﻿using common;
+using game.model.trigger._base;
+using logic.core.context;
+using logic.core.throughEvent;
+using logic.core.util;
 
-namespace Assets.game.model.trigger
+namespace game.model.trigger
 {
     public class QueueTrigger : CompositeTrigger
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.OEPFramework.unityEngine.behaviour
+namespace OEPFramework.unityEngine.behaviour
 {
     public interface ILoopable
     {

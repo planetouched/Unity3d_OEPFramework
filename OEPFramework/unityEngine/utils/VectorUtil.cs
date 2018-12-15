@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.OEPFramework.unityEngine.utils
+namespace OEPFramework.unityEngine.utils
 {
     public static class VectorUtil
     {

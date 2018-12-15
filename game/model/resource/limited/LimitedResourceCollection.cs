@@ -1,9 +1,9 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.model;
-using Assets.logic.core.reference.dataSource;
+﻿using common;
+using logic.core.context;
+using logic.core.model;
+using logic.core.reference.dataSource;
 
-namespace Assets.game.model.resource.limited
+namespace game.model.resource.limited
 {
     public class LimitedResourceCollection : ReferenceCollectionBase<LimitedResource, LimitedResourceCategories, LimitedResourceDescription>
     {

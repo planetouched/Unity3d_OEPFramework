@@ -1,11 +1,11 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.factories;
-using Assets.logic.essential.amount;
-using Assets.logic.essential.reward;
-using Assets.logic.essential.reward.result;
+﻿using common;
+using logic.core.context;
+using logic.core.factories;
+using logic.essential.amount;
+using logic.essential.reward;
+using logic.essential.reward.result;
 
-namespace Assets.game.model.resource.limited
+namespace game.model.resource.limited
 {
     public class LimitedResourceReward : Reward
     {

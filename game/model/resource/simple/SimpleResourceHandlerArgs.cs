@@ -1,4 +1,4 @@
-﻿namespace Assets.game.model.resource.simple
+﻿namespace game.model.resource.simple
 {
     public class SimpleResourceHandlerArgs
     {

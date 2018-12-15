@@ -1,4 +1,4 @@
-﻿namespace Assets.logic.core.context
+﻿namespace logic.core.context
 {
     public interface IHasContext
     {

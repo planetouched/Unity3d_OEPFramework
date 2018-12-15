@@ -1,7 +1,7 @@
 ﻿using System;
-using Assets.OEPFramework.unityEngine.behaviour;
+using OEPFramework.unityEngine.behaviour;
 
-namespace Assets.OEPFramework.unityEngine.transit
+namespace OEPFramework.unityEngine.transit
 {
     public class ControlLoopTransit : ControlLoopBehaviour
     {

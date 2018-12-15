@@ -1,5 +1,5 @@
 ﻿
-namespace Assets.logic.essential.random
+namespace logic.essential.random
 {
     public interface IRandom
     {

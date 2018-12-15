@@ -1,10 +1,10 @@
 ﻿using System;
-using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.model;
-using Assets.logic.core.util;
+using common;
+using logic.core.context;
+using logic.core.model;
+using logic.core.util;
 
-namespace Assets.game.model.resource.limited
+namespace game.model.resource.limited
 {
     public class LimitedResource : ReferenceModelBase<LimitedResourceCategories, LimitedResourceDescription>
     {

@@ -1,9 +1,9 @@
-using Assets.common;
-using Assets.game.model.trigger._base;
-using Assets.logic.core.context;
-using Assets.logic.core.throughEvent;
+using common;
+using game.model.trigger._base;
+using logic.core.context;
+using logic.core.throughEvent;
 
-namespace Assets.game.model.trigger
+namespace game.model.trigger
 {
     public class AndTrigger : CompositeTrigger
     {

@@ -1,9 +1,9 @@
-﻿using Assets.game.preloader;
-using Assets.OEPFramework.unityEngine;
-using Assets.OEPFramework.unityEngine.loop;
+﻿using OEPFramework.unityEngine;
+using OEPFramework.unityEngine.loop;
+using preloader;
 using UnityEngine;
 
-namespace Assets.game
+namespace game
 {
     public class GameLoop : MonoBehaviour
     {

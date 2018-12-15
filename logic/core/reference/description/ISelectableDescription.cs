@@ -1,4 +1,4 @@
-﻿namespace Assets.logic.core.reference.description
+﻿namespace logic.core.reference.description
 {
     public interface ISelectableDescription : IDescription
     {

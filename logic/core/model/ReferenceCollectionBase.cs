@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.reference.dataSource;
-using Assets.logic.core.reference.description;
-using Assets.logic.core.util;
+using common;
+using logic.core.context;
+using logic.core.reference.dataSource;
+using logic.core.reference.description;
+using logic.core.util;
 
-namespace Assets.logic.core.model
+namespace logic.core.model
 {
     public abstract class ReferenceCollectionBase<TModel, TCategories, TDescription> : CollectionBase<TModel>, IReferenceCollection
         where TDescription : ISelectableDescription

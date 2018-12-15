@@ -1,9 +1,9 @@
-using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.throughEvent;
-using Assets.logic.essential.path;
+using common;
+using logic.core.context;
+using logic.core.throughEvent;
+using logic.essential.path;
 
-namespace Assets.logic.essential.choice
+namespace logic.essential.choice
 {
     public class SimplePathChoice : PathChoice
     {
