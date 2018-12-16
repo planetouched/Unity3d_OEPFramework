@@ -6,7 +6,7 @@ namespace logic.essential.price
 {
     public class CompositePrice : Price
     {
-        public LazyArray<Price> prices { get; private set; }
+        public LazyArray<Price> prices { get; }
 
         public CompositePrice(RawNode rawNode, IContext context)
             : base(rawNode, context)

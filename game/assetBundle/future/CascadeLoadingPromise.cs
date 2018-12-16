@@ -1,6 +1,6 @@
-﻿using Assets.OEPFramework.future;
+﻿using OEPFramework.future;
 
-namespace Assets.game.assetBundle.future
+namespace game.assetBundle.future
 {
     public class CascadeLoadingPromise : Future
     {

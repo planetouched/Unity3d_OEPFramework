@@ -16,7 +16,7 @@ namespace logic.essential.amount
         public RleSetAmount(RawNode node, IContext context)
             : base(node, context)
         {
-            random = PathUtil.ModelsPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
+            random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
             var rows = node.GetNode("elements").array;
 
             foreach (var obj in rows)

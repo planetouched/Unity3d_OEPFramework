@@ -4,7 +4,7 @@ using logic.core.reference.description;
 
 namespace game.model.resource.renewable
 {
-    public class RenewableResourceDescription : SelectableDescriptionBase
+    public class RenewableResourceDescription : DescriptionBase
     {
         public int recoveryTime { get; private set; }
         public int renewableMaximum { get; private set; }

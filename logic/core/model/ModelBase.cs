@@ -1,18 +1,20 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using common;
 using logic.core.context;
 using logic.core.throughEvent;
 
 namespace logic.core.model
 {
-    public abstract class ModelBase : IModel
+    public abstract class ModelBase : IModel, IEnumerable<KeyValuePair<string, IModel>>
     {
-        public string key { get; set; }
-        protected object eventCategory;
+        public string key { get; protected set; }
         private readonly WeakRef<IContext> weakContext;
         private WeakRef<IModel> weakParent;
         private Event modelEvent;
+        private IOrderedDictionary children;
 
         protected ModelBase(IContext context, IModel parent = null)
         {
@@ -24,6 +26,11 @@ namespace logic.core.model
             }
         }
 
+        protected IDictionary GetChildren()
+        {
+            return children ?? (children = new OrderedDictionary());
+        }
+        
         public IContext GetContext()
         {
             return weakContext.obj;
@@ -48,27 +55,52 @@ namespace logic.core.model
         {
         }
 
-        public void SetParent(IModel newParent)
+        public void SetParent(IModel parent)
         {
-            var parent = GetParent();
-            if (newParent == parent) return;
-
-            if (newParent != null && parent != null && newParent != parent)
-                throw new Exception("объект может быть членом только одной иерархии");
-
-            weakParent = new WeakRef<IModel>(newParent);
+            if (parent == null)
+            {
+                weakParent = null;
+                return;
+            }
+            
+            weakParent = new WeakRef<IModel>(parent);
         }
 
         public IModel GetParent()
         {
-            if (weakParent != null)
-            {
-                return weakParent.obj;
-            }
-
-            return null;
+            return weakParent != null ? weakParent.obj : null;
         }
 
+        public IModel GetChild(string collectionKey)
+        {
+            return (IModel)GetChildren()[collectionKey];
+        }
+
+        public virtual void AddChild(string collectionKey, IModel model)
+        {
+            GetChildren().Add(collectionKey, model);
+            model.SetParent(this);
+        }
+
+        public void RemoveChild(string collectionKey, bool destroy)
+        {
+            if (children == null) return;
+
+            var child = GetChild(collectionKey);
+            child.SetParent(null);
+            children.Remove(collectionKey);
+
+            if (destroy)
+            {
+                child.Destroy();
+            }
+        }
+
+        public bool Exist(string collectionKey)
+        {
+            return GetChildren().Contains(collectionKey);
+        }
+        
         public virtual bool CheckAvailable()
         {
             return true;
@@ -91,6 +123,19 @@ namespace logic.core.model
             return models;
         }
 
+        public IEnumerator<KeyValuePair<string, IModel>> GetEnumerator()
+        {
+            foreach (DictionaryEntry pair in GetChildren())
+            {
+                yield return new KeyValuePair<string, IModel>((string)pair.Key, (IModel)pair.Value);
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        
         public void Call(EventCategory category, object args)
         {
             var models = GetModelPath(true);

@@ -7,7 +7,7 @@ namespace logic.essential.reward
 {
     public class CompositeReward : Reward
     {
-        public LazyArray<Reward> rewards { get; private set; }
+        public LazyArray<Reward> rewards { get; }
 
         public CompositeReward(RawNode rawNode, IContext context)
             : base(rawNode, context)

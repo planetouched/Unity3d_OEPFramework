@@ -37,21 +37,21 @@ namespace game.model.resource.renewable
 
             lastUpdateTime = Time.GetUnixTime();
             int oldAmount = innerAmount;
-            innerAmount = setAmount > GetDescription().maximum ? GetDescription().maximum : setAmount;
+            innerAmount = setAmount > description.maximum ? description.maximum : setAmount;
 
             Call(categories.changed, new RenewableResourceHandlerArgs { oldAmount = oldAmount, newAmount = innerAmount });
         }
 
         void Recount()
         {
-            if (innerAmount >= GetDescription().renewableMaximum) return;
+            if (innerAmount >= description.renewableMaximum) return;
             var currentTime = Time.GetUnixTime();
 
-            var newAmount = innerAmount + (int)(currentTime - lastUpdateTime) / GetDescription().recoveryTime * GetDescription().recoveryStep;
-            lastUpdateTime = currentTime - (currentTime - lastUpdateTime) % GetDescription().recoveryTime;
+            var newAmount = innerAmount + (int)(currentTime - lastUpdateTime) / description.recoveryTime * description.recoveryStep;
+            lastUpdateTime = currentTime - (currentTime - lastUpdateTime) % description.recoveryTime;
 
-            if (newAmount >= GetDescription().renewableMaximum && innerAmount <= GetDescription().renewableMaximum)
-                newAmount = GetDescription().renewableMaximum;
+            if (newAmount >= description.renewableMaximum && innerAmount <= description.renewableMaximum)
+                newAmount = description.renewableMaximum;
 
             innerAmount = newAmount;
         }

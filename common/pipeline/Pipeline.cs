@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assets.common.pipeline
+namespace common.pipeline
 {
     public class Pipeline
     {

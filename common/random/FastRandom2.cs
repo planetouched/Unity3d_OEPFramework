@@ -1,4 +1,4 @@
-﻿namespace Assets.common.random
+﻿namespace common.random
 {
     public class FastRandom2
     {

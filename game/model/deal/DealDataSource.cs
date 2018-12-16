@@ -1,10 +1,10 @@
 ﻿using common;
 using logic.core.context;
-using logic.core.reference.dataSource;
+using logic.core.reference.description;
 
 namespace game.model.deal
 {
-    public class DealDataSource : SelectableDataSourceBase<DealDescription>
+    public class DealDataSource : DataSourceBase<DealDescription>
     {
         public DealDataSource(RawNode node, IContext context = null) : base(node, context)
         {

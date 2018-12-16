@@ -1,4 +1,4 @@
-﻿namespace Assets.common.pipeline
+﻿namespace common.pipeline
 {
     public interface IPipelineHandler
     {

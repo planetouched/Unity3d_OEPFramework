@@ -1,4 +1,4 @@
-﻿namespace Assets.test.reference.someModel
+﻿namespace test.reference.someModel
 {
     public class SomeModelCategories
     {

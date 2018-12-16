@@ -13,7 +13,7 @@ namespace logic.essential.choice
         public PathChoice(RawNode node, IContext context) : base(node, context)
         {
             if (node.CheckKey("random"))
-                randomPath = PathUtil.ModelsPath(context, node.GetString("random"), null);
+                randomPath = PathUtil.GetModelPath(context, node.GetString("random"), null);
         }
 
         public virtual ModelsPath GetPath()

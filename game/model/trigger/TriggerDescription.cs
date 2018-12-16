@@ -6,7 +6,7 @@ using logic.essential.reward;
 
 namespace game.model.trigger
 {
-    public class TriggerDescription : SelectableDescriptionBase
+    public class TriggerDescription : DescriptionBase
     {
         public string type { get; private set; }
         public IReward reward { get; private set; }

@@ -1,8 +1,8 @@
-﻿using Assets.logic.core.context;
-using Assets.logic.core.model;
-using Assets.logic.core.throughEvent;
+﻿using logic.core.context;
+using logic.core.model;
+using logic.core.throughEvent;
 
-namespace Assets.test.simple
+namespace test.simple
 {
     public class Tanks : CollectionBase<Tank>
     {

@@ -9,7 +9,7 @@ using logic.essential.reward.result;
 
 namespace game.model.deal
 {
-    public class DealDescription : SelectableDescriptionBase
+    public class DealDescription : DescriptionBase
     {
         public IRequirement requirement { get; private set; }
         public IPrice price { get; private set; }

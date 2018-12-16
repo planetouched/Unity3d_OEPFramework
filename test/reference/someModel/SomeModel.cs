@@ -1,10 +1,10 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.factories;
-using Assets.logic.core.model;
-using Assets.logic.essential.reward.result;
+﻿using common;
+using logic.core.context;
+using logic.core.factories;
+using logic.core.model;
+using logic.essential.reward.result;
 
-namespace Assets.test.reference.someModel
+namespace test.reference.someModel
 {
     public class SomeModel : ReferenceModelBase<SomeModelCategories, SomeModelDescription>
     {

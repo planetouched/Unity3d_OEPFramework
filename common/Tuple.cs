@@ -1,4 +1,4 @@
-﻿namespace Assets.common
+﻿namespace common
 {
     public class Tuple<T1, T2>
     {

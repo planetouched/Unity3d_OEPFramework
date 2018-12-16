@@ -4,7 +4,7 @@ using logic.core.reference.description;
 
 namespace game.model.resource.limited
 {
-    public class LimitedResourceDescription : SelectableDescriptionBase
+    public class LimitedResourceDescription : DescriptionBase
     {
         public int maximum { get; private set; }
 

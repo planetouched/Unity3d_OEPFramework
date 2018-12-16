@@ -1,25 +1,29 @@
-﻿using System.Collections.Generic;
-using Assets.common;
-using Assets.game.model.resource.simple;
-using Assets.logic.core.context;
-using Assets.logic.core.model;
-using Assets.logic.essential.random;
-using Assets.test.reference.someModel;
-using Assets.test.simple;
+﻿using System;
+using System.Collections.Generic;
+using common;
+using game.model.resource.simple;
+using logic.core.context;
+using logic.core.model;
+using logic.essential.random;
+using test.reference.someModel;
+using test.simple;
 
-namespace Assets.test
+namespace test
 {
     public class Player : IContext
     {
+        public DataSources dataSources { get; }
         public RawNode repositoryNode { get; }
 
-        private readonly Dictionary<string, object> models = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> children = new Dictionary<string, object>();
 
         public Territories territories;
 
         public Player(RawNode initNode, RawNode repositoryNode)
         {
             this.repositoryNode = repositoryNode;
+
+            dataSources = new DataSources();
 
             var simpleResources = new SimpleResourceCollection(initNode.GetNode("simple-resources"), new SimpleResourceCategories(), this, new SimpleResourceDataSource(repositoryNode.GetNode("simple-resources"), this));
             var objects = new SomeModelCollection(initNode.GetNode("objects"), new SomeModelCategories(), this, new SomeModelDataSource(repositoryNode.GetNode("objects"), this));
@@ -32,37 +36,27 @@ namespace Assets.test
 
         public IModel GetChild(string collectionKey)
         {
-            return (IModel)models[collectionKey];
+            return (IModel)children[collectionKey];
         }
 
-        public void AddChild(string collectionKey, IModel model)
+        public void AddChild(string collectionKey, IModel obj)
         {
-            models.Add(collectionKey, model);
+            children.Add(collectionKey, obj);
         }
 
-        public void AddChild(string collectionKey, object obj)
+        public void RemoveChild(string collectionKey, bool destroy)
         {
-            models.Add(collectionKey, obj);
-        }
-
-        public void RemoveChild(string collectionKey)
-        {
-            models.Remove(collectionKey);
+            throw new NotImplementedException();
         }
 
         public bool Exist(string collectionKey)
         {
-            return models.ContainsKey(collectionKey);
+            return children.ContainsKey(collectionKey);
         }
 
-        public int Count()
+        public T GetChild<T>(string collectionKey) where T : class
         {
-            return models.Count;
-        }
-
-        public T GetChild<T>(string collectionKey)
-        {
-            return (T)models[collectionKey];
+            return (T)children[collectionKey];
         }
     }
 }

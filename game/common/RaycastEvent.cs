@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Assets.OEPFramework.unityEngine._base;
+using OEPFramework.unityEngine._base;
 using UnityEngine;
 
-namespace Assets.game.common
+namespace game.common
 {
     public static class MouseEventHandlerType
     {

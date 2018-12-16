@@ -5,7 +5,7 @@ namespace logic.essential.amount
 {
     public class SimpleAmount : Amount
     {
-        public int amount { get; private set; }
+        public int amount { get; }
 
         public SimpleAmount(RawNode node, IContext context)
             : base(node, context)

@@ -104,6 +104,9 @@
     <Compile Include="game\model\trigger\_base\CounterTriggerData.cs" />
     <Compile Include="game\model\trigger\_base\Trigger.cs" />
     <Compile Include="game\preloader\AppStart.cs" />
+    <Compile Include="logic\core\common\IChildren.cs" />
+    <Compile Include="logic\core\common\IParent.cs" />
+    <Compile Include="logic\core\context\DataSources.cs" />
     <Compile Include="logic\core\context\IContext.cs" />
     <Compile Include="logic\core\context\IHasContext.cs" />
     <Compile Include="logic\core\factories\DefaultFactory.cs" />
@@ -112,8 +115,8 @@
     <Compile Include="logic\core\factories\IDefaultFactory.cs" />
     <Compile Include="logic\core\factories\IFactory.cs" />
     <Compile Include="logic\core\model\CollectionBase.cs" />
-    <Compile Include="logic\core\model\IChildren.cs" />
     <Compile Include="logic\core\model\IModel.cs" />
+    <Compile Include="logic\core\model\InstanceCollection.cs" />
     <Compile Include="logic\core\model\IReferenceCollection.cs" />
     <Compile Include="logic\core\model\IReferenceModel.cs" />
     <Compile Include="logic\core\model\ISerialize.cs" />
@@ -121,14 +124,11 @@
     <Compile Include="logic\core\model\ReferenceCollectionBase.cs" />
     <Compile Include="logic\core\model\ReferenceModelBase.cs" />
     <Compile Include="logic\core\reference\collection\LazyArray.cs" />
+    <Compile Include="logic\core\reference\collection\LazyCollectionBase.cs" />
     <Compile Include="logic\core\reference\collection\LazyDictionary.cs" />
-    <Compile Include="logic\core\reference\dataSource\DataSourceBase.cs" />
-    <Compile Include="logic\core\reference\dataSource\SelectableDataSourceBase.cs" />
-    <Compile Include="logic\core\reference\dataSource\IDataSource.cs" />
+    <Compile Include="logic\core\reference\description\DataSourceBase.cs" />
     <Compile Include="logic\core\reference\description\DescriptionBase.cs" />
     <Compile Include="logic\core\reference\description\IDescription.cs" />
-    <Compile Include="logic\core\reference\description\ISelectableDescription.cs" />
-    <Compile Include="logic\core\reference\description\SelectableDescriptionBase.cs" />
     <Compile Include="logic\core\throughEvent\CoreParams.cs" />
     <Compile Include="logic\core\throughEvent\Event.cs" />
     <Compile Include="logic\core\throughEvent\EventCategory.cs" />

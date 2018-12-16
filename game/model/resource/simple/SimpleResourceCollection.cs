@@ -1,13 +1,13 @@
 ﻿using common;
 using logic.core.context;
 using logic.core.model;
-using logic.core.reference.dataSource;
+using logic.core.reference.description;
 
 namespace game.model.resource.simple
 {
     public class SimpleResourceCollection : ReferenceCollectionBase<SimpleResource, SimpleResourceCategories, SimpleResourceDescription>
     {
-        public SimpleResourceCollection(RawNode initNode, SimpleResourceCategories categories, IContext context, IDataSource<string, SimpleResourceDescription> dataSource) : base(initNode, categories, context, dataSource)
+        public SimpleResourceCollection(RawNode initNode, SimpleResourceCategories categories, IContext context, IDescription dataSource) : base(initNode, categories, context, dataSource)
         {
         }
 

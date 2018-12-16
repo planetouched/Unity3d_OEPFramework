@@ -1,4 +1,4 @@
-﻿namespace Assets.test.simple
+﻿namespace test.simple
 {
     public class TerritoryCategory
     {

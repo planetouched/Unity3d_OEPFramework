@@ -1,8 +1,8 @@
-﻿using Assets.OEPFramework.unityEngine.behaviour;
-using Assets.OEPFramework.unityEngine.loop;
+﻿using OEPFramework.unityEngine.behaviour;
+using OEPFramework.unityEngine.loop;
 using UnityEngine;
 
-namespace Assets.game.assetBundle.future
+namespace game.assetBundle.future
 {
     public class UnpackBundlePromise : FutureBehaviour
     {

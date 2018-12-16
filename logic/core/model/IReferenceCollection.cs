@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using logic.core.reference.description;
 
 namespace logic.core.model
 {
-    public interface IReferenceCollection : IModel, IChildren
+    public interface IReferenceCollection : IModel
     {
-        IEnumerable<string> GetUnsortedKeys();
-        IEnumerable<string> GetSortedKeys();
+        IDescription dataSource { get; }
     }
 }

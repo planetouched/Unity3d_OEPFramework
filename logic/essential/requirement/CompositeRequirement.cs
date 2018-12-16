@@ -6,7 +6,7 @@ namespace logic.essential.requirement
 {
     public abstract class CompositeRequirement : Requirement
     {
-        public LazyArray<Requirement> requirements { get; protected set; }
+        public LazyArray<Requirement> requirements { get; }
 
         protected CompositeRequirement(RawNode node, IContext context)
             : base(node, context)

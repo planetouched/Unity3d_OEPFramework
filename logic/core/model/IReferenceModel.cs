@@ -1,9 +1,9 @@
-﻿using logic.core.reference.description;
+﻿using logic.core.common;
 
 namespace logic.core.model
 {
-    public interface IReferenceModel : IModel, IChildren
+    public interface IReferenceModel : IModel, IChildren<IModel>
     {
-        ISelectableDescription description { get; }
+        bool selectable { get; }
     }
 }

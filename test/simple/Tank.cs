@@ -1,7 +1,7 @@
-﻿using Assets.logic.core.context;
-using Assets.logic.core.model;
+﻿using logic.core.context;
+using logic.core.model;
 
-namespace Assets.test.simple
+namespace test.simple
 {
     public class Tank : ModelBase
     {

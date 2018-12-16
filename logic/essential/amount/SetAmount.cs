@@ -14,7 +14,7 @@ namespace logic.essential.amount
             : base(node, context)
         {
             elements = node.GetIntArray("elements");
-            random = PathUtil.ModelsPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
+            random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
         }
 
         public override int Number()

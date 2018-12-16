@@ -1,23 +1,22 @@
 ﻿using System;
 using System.IO;
-using Assets.common;
-using Assets.common.random;
-using Assets.game.model.resource.simple;
-using Assets.logic.core.factories;
-using Assets.logic.core.throughEvent;
-using Assets.logic.core.util;
-using Assets.logic.essential.amount;
-using Assets.logic.essential.choice;
-using Assets.logic.essential.path;
-using Assets.logic.essential.price;
-using Assets.logic.essential.random;
-using Assets.logic.essential.random.implementation;
-using Assets.logic.essential.requirement;
-using Assets.logic.essential.reward;
-using Assets.logic.essential.reward.result;
-using Assets.test;
-using Assets.test.simple;
+using test;
+using test.simple;
+using common;
 using fastJSON;
+using game.model.resource.simple;
+using logic.core.factories;
+using logic.core.throughEvent;
+using logic.core.util;
+using logic.essential.amount;
+using logic.essential.choice;
+using logic.essential.path;
+using logic.essential.price;
+using logic.essential.random;
+using logic.essential.random.implementation;
+using logic.essential.requirement;
+using logic.essential.reward;
+using logic.essential.reward.result;
 
 namespace OEPFramework
 {
@@ -101,7 +100,6 @@ namespace OEPFramework
             territories["0"].tanks["0"].Attach(territories.category.tank.fire, OnTank);
             territories["0"].tanks["0"].Fire();
 
-            var node = PathUtil.RawNodePath(player, "deals.0", player.GetChild<RandomCollection>("random")["0"]);
             Console.ReadKey();
         }
 

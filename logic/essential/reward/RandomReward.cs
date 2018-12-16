@@ -16,7 +16,7 @@ namespace logic.essential.reward
         {
             if (rawNode.CheckKey("random"))
             {
-                random = PathUtil.ModelsPath(GetContext(), rawNode.GetString("random"), null).GetSelf<Random>();
+                random = PathUtil.GetModelPath(GetContext(), rawNode.GetString("random"), null).GetSelf<Random>();
             }
 
             probability = rawNode.GetDouble("probability");

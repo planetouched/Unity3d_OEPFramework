@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace Assets.common.pipeline
+namespace common.pipeline
 {
     public abstract class PipelineHandlerBase : IPipelineHandler
     {

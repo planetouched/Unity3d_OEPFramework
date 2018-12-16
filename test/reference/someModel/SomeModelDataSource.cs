@@ -1,10 +1,10 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.reference.dataSource;
+﻿using common;
+using logic.core.context;
+using logic.core.reference.description;
 
-namespace Assets.test.reference.someModel
+namespace test.reference.someModel
 {
-    public class SomeModelDataSource : DataSourceSelectableBase<SomeModelDescription>
+    public class SomeModelDataSource : DataSourceBase<SomeModelDescription>
     {
         public SomeModelDataSource(RawNode node, IContext context = null) : base(node, context)
         {

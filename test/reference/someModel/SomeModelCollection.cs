@@ -1,13 +1,13 @@
-﻿using Assets.common;
-using Assets.logic.core.context;
-using Assets.logic.core.model;
-using Assets.logic.core.reference.dataSource;
+﻿using common;
+using logic.core.context;
+using logic.core.model;
+using logic.core.reference.description;
 
-namespace Assets.test.reference.someModel
+namespace test.reference.someModel
 {
     public class SomeModelCollection : ReferenceCollectionBase<SomeModel, SomeModelCategories, SomeModelDescription>
     {
-        public SomeModelCollection(RawNode initNode, SomeModelCategories categories, IContext context, IDataSource<string, SomeModelDescription> dataSource) : base(initNode, categories, context, dataSource)
+        public SomeModelCollection(RawNode initNode, SomeModelCategories categories, IContext context, IDescription dataSource) : base(initNode, categories, context, dataSource)
         {
         }
 

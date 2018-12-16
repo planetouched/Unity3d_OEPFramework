@@ -1,13 +1,13 @@
 ﻿using common;
 using logic.core.context;
 using logic.core.model;
-using logic.core.reference.dataSource;
+using logic.core.reference.description;
 
 namespace game.model.resource.limited
 {
     public class LimitedResourceCollection : ReferenceCollectionBase<LimitedResource, LimitedResourceCategories, LimitedResourceDescription>
     {
-        public LimitedResourceCollection(RawNode initNode, LimitedResourceCategories categories, IContext context, IDataSource<string, LimitedResourceDescription> dataSource) : base(initNode, categories, context, dataSource)
+        public LimitedResourceCollection(RawNode initNode, LimitedResourceCategories categories, IContext context, IDescription dataSource) : base(initNode, categories, context, dataSource)
         {
         }
 

@@ -20,13 +20,13 @@ namespace game.model.resource.renewable
 
         public RenewableResourceRewardResult(RawNode node, IContext context) : base(node, context)
         {
-            resource = PathUtil.ModelsPath(context, node.GetString("path"), null).GetSelf<RenewableResource>();
+            resource = PathUtil.GetModelPath(context, node.GetString("path"), null).GetSelf<RenewableResource>();
             amount = node.GetInt("amount");
         }
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict().SetArgs("type", type, "path", PathUtil.StringPath(resource), "amount", amount);
+            return SerializeUtil.Dict().SetArgs("type", type, "path", PathUtil.GetStringPath(resource), "amount", amount);
         }
     }
 }

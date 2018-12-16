@@ -18,7 +18,7 @@ namespace logic.essential.requirement
 
         public ModelsPath GetPath()
         {
-            return cache ?? (cache = PathUtil.ModelsPath(GetContext(), node.GetString("path"), null));
+            return cache ?? (cache = PathUtil.GetModelPath(GetContext(), node.GetString("path"), null));
         }
 
         public virtual bool Check()

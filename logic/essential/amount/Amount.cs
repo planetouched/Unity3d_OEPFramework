@@ -6,7 +6,7 @@ namespace logic.essential.amount
 {
     public class Amount : DescriptionBase, IAmount
     {
-        public string type { get; private set; }
+        public string type { get; }
 
         public Amount(RawNode node, IContext context) : base(node, context)
         {

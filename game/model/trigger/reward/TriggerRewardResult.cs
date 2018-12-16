@@ -18,12 +18,12 @@ namespace game.model.trigger.reward
 
         public TriggerRewardResult(RawNode node, IContext context) : base(node, context)
         {
-            trigger = PathUtil.ModelsPath(context, node.GetString("path"), null).GetSelf<Trigger>();
+            trigger = PathUtil.GetModelPath(context, node.GetString("path"), null).GetSelf<Trigger>();
         }
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict().SetArgs("path", PathUtil.StringPath(trigger));
+            return SerializeUtil.Dict().SetArgs("path", PathUtil.GetStringPath(trigger));
         }
     }
 }

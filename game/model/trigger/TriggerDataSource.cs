@@ -1,10 +1,10 @@
 ﻿using common;
 using logic.core.context;
-using logic.core.reference.dataSource;
+using logic.core.reference.description;
 
 namespace game.model.trigger
 {
-    public class TriggerDataSource : SelectableDataSourceBase<TriggerDescription>
+    public class TriggerDataSource : DataSourceBase<TriggerDescription>
     {
         public TriggerDataSource(RawNode node, IContext context = null) : base(node, context)
         {

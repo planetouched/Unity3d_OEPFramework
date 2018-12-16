@@ -14,7 +14,7 @@ namespace logic.essential.choice
 
         public override ModelsPath GetPath()
         {
-            return PathUtil.ModelsPath(GetContext(), node.GetNode("path"));
+            return PathUtil.GetModelPath(GetContext(), node.GetNode("path"));
         }
     }
 }

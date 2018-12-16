@@ -1,6 +1,6 @@
-﻿using Assets.logic.core.throughEvent;
+﻿using logic.core.throughEvent;
 
-namespace Assets.test.simple
+namespace test.simple
 {
     public class TankCategory
     {

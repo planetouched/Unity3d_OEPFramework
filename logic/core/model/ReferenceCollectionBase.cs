@@ -1,28 +1,28 @@
 ﻿using System.Collections.Generic;
 using common;
 using logic.core.context;
-using logic.core.reference.dataSource;
 using logic.core.reference.description;
 using logic.core.util;
 
 namespace logic.core.model
 {
-    public abstract class ReferenceCollectionBase<TModel, TCategories, TDescription> : CollectionBase<TModel>, IReferenceCollection
-        where TDescription : ISelectableDescription
+    public abstract class ReferenceCollectionBase<TModel, TCategories, TDescription> : CollectionBase<TModel>, IReferenceModel, IEnumerable<KeyValuePair<string, TModel>>, IReferenceCollection
+        where TDescription : IDescription
         where TCategories : class
-        where TModel : IModel
+        where TModel : IReferenceModel
     {
-
-        public TCategories categories { get; protected set; }
-        private readonly IDataSource<string, TDescription> dataSource;
+        public TCategories categories { get; }
+        public IDescription dataSource { get; }
         private readonly RawNode initNode;
+        public bool selectable { get; }
 
-        protected ReferenceCollectionBase(RawNode initNode, TCategories categories, IContext context, IDataSource<string, TDescription> dataSource) : base(context, null)
+        protected ReferenceCollectionBase(RawNode initNode, TCategories categories, IContext context, IDescription dataSource) : base(context, null)
         {
             key = dataSource.key;
             this.initNode = initNode;
             this.dataSource = dataSource;
             this.categories = categories;
+            selectable = true;
         }
 
         public override TModel this[string collectionKey]
@@ -36,7 +36,7 @@ namespace logic.core.model
                     return model;
                 }
 
-                var description = dataSource.GetDescription(collectionKey);
+                var description = (TDescription)dataSource.GetChild(collectionKey);
                 model = Factory(initNode.GetNode(collectionKey), description);
                 AddChild(collectionKey, model);
                 description.Initialization();
@@ -46,30 +46,9 @@ namespace logic.core.model
             }
         }
 
-        public override IModel GetChild(string collectionKey)
+        public new IEnumerator<KeyValuePair<string, TModel>> GetEnumerator()
         {
-            return this[collectionKey];
-        }
-
-        public IEnumerable<string> GetUnsortedKeys()
-        {
-            foreach (var pair in dataSource.GetNode().GetUnsortedCollection())
-            {
-                yield return pair.Key;
-            }
-        }
-
-        public IEnumerable<string> GetSortedKeys()
-        {
-            foreach (var pair in dataSource.GetNode().GetSortedCollection())
-            {
-                yield return pair.Key;
-            }
-        }
-
-        public override IEnumerator<KeyValuePair<string, TModel>> GetEnumerator()
-        {
-            foreach (var sortedKey in GetSortedKeys())
+            foreach (var sortedKey in dataSource.GetNode().GetSortedKeys())
             {
                 yield return new KeyValuePair<string, TModel>(sortedKey, this[sortedKey]);
             }
@@ -79,7 +58,7 @@ namespace logic.core.model
         {
             var dict = SerializeUtil.Dict();
 
-            foreach (var unsortedKey in GetUnsortedKeys())
+            foreach (var unsortedKey in dataSource.GetNode().GetUnsortedKeys())
             {
                 if (Exist(unsortedKey))
                 {

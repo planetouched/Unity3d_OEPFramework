@@ -27,7 +27,7 @@ namespace logic.essential.reward
             {
                 if (node.CheckKey("path"))
                 {
-                    path = PathUtil.ModelsPath(GetContext(), node.GetNode("path"));
+                    path = PathUtil.GetModelPath(GetContext(), node.GetNode("path"));
                 }
             }
         }

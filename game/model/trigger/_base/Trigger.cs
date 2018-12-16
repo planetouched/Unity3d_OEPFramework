@@ -60,7 +60,7 @@ namespace game.model.trigger._base
 
             Deactivate();
             completed = true;
-            GetDescription().reward.Award();
+            description.reward.Award();
             Call(categories.completed, new TriggerHandlerArgs());
         }
 

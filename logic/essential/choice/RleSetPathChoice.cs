@@ -36,7 +36,7 @@ namespace logic.essential.choice
             foreach (object[] pair in list)
             {
                 if (pos >= currentPos && pos < currentPos + (int)pair[1])
-                    return PathUtil.ModelsPath(GetContext(), (string)pair[0], rnd);
+                    return PathUtil.GetModelPath(GetContext(), (string)pair[0], rnd);
                 currentPos += (int)pair[1];
             }
 

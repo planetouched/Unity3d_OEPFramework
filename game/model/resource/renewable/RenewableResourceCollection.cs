@@ -1,13 +1,13 @@
 ﻿using common;
 using logic.core.context;
 using logic.core.model;
-using logic.core.reference.dataSource;
+using logic.core.reference.description;
 
 namespace game.model.resource.renewable
 {
     public class RenewableResourceCollection : ReferenceCollectionBase<RenewableResource, RenewableResourceCategories, RenewableResourceDescription>
     {
-        public RenewableResourceCollection(RawNode initNode, RenewableResourceCategories categories, IContext context, IDataSource<string, RenewableResourceDescription> dataSource) : base(initNode, categories, context, dataSource)
+        public RenewableResourceCollection(RawNode initNode, RenewableResourceCategories categories, IContext context, IDescription dataSource) : base(initNode, categories, context, dataSource)
         {
         }
 

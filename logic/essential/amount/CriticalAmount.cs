@@ -7,9 +7,9 @@ namespace logic.essential.amount
 {
     public class CriticalAmount : Amount
     {
-        public double probability { get; private set; }
-        public int critical { get; private set; }
-        public int regular { get; private set; }
+        public double probability { get; }
+        public int critical { get; }
+        public int regular { get; }
         public bool wasCritical { get; private set; }
         private readonly Random random;
 
@@ -19,7 +19,7 @@ namespace logic.essential.amount
             probability = node.GetDouble("probability");
             critical = node.GetInt("critical");
             regular = node.GetInt("regular");
-            random = PathUtil.ModelsPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
+            random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
         }
 
         public override int Number()
