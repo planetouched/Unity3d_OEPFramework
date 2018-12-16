@@ -4,15 +4,14 @@ using common;
 using logic.core.context;
 using logic.core.throughEvent;
 using logic.essential.path;
-using Random = logic.essential.random.Random;
 
 namespace logic.essential.choice
 {
     public class RleSetPathChoice : PathChoice
     {
-        readonly List<object[]> list = new List<object[]>();
+        private readonly List<object[]> list = new List<object[]>();
         private readonly int length;
-
+        
         public RleSetPathChoice(RawNode node, IContext context)
             : base(node, context)
         {
@@ -28,15 +27,28 @@ namespace logic.essential.choice
                 length += (int)pair[1];
         }
 
-        public override ModelsPath GetPath()
+        public override ModelsPath GetModelPath()
         {
-            var rnd = randomPath.GetSelf<Random>();
-            int pos = rnd.Range(0, length);
+            int pos = random.Range(0, length);
             int currentPos = 0;
             foreach (object[] pair in list)
             {
                 if (pos >= currentPos && pos < currentPos + (int)pair[1])
-                    return PathUtil.GetModelPath(GetContext(), (string)pair[0], rnd);
+                    return PathUtil.GetModelPath(GetContext(), (string)pair[0], random);
+                currentPos += (int)pair[1];
+            }
+
+            throw new Exception("nothing selected");
+        }
+
+        public override T GetDescription<T>()
+        {
+            int pos = random.Range(0, length);
+            int currentPos = 0;
+            foreach (object[] pair in list)
+            {
+                if (pos >= currentPos && pos < currentPos + (int)pair[1])
+                    return PathUtil.GetDescription<T>(GetContext(), (string)pair[0], random);
                 currentPos += (int)pair[1];
             }
 

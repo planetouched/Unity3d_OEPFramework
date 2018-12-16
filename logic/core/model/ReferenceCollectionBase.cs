@@ -46,6 +46,11 @@ namespace logic.core.model
             }
         }
 
+        public override IModel GetChild(string collectionKey)
+        {
+            return this[collectionKey];
+        }
+
         public new IEnumerator<KeyValuePair<string, TModel>> GetEnumerator()
         {
             foreach (var sortedKey in dataSource.GetNode().GetSortedKeys())

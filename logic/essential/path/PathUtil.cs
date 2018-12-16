@@ -5,6 +5,7 @@ using logic.core.context;
 using logic.core.model;
 using logic.core.reference.description;
 using logic.core.throughEvent;
+using logic.essential.random;
 using Random = logic.essential.random.Random;
 
 namespace logic.essential.path
@@ -48,12 +49,12 @@ namespace logic.essential.path
             return GetResult(context, path, random);
         }
 
-        public static ModelsPath GetModelPath(IContext context, string path, Random random)
+        public static ModelsPath GetModelPath(IContext context, string path, IRandom random)
         {
             return GetResult(context, path, random);
         }
 
-        private static ModelsPath GetResult(IContext context, string path, Random random)
+        private static ModelsPath GetResult(IContext context, string path, IRandom random)
         {
             var parts = GetParts(path);
             var models = new List<IModel>();
@@ -100,7 +101,7 @@ namespace logic.essential.path
             return result;
         }
 
-        public static RawNode GetRawNode(IContext context, string path, Random random)
+        public static RawNode GetRawNode(IContext context, string path, IRandom random)
         {
             var parts = GetParts(path);
             RawNode current = context.repositoryNode;
@@ -131,7 +132,7 @@ namespace logic.essential.path
             return current;
         }
 
-        public static T GetDescription<T>(IContext context, string path, Random random) where T : class, IDescription
+        public static T GetDescription<T>(IContext context, string path, IRandom random) where T : class, IDescription
         {
             var parts = GetParts(path);
             IDescription current = null;

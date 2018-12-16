@@ -13,7 +13,7 @@ namespace logic.essential.path
 
         public static bool IsRange(string rawSelector)
         {
-            return rawSelector.Contains("-");
+            return rawSelector.Contains("~");
         }
 
         public static bool IsExcept(string rawSelector)
@@ -31,9 +31,9 @@ namespace logic.essential.path
             return rawSelector == "*";
         }
 
-        static void AddRange(string range, OrderedDictionary fastKeys, ref List<string> affectedKeys)
+        static void AddRange(string range, IOrderedDictionary fastKeys, ref List<string> affectedKeys)
         {
-            var tmp = range.Split('-');
+            var tmp = range.Split('~');
             int start = Convert.ToInt32(tmp[0]);
             int end = Convert.ToInt32(tmp[1]);
             for (int i = start; i <= end; i++)
@@ -44,9 +44,9 @@ namespace logic.essential.path
             }
         }
 
-        static void ExceptRange(string range, OrderedDictionary fastKeys, ref List<string> affectedKeys)
+        static void ExceptRange(string range, IOrderedDictionary fastKeys, ref List<string> affectedKeys)
         {
-            var tmp = range.Split('-');
+            var tmp = range.Split('~');
             int start = Convert.ToInt32(Trim(tmp[0]));
             int end = Convert.ToInt32(Trim(tmp[1]));
             for (int i = start; i <= end; i++)
@@ -62,7 +62,7 @@ namespace logic.essential.path
             return key.TrimStart('!');
         }
         
-        public static IList<string> GetAffectedKeys(string rawSelector, List<string> allKeys)
+        public static IList<string> GetAffectedKeys(string rawSelector, IList<string> allKeys)
         {
             if (IsAll(rawSelector))
                 return allKeys;

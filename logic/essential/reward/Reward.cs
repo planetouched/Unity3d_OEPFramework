@@ -49,7 +49,7 @@ namespace logic.essential.reward
 
         protected ModelsPath RewardPath()
         {
-            return choice != null ? choice.GetPath() : path;
+            return choice != null ? choice.GetModelPath() : path;
         }
     }
 }

@@ -71,7 +71,7 @@ namespace logic.core.model
             return weakParent != null ? weakParent.obj : null;
         }
 
-        public IModel GetChild(string collectionKey)
+        public virtual IModel GetChild(string collectionKey)
         {
             return (IModel)GetChildren()[collectionKey];
         }
