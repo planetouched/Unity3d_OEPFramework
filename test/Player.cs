@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.game.models.resource.simple;
+using Assets.game.models.resources.simple;
 using common;
 using logic.core.context;
 using logic.core.model;

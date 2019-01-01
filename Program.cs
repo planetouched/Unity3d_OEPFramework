@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Assets.game.models.resource.simple;
+using Assets.game.models.resources.simple;
 using test;
 using test.simple;
 using common;
