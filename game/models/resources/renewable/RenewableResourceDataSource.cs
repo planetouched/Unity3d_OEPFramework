@@ -2,7 +2,7 @@
 using logic.core.context;
 using logic.core.reference.description;
 
-namespace Assets.game.models.resources.renewable
+namespace game.models.resources.renewable
 {
     public class RenewableResourceDataSource : DataSourceBase<RenewableResourceDescription>
     {
@@ -10,9 +10,9 @@ namespace Assets.game.models.resources.renewable
         {
         }
 
-        protected override RenewableResourceDescription Factory(RawNode node)
+        protected override RenewableResourceDescription Factory(RawNode partialNode)
         {
-            return new RenewableResourceDescription(node, GetContext());
+            return new RenewableResourceDescription(partialNode, GetContext());
         }
     }
 }

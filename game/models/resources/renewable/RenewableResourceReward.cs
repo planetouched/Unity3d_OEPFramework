@@ -5,7 +5,7 @@ using logic.essential.amount;
 using logic.essential.reward;
 using logic.essential.reward.result;
 
-namespace Assets.game.models.resources.renewable
+namespace game.models.resources.renewable
 {
     public class RenewableResourceReward : Reward
     {

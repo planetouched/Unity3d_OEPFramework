@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Assets.game.assetBundle.future;
+using Assets.game.assetBundle.futures;
 using Assets.game.assetBundle.repository;
 using common;
 using OEPFramework.future;

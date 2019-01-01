@@ -221,10 +221,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="game\assetBundle\AssetBundleManager.cs" />
     <Compile Include="game\assetBundle\AssetbundleUnloadService.cs" />
-    <Compile Include="game\assetBundle\future\CascadeLoadingPromise.cs" />
-    <Compile Include="game\assetBundle\future\LoadBundlePromise.cs" />
-    <Compile Include="game\assetBundle\future\ProcessFuture.cs" />
-    <Compile Include="game\assetBundle\future\UnpackBundlePromise.cs" />
+    <Compile Include="game\assetBundle\futures\CascadeLoadingPromise.cs" />
+    <Compile Include="game\assetBundle\futures\LoadBundlePromise.cs" />
+    <Compile Include="game\assetBundle\futures\ProcessFuture.cs" />
+    <Compile Include="game\assetBundle\futures\UnpackBundlePromise.cs" />
     <Compile Include="game\assetBundle\ProcessChecker.cs" />
     <Compile Include="game\assetBundle\repository\AssetBundleRepositoryItem.cs" />
     <Compile Include="game\assetBundle\repository\AssetBundlesRepository.cs" />

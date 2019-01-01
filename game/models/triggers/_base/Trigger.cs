@@ -3,7 +3,7 @@ using logic.core.context;
 using logic.core.model;
 using logic.core.util;
 
-namespace Assets.game.models.triggers._base
+namespace game.models.triggers._base
 {
     public class Trigger : ReferenceModelBase<TriggerCategories, TriggerDescription>
     {
@@ -19,6 +19,8 @@ namespace Assets.game.models.triggers._base
 
         public override void Initialization()
         {
+            base.Initialization();
+            
             if (activated)
                 InnerActivate();
         }

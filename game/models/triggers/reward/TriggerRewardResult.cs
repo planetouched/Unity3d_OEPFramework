@@ -1,11 +1,11 @@
-﻿using Assets.game.models.triggers._base;
-using common;
+﻿using common;
+using game.models.triggers._base;
 using logic.core.context;
 using logic.core.util;
 using logic.essential.path;
 using logic.essential.reward.result;
 
-namespace Assets.game.models.triggers.reward
+namespace game.models.triggers.reward
 {
     public class TriggerRewardResult : RewardResult
     {

@@ -2,7 +2,7 @@
 using logic.core.context;
 using logic.essential.requirement;
 
-namespace Assets.game.models.resources.simple
+namespace game.models.resources.simple
 {
     public class SimpleResourceRequirement : Requirement
     {

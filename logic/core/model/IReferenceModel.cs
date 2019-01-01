@@ -1,8 +1,6 @@
-﻿using logic.core.common;
-
-namespace logic.core.model
+﻿namespace logic.core.model
 {
-    public interface IReferenceModel : IModel, IChildren<IModel>
+    public interface IReferenceModel : IModel
     {
         bool selectable { get; }
     }

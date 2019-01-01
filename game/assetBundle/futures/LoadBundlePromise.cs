@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.game.futures;
+using game.futures;
 using OEPFramework.future;
 using OEPFramework.unityEngine.utils;
 using UnityEngine;
 
-namespace Assets.game.assetBundle.future
+namespace Assets.game.assetBundle.futures
 {
     public class LoadBundlePromise : Future, IProcess
     {

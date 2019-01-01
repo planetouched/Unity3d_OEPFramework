@@ -5,7 +5,7 @@ using logic.essential.amount;
 using logic.essential.reward;
 using logic.essential.reward.result;
 
-namespace Assets.game.models.resources.simple
+namespace game.models.resources.simple
 {
     public class SimpleResourceReward : Reward
     {

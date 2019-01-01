@@ -3,7 +3,7 @@ using logic.core.context;
 using logic.core.model;
 using logic.core.reference.description;
 
-namespace Assets.game.models.resources.renewable
+namespace game.models.resources.renewable
 {
     public class RenewableResourceCollection : ReferenceCollectionBase<RenewableResource, RenewableResourceCategories, RenewableResourceDescription>
     {

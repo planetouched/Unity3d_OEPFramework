@@ -3,7 +3,7 @@ using OEPFramework.unityEngine;
 using OEPFramework.unityEngine.loop;
 using UnityEngine;
 
-namespace Assets.game
+namespace game
 {
     public class GameLoop : MonoBehaviour
     {

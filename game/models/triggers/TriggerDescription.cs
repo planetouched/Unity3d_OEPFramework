@@ -4,7 +4,7 @@ using logic.core.factories;
 using logic.core.reference.description;
 using logic.essential.reward;
 
-namespace Assets.game.models.triggers
+namespace game.models.triggers
 {
     public class TriggerDescription : DescriptionBase
     {

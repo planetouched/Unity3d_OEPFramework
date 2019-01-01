@@ -2,7 +2,7 @@
 using logic.core.context;
 using logic.core.reference.description;
 
-namespace Assets.game.models.resources.simple
+namespace game.models.resources.simple
 {
     public class SimpleResourceDescription : DescriptionBase
     {

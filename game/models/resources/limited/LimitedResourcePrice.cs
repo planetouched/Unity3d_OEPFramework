@@ -2,7 +2,7 @@
 using logic.core.context;
 using logic.essential.price;
 
-namespace Assets.game.models.resources.limited
+namespace game.models.resources.limited
 {
     public class LimitedResourcePrice : Price
     {

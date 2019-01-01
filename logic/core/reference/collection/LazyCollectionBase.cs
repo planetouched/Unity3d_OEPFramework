@@ -25,14 +25,14 @@ namespace logic.core.reference.collection
             }        
         }
         
-        protected virtual TValue Factory(RawNode node)
+        protected virtual TValue Factory(RawNode partialNode)
         {
             if (GetContext() == null)
             {
-                return FactoryManager.Build<TValue>(node);
+                return FactoryManager.Build<TValue>(partialNode);
             }
 
-            return FactoryManager.Build<TValue>(node, GetContext());
+            return FactoryManager.Build<TValue>(partialNode, GetContext());
         }
 
         protected abstract TValue GetDescription(TKey collectionKey);

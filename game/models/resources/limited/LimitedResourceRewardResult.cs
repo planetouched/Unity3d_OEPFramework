@@ -4,7 +4,7 @@ using logic.core.util;
 using logic.essential.path;
 using logic.essential.reward.result;
 
-namespace Assets.game.models.resources.limited
+namespace game.models.resources.limited
 {
     public class LimitedResourceRewardResult : RewardResult
     {

@@ -2,7 +2,7 @@
 using logic.core.context;
 using logic.core.util;
 
-namespace Assets.game.models.triggers._base
+namespace game.models.triggers._base
 {
     public abstract class CompositeTrigger : Trigger
     {

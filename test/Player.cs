@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.game.models.resources.simple;
 using common;
+using game.models.resources.simple;
 using logic.core.context;
 using logic.core.model;
 using logic.essential.random;

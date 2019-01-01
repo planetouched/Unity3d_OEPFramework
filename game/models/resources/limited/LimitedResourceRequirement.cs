@@ -2,7 +2,7 @@
 using logic.core.context;
 using logic.essential.requirement;
 
-namespace Assets.game.models.resources.limited
+namespace game.models.resources.limited
 {
     public class LimitedResourceRequirement : Requirement
     {

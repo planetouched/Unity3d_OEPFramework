@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Assets.game.assetBundle.future;
+using Assets.game.assetBundle.futures;
 using common.utils;
 using OEPFramework.future;
 using OEPFramework.future.utils.threadsafe;

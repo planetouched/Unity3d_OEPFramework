@@ -2,7 +2,7 @@
 using logic.core.context;
 using logic.core.reference.description;
 
-namespace Assets.game.models.deal
+namespace game.models.deal
 {
     public class DealDataSource : DataSourceBase<DealDescription>
     {
@@ -10,9 +10,9 @@ namespace Assets.game.models.deal
         {
         }
 
-        protected override DealDescription Factory(RawNode node)
+        protected override DealDescription Factory(RawNode partialNode)
         {
-            return new DealDescription(node, GetContext());
+            return new DealDescription(partialNode, GetContext());
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.game.audio.future;
+using game.audio.future;
 using OEPFramework.unityEngine;
 using OEPFramework.unityEngine._base;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Assets.game.audio
+namespace game.audio
 {
     public class AudioPlayer : DroppableItemBase
     {

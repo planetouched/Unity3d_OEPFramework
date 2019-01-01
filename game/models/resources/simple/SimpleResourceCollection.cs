@@ -3,7 +3,7 @@ using logic.core.context;
 using logic.core.model;
 using logic.core.reference.description;
 
-namespace Assets.game.models.resources.simple
+namespace game.models.resources.simple
 {
     public class SimpleResourceCollection : ReferenceCollectionBase<SimpleResource, SimpleResourceCategories, SimpleResourceDescription>
     {

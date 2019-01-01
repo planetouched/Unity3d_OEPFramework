@@ -2,7 +2,7 @@
 using logic.core.context;
 using logic.essential.requirement;
 
-namespace Assets.game.models.resources.renewable
+namespace game.models.resources.renewable
 {
     public class RenewableResourceRequirement : Requirement
     {

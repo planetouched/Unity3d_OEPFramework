@@ -2,7 +2,7 @@
 using logic.core.context;
 using logic.core.reference.description;
 
-namespace Assets.game.models.resources.simple
+namespace game.models.resources.simple
 {
     public class SimpleResourceDataSource : DataSourceBase<SimpleResourceDescription>
     {
@@ -10,9 +10,9 @@ namespace Assets.game.models.resources.simple
         {
         }
 
-        protected override SimpleResourceDescription Factory(RawNode node)
+        protected override SimpleResourceDescription Factory(RawNode partialNode)
         {
-            return new SimpleResourceDescription(node, GetContext());
+            return new SimpleResourceDescription(partialNode, GetContext());
         }
     }
 }

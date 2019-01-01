@@ -7,7 +7,7 @@ namespace logic.core.reference.description
 {
     public abstract class DataSourceBase<TDescription> : DescriptionBase, IEnumerable<KeyValuePair<string, TDescription>> where TDescription : IDescription
     {
-        protected abstract TDescription Factory(RawNode node);
+        protected abstract TDescription Factory(RawNode partialNode);
         
         private WeakRef<IDescription> weakParent;
         

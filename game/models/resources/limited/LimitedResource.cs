@@ -4,7 +4,7 @@ using logic.core.context;
 using logic.core.model;
 using logic.core.util;
 
-namespace Assets.game.models.resources.limited
+namespace game.models.resources.limited
 {
     public class LimitedResource : ReferenceModelBase<LimitedResourceCategories, LimitedResourceDescription>
     {

@@ -5,7 +5,7 @@ using logic.core.model;
 using logic.core.util;
 using logic.essential.time;
 
-namespace Assets.game.models.resources.renewable
+namespace game.models.resources.renewable
 {
     public class RenewableResource : ReferenceModelBase<RenewableResourceCategories, RenewableResourceDescription>
     {

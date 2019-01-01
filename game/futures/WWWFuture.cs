@@ -3,7 +3,7 @@ using OEPFramework.unityEngine.behaviour;
 using OEPFramework.unityEngine.loop;
 using UnityEngine;
 
-namespace Assets.game.futures
+namespace game.futures
 {
     public class WWWFuture : FutureBehaviour
     {

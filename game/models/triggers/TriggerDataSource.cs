@@ -2,7 +2,7 @@
 using logic.core.context;
 using logic.core.reference.description;
 
-namespace Assets.game.models.triggers
+namespace game.models.triggers
 {
     public class TriggerDataSource : DataSourceBase<TriggerDescription>
     {
@@ -10,9 +10,9 @@ namespace Assets.game.models.triggers
         {
         }
 
-        protected override TriggerDescription Factory(RawNode node)
+        protected override TriggerDescription Factory(RawNode partialNode)
         {
-            return new TriggerDescription(node, GetContext());
+            return new TriggerDescription(partialNode, GetContext());
         }
     }
 }

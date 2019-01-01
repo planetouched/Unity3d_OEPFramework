@@ -19,6 +19,8 @@ namespace logic.core.model
 
         public override void Initialization()
         {
+            base.Initialization();
+            
             var collectionNode = initNode.GetNode("collection");
             
             foreach (var pair in collectionNode.GetUnsortedCollection())
@@ -34,16 +36,18 @@ namespace logic.core.model
             base.AddChild(lastId.ToString(), model);
         }
 
-        public void AddChild(IModel model)
+        public void AddChild(TModel model)
         {
             lastId++;
             base.AddChild(lastId.ToString(), model);
         }
         
-        public void AddChild(RawNode modelNode)
+        public TModel AddChild(RawNode modelNode)
         {
             lastId++;
-            base.AddChild(lastId.ToString(), Factory(modelNode));
+            var model = Factory(modelNode);
+            base.AddChild(lastId.ToString(), model);
+            return model;
         }
         
         protected abstract TModel Factory(RawNode modelInitNode);

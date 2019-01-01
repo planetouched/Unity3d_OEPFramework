@@ -10,9 +10,9 @@ namespace logic.essential.random
         {
         }
 
-        protected override RandomDescription Factory(RawNode node)
+        protected override RandomDescription Factory(RawNode partialNode)
         {
-            return new RandomDescription(node);
+            return new RandomDescription(partialNode);
         }
     }
 }

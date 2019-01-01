@@ -7,7 +7,7 @@ using logic.essential.requirement;
 using logic.essential.reward;
 using logic.essential.reward.result;
 
-namespace Assets.game.models.deal
+namespace game.models.deal
 {
     public class DealDescription : DescriptionBase
     {
