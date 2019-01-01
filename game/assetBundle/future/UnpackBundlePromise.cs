@@ -2,7 +2,7 @@
 using OEPFramework.unityEngine.loop;
 using UnityEngine;
 
-namespace game.assetBundle.future
+namespace Assets.game.assetBundle.future
 {
     public class UnpackBundlePromise : FutureBehaviour
     {

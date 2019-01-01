@@ -1,7 +1,7 @@
 ﻿using OEPFramework.unityEngine.loop;
 using UnityEngine;
 
-namespace game.audio.future
+namespace Assets.game.audio.future
 {
     public class AudioFuture : AudioFutureBase
     {

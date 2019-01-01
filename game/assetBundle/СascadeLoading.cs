@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OEPFramework.future;
 using OEPFramework.future.utils;
 
-namespace game.assetBundle
+namespace Assets.game.assetBundle
 {
     public class CascadeLoading
     {

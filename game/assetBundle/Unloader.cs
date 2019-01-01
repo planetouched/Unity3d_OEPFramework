@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using common.utils;
 
-namespace game.assetBundle
+namespace Assets.game.assetBundle
 {
     public class Unloader
     {

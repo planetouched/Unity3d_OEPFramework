@@ -1,7 +1,7 @@
 ﻿using OEPFramework.unityEngine.behaviour;
 using UnityEngine;
 
-namespace game.audio.future
+namespace Assets.game.audio.future
 {
     public abstract class AudioFutureBase : FutureBehaviour
     {

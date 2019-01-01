@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Assets.game.assetBundle.future;
+using Assets.game.assetBundle.repository;
 using common;
-using game.assetBundle.future;
-using game.assetBundle.repository;
 using OEPFramework.future;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace game.assetBundle
+namespace Assets.game.assetBundle
 {
     public class AssetBundleManager
     {

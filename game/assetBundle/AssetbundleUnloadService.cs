@@ -1,7 +1,7 @@
 ﻿using OEPFramework.unityEngine;
 using UnityEngine;
 
-namespace game.assetBundle
+namespace Assets.game.assetBundle
 {
     public class AssetBundleUnloadService
     {

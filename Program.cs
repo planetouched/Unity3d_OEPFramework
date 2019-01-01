@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
+using Assets.game.models.resource.simple;
 using test;
 using test.simple;
 using common;
 using fastJSON;
-using game.model.resource.simple;
 using logic.core.factories;
 using logic.core.throughEvent;
 using logic.core.util;

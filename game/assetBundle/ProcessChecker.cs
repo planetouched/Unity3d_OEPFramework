@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Assets.game.assetBundle.future;
 using common.utils;
-using game.assetBundle.future;
 using OEPFramework.future;
 using OEPFramework.future.utils.threadsafe;
 
-namespace game.assetBundle
+namespace Assets.game.assetBundle
 {
     public class ProcessChecker : IProcess
     {

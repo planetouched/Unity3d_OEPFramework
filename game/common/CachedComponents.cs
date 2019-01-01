@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace game.common
+namespace Assets.game.common
 {
     public static class CachedComponentsExtensions
     {

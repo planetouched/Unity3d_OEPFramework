@@ -3,7 +3,7 @@ using OEPFramework.future;
 using OEPFramework.unityEngine.utils;
 using UnityEngine;
 
-namespace game.audio.future
+namespace Assets.game.audio.future
 {
     public class SequenceAudioFuture : AudioFutureBase
     {

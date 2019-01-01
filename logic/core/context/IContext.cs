@@ -1,5 +1,4 @@
 ﻿using common;
-using game.model;
 using logic.core.common;
 using logic.core.model;
 
