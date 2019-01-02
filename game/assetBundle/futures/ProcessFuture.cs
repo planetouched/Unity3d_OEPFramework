@@ -2,7 +2,7 @@
 using OEPFramework.unityEngine.behaviour;
 using OEPFramework.unityEngine.loop;
 
-namespace Assets.game.assetBundle.futures
+namespace game.assetBundle.futures
 {
     public class ProcessFuture : FutureBehaviour, IProcess
     {

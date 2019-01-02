@@ -1,25 +1,19 @@
 using System;
 using System.Collections.Generic;
-using Assets.game.assetBundle.futures;
-using Assets.OEPFramework.futures;
-using Assets.OEPFramework.futures.utils.threadsafe;
 using common.utils;
+using game.assetBundle.futures;
+using OEPFramework.futures;
+using OEPFramework.futures.utils.threadsafe;
 
-namespace Assets.game.assetBundle
+namespace game.assetBundle
 {
     public class ProcessChecker : IProcess
     {
         private readonly AssetBundleManager manager;
 
-        public float loadingProgress
-        {
-            get { return CalcLoadingProgress(); }
-        }
+        public float loadingProgress => CalcLoadingProgress();
 
-        public float unpackProgress
-        {
-            get { return CalcUnpackProgress(); }
-        }
+        public float unpackProgress => CalcUnpackProgress();
 
         public Action<IProcess> onProcessComplete { get; set; }
         public bool isComplete { get; private set; }

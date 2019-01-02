@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Assets.OEPFramework.futures;
+using OEPFramework.futures;
 using OEPFramework.unityEngine.utils;
 using UnityEngine;
 
-namespace Assets.game.audio.futures
+namespace game.audio.futures
 {
     public class SequenceAudioFuture : AudioFutureBase
     {

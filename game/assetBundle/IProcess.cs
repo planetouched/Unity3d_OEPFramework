@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.game.assetBundle
+namespace game.assetBundle
 {
     public interface IProcess
     {

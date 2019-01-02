@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.OEPFramework.futures;
-using Assets.OEPFramework.futures.utils;
+using OEPFramework.futures;
+using OEPFramework.futures.utils;
 
-namespace Assets.game.assetBundle
+namespace game.assetBundle
 {
     public class CascadeLoading
     {

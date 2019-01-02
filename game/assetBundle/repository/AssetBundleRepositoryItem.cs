@@ -1,7 +1,7 @@
 ﻿using common;
 using UnityEngine;
 
-namespace Assets.game.assetBundle.repository
+namespace game.assetBundle.repository
 {
     public class AssetBundleRepositoryItem
     {

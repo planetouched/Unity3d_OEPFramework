@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using common;
 
-namespace Assets.game.assetBundle.repository
+namespace game.assetBundle.repository
 {
     public class AssetBundlesRepository
     {
