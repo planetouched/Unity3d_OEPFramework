@@ -1,6 +1,7 @@
-﻿using OEPFramework.future;
+﻿using Assets.OEPFramework.futures;
+using OEPFramework.unityEngine;
 
-namespace OEPFramework.unityEngine.future
+namespace Assets.OEPFramework.unityEngine.futures
 {
     public class SyncLoopFuture : Future
     {

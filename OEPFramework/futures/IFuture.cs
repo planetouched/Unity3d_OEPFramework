@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OEPFramework.future
+namespace Assets.OEPFramework.futures
 {
     public interface IFuture
     {

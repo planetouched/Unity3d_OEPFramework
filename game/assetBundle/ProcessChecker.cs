@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using Assets.game.assetBundle.futures;
+using Assets.OEPFramework.futures;
+using Assets.OEPFramework.futures.utils.threadsafe;
 using common.utils;
-using OEPFramework.future;
-using OEPFramework.future.utils.threadsafe;
 
 namespace Assets.game.assetBundle
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using OEPFramework.future;
-using OEPFramework.future.utils;
+using Assets.OEPFramework.futures;
+using Assets.OEPFramework.futures.utils;
 
 namespace Assets.game.assetBundle
 {

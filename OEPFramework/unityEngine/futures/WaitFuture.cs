@@ -1,7 +1,8 @@
-﻿using OEPFramework.future;
+﻿using Assets.OEPFramework.futures;
+using OEPFramework.unityEngine;
 using OEPFramework.unityEngine.behaviour;
 
-namespace OEPFramework.unityEngine.future
+namespace Assets.OEPFramework.unityEngine.futures
 {
     public class WaitFuture : Future, IPlayable
     {

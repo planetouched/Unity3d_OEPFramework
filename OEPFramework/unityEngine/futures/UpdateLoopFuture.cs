@@ -2,7 +2,7 @@
 using OEPFramework.unityEngine.behaviour;
 using OEPFramework.unityEngine.loop;
 
-namespace OEPFramework.unityEngine.future
+namespace Assets.OEPFramework.unityEngine.futures
 {
     public class UpdateLoopFuture : FutureBehaviour
     {

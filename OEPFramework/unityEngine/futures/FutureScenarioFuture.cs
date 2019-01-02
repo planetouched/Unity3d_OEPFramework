@@ -1,7 +1,7 @@
-﻿using OEPFramework.future;
-using OEPFramework.future.utils;
+﻿using Assets.OEPFramework.futures;
+using Assets.OEPFramework.futures.utils;
 
-namespace OEPFramework.unityEngine.future
+namespace Assets.OEPFramework.unityEngine.futures
 {
     public class FutureScenarioFuture : Future
     {

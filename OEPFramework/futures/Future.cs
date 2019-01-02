@@ -1,4 +1,4 @@
-﻿namespace OEPFramework.future
+﻿namespace Assets.OEPFramework.futures
 {
     public abstract class Future : FutureBase
     {

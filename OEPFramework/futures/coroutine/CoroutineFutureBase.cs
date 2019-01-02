@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace OEPFramework.future.coroutine
+namespace Assets.OEPFramework.futures.coroutine
 {
     public abstract class CoroutineFutureBase : Future
     {
