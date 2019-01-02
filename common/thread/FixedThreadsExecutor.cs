@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Assets.OEPFramework.futures;
+using OEPFramework.futures;
 
 namespace common.thread
 {

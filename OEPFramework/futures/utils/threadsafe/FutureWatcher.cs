@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Assets.OEPFramework.futures.utils.threadsafe
+namespace OEPFramework.futures.utils.threadsafe
 {
     public class FutureWatcher
     {

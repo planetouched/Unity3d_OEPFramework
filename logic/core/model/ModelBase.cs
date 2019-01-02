@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using common;
@@ -10,7 +9,7 @@ namespace logic.core.model
 {
     public abstract class ModelBase : IModel, IEnumerable<KeyValuePair<string, IModel>>
     {
-        public string key { get; protected set; }
+        public string key { get; set; }
         private readonly WeakRef<IContext> weakContext;
         private WeakRef<IModel> weakParent;
         private Event modelEvent;

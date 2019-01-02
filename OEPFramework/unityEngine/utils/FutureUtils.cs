@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.OEPFramework.futures;
-using Assets.OEPFramework.futures.coroutine;
-using Assets.OEPFramework.futures.utils;
-using Assets.OEPFramework.unityEngine.futures;
+using OEPFramework.futures;
+using OEPFramework.futures.coroutine;
+using OEPFramework.futures.utils;
+using OEPFramework.unityEngine.futures;
 
 namespace OEPFramework.unityEngine.utils
 {

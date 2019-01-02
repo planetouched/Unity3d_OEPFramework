@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Assets.OEPFramework.futures
+namespace OEPFramework.futures
 {
     public abstract class ThreadSafeFuture : IFuture
     {

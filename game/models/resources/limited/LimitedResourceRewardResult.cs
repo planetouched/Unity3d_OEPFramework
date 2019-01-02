@@ -26,7 +26,7 @@ namespace game.models.resources.limited
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict().SetArgs("type", type, "path", PathUtil.GetStringPath(resource), "amount", amount);
+            return SerializeUtil.Dict().SetArgs("type", type, "path", resource.description.GetDescriptionPath(), "amount", amount);
         }
     }
 }

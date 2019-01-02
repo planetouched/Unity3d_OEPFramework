@@ -1,6 +1,6 @@
 using System;
 
-namespace Assets.OEPFramework.futures
+namespace OEPFramework.futures
 {
     public class FutureTask<T> : ThreadSafeFuture
     {

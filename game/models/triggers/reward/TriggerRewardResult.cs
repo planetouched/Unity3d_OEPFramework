@@ -23,7 +23,7 @@ namespace game.models.triggers.reward
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict().SetArgs("path", PathUtil.GetStringPath(trigger));
+            return SerializeUtil.Dict().SetArgs("path", trigger.description.GetDescriptionPath());
         }
     }
 }

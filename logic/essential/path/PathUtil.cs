@@ -24,6 +24,7 @@ namespace logic.essential.path
             return selectors;
         }
         
+        /*
         public static string GetStringPath(IModel model)
         {
             var models = model.GetModelPath(false);
@@ -34,7 +35,7 @@ namespace logic.essential.path
             }
             
             return string.Join(".", arr);
-        }
+        }*/
 
         public static ModelsPath GetModelPath(IContext context, RawNode node)
         {

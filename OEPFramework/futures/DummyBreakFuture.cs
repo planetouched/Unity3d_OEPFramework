@@ -1,4 +1,4 @@
-﻿namespace Assets.OEPFramework.futures
+﻿namespace OEPFramework.futures
 {
     public class DummyBreakFuture : Future
     {

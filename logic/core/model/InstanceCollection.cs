@@ -17,6 +17,8 @@ namespace logic.core.model
         {
         }
 
+        public TModel this[string collectionKey] => (TModel)GetChild(collectionKey);
+
         public override void Initialization()
         {
             base.Initialization();
@@ -33,12 +35,14 @@ namespace logic.core.model
         public override void AddChild(string collectionKey, IModel model)
         {
             lastId = Math.Max(lastId, int.Parse(collectionKey));
+            model.key = lastId.ToString();            
             base.AddChild(lastId.ToString(), model);
         }
 
         public void AddChild(TModel model)
         {
             lastId++;
+            model.key = lastId.ToString();
             base.AddChild(lastId.ToString(), model);
         }
         
@@ -46,6 +50,7 @@ namespace logic.core.model
         {
             lastId++;
             var model = Factory(modelNode);
+            model.key = lastId.ToString();            
             base.AddChild(lastId.ToString(), model);
             return model;
         }

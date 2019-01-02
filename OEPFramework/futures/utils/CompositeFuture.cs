@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Assets.OEPFramework.futures.utils
+namespace OEPFramework.futures.utils
 {
     public class CompositeFuture : FutureBase
     {

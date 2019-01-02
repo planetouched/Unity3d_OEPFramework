@@ -5,7 +5,7 @@ using System.Threading;
 using OEPFramework.utils;
 #endif
 
-namespace Assets.OEPFramework.futures
+namespace OEPFramework.futures
 {
     public abstract class FutureBase :
 #if REFVIEW
