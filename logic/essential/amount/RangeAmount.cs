@@ -9,19 +9,19 @@ namespace logic.essential.amount
     {
         public int min { get; }
         public int max { get; }
-        private readonly Random random;
+        private readonly Random _random;
 
         public RangeAmount(RawNode node, IContext context)
             : base(node, context)
         {
-            random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
+            _random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
             min = node.GetInt("min");
             max = node.GetInt("max");
         }
 
         public override int Number()
         {
-            return random.Range(min, max + 1);
+            return _random.Range(min, max + 1);
         }
     }
 }

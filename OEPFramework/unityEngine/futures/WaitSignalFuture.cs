@@ -4,10 +4,11 @@ namespace OEPFramework.unityEngine.futures
 {
     public class WaitSignalFuture : Future
     {
-        private readonly string signalCategory;
+        private readonly string _signalCategory;
+        
         public WaitSignalFuture(string signalCategory)
         {
-            this.signalCategory = signalCategory;
+            _signalCategory = signalCategory;
         }
 
         void SignalComplete(object obj)
@@ -17,12 +18,12 @@ namespace OEPFramework.unityEngine.futures
 
         protected override void OnRun()
         {
-            GEvent.Attach(signalCategory, SignalComplete, null);
+            GEvent.Attach(_signalCategory, SignalComplete, null);
         }
 
         protected override void OnComplete()
         {
-            GEvent.Detach(signalCategory, SignalComplete);
+            GEvent.Detach(_signalCategory, SignalComplete);
         }
     }
 }

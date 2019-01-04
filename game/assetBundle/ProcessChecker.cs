@@ -9,28 +9,25 @@ namespace game.assetBundle
 {
     public class ProcessChecker : IProcess
     {
-        private readonly AssetBundleManager manager;
-
         public float loadingProgress => CalcLoadingProgress();
-
         public float unpackProgress => CalcUnpackProgress();
-
         public Action<IProcess> onProcessComplete { get; set; }
         public bool isComplete { get; private set; }
 
-        private readonly FutureWatcher watcher = new FutureWatcher();
-        readonly List<IProcess> processes = new List<IProcess>();
-        private bool loading;
+        private readonly AssetBundleManager _manager;
+        private readonly FutureWatcher _watcher = new FutureWatcher();
+        private readonly List<IProcess> _processes = new List<IProcess>();
+        private bool _loading;
 
         public ProcessChecker()
         {
-            manager = SingletonManager.Get<AssetBundleManager>();
+            _manager = SingletonManager.Get<AssetBundleManager>();
         }
 
         public void Add(IProcess process)
         {
-            processes.Add(process);
-            watcher.AddFuture(new ProcessFuture(process).Run());
+            _processes.Add(process);
+            _watcher.AddFuture(new ProcessFuture(process).Run());
         }
 
         public void Add(string resource, Unloader unloader = null, bool async = true)
@@ -41,15 +38,15 @@ namespace game.assetBundle
                 unloader.Add(resource);
 
             List<IProcess> processList;
-            var compositeFuture = manager.Load(resource, out processList, async);
+            var compositeFuture = _manager.Load(resource, out processList, async);
             foreach (var loadFuture in processList)
             {
-                processes.Add(loadFuture);
+                _processes.Add(loadFuture);
             }
 
-            watcher.AddFuture(compositeFuture);
+            _watcher.AddFuture(compositeFuture);
 
-            if (loading)
+            if (_loading)
                 Subscribe(compositeFuture);
         }
 
@@ -57,11 +54,11 @@ namespace game.assetBundle
         {
             target.AddListener(future =>
             {
-                if (watcher.futuresCount == 0 && future.isDone)
+                if (_watcher.futuresCount == 0 && future.isDone)
                 {
-                    processes.Clear();
+                    _processes.Clear();
                     isComplete = true;
-                    loading = false;
+                    _loading = false;
 
                     if (onProcessComplete != null)
                         onProcessComplete(this);
@@ -71,12 +68,12 @@ namespace game.assetBundle
 
         public void Load()
         {
-            if (CallCompleteIfEmpty() || loading)
+            if (CallCompleteIfEmpty() || _loading)
                 return;
 
-            loading = true;
+            _loading = true;
 
-            foreach (var future in watcher.futures)
+            foreach (var future in _watcher.futures)
             {
                 Subscribe(future);
             }
@@ -84,7 +81,7 @@ namespace game.assetBundle
 
         bool CallCompleteIfEmpty()
         {
-            if (watcher.futuresCount == 0)
+            if (_watcher.futuresCount == 0)
             {
                 isComplete = true;
                 if (onProcessComplete != null)
@@ -98,33 +95,33 @@ namespace game.assetBundle
         float CalcUnpackProgress()
         {
             if (isComplete) return 1;
-            if (processes.Count == 0)
+            if (_processes.Count == 0)
                 return 0;
 
             float value = 0;
-            foreach (var progress in processes)
+            foreach (var progress in _processes)
                 value += progress.unpackProgress;
             
-            return value / processes.Count;
+            return value / _processes.Count;
         }
         
         float CalcLoadingProgress()
         {
             if (isComplete) return 1;
-            if (processes.Count == 0)
+            if (_processes.Count == 0)
                 return 0;
 
             float value = 0;
-            foreach (var progress in processes)
+            foreach (var progress in _processes)
                 value += progress.loadingProgress;
 
-            return value / processes.Count;
+            return value / _processes.Count;
         }
         
         public void Drop()
         {
-            processes.Clear();
-            watcher.CancelFutures();
+            _processes.Clear();
+            _watcher.CancelFutures();
         }
     }
 }

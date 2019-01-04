@@ -9,32 +9,32 @@ namespace game.assetBundle.futures
 {
     public class LoadBundlePromise : Future, IProcess
     {
-        private readonly string assetBundleName;
-        private readonly string url;
-
-        private WWWFuture wwwFuture;
-        private UnpackBundlePromise unpackBundlePromise;
         public AssetBundle assetBundle { get; private set; }
         public WWW request { get; private set; }
-        private readonly bool async;
-        readonly Hash128? version;
-        private readonly uint crc32;
+        
+        private readonly string _assetBundleName;
+        private readonly string _url;
+        private WWWFuture _wwwFuture;
+        private UnpackBundlePromise _unpackBundlePromise;
+        private readonly bool _async;
+        readonly Hash128? _version;
+        private readonly uint _crc32;
 
-        public float loadingProgress { get { return wwwFuture.request.progress; } }
-        public float unpackProgress { get { return unpackBundlePromise.asyncOperation.progress; } }
+        public float loadingProgress => _wwwFuture.request.progress;
+        public float unpackProgress => _unpackBundlePromise.asyncOperation.progress;
         public Action<IProcess> onProcessComplete { get; set; }
         public bool isComplete { get; private set; }
-        public bool dependency { get; private set; }
+        public bool dependency { get; }
 
         public LoadBundlePromise(string assetBundleName, string url, bool dependency, bool async = true, Hash128? version = null, uint crc32 = 0)
         {
             SetAsPromise();
-            this.crc32 = crc32;
-            this.version = version;
-            this.async = async;
-            this.assetBundleName = assetBundleName;
-            this.version = version;
-            this.url = url;
+            _crc32 = crc32;
+            _version = version;
+            _async = async;
+            _assetBundleName = assetBundleName;
+            _version = version;
+            _url = url;
             this.dependency = dependency;
         }
 
@@ -45,22 +45,22 @@ namespace game.assetBundle.futures
 
         private IEnumerator<IFuture> LoadingProcess()
         {
-            Debug.Log("AssetBundle load: " + url + assetBundleName);
-            wwwFuture = new WWWFuture(url + assetBundleName, Int32.MaxValue, version, crc32);
-            yield return wwwFuture.Run();
+            Debug.Log("AssetBundle load: " + _url + _assetBundleName);
+            _wwwFuture = new WWWFuture(_url + _assetBundleName, Int32.MaxValue, _version, _crc32);
+            yield return _wwwFuture.Run();
 
-            assetBundle = wwwFuture.request.assetBundle;
+            assetBundle = _wwwFuture.request.assetBundle;
 
             if (!dependency)
             {
-                unpackBundlePromise = new UnpackBundlePromise(assetBundle, async);
-                yield return unpackBundlePromise.Run();
+                _unpackBundlePromise = new UnpackBundlePromise(assetBundle, _async);
+                yield return _unpackBundlePromise.Run();
                 assetBundle.Unload(false);
-                wwwFuture.request.Dispose();
+                _wwwFuture.request.Dispose();
             }
             else
             {
-                request = wwwFuture.request;
+                request = _wwwFuture.request;
             }
 
             Complete();
@@ -69,7 +69,7 @@ namespace game.assetBundle.futures
         public UnityEngine.Object[] GetAssets()
         {
             if (!dependency)
-                return unpackBundlePromise.allAssets;
+                return _unpackBundlePromise.allAssets;
 
             return null;
         }

@@ -7,22 +7,23 @@ namespace OEPFramework.unityEngine.behaviour
 {
     public abstract class FutureBehaviour : Future, IControllable, IDroppableItem, ILoopable
     {
-        private readonly int hashCode;
+        private readonly int _hashCode;
 
-        private readonly ControlLoopTransit controlLoopTransit;
+        private readonly ControlLoopTransit _controlLoopTransit;
         public event Action<IDroppableItem> onDrop;
 
-        public bool dropped { get { return controlLoopTransit.dropped; } }
-        public bool initialized { get { return controlLoopTransit.initialized; } }
+        public bool dropped => _controlLoopTransit.dropped;
+        public bool initialized => _controlLoopTransit.initialized;
+
         protected FutureBehaviour()
         {
-            hashCode = DroppableItemBase.globalHashCode++;
-            controlLoopTransit = new ControlLoopTransit();
-            controlLoopTransit.onDrop += onDrop;
-            controlLoopTransit.onPlay = OnPlay;
-            controlLoopTransit.onInitialize = OnInitialize;
-            controlLoopTransit.onUninitialize = OnUninitialize;
-            controlLoopTransit.onPause = OnPause;
+            _hashCode = DroppableItemBase.globalHashCode++;
+            _controlLoopTransit = new ControlLoopTransit();
+            _controlLoopTransit.onDrop += onDrop;
+            _controlLoopTransit.onPlay = OnPlay;
+            _controlLoopTransit.onInitialize = OnInitialize;
+            _controlLoopTransit.onUninitialize = OnUninitialize;
+            _controlLoopTransit.onPause = OnPause;
 
             AddListener(f => { Drop(); });
         }
@@ -32,46 +33,45 @@ namespace OEPFramework.unityEngine.behaviour
         protected virtual void OnPause() { }
         protected virtual void OnPlay() { }
 
-
         public override int GetHashCode()
         {
-            return hashCode;
+            return _hashCode;
         }
 
         public void LoopOn(int loopType, Action action)
         {
-            controlLoopTransit.LoopOn(loopType, action);
+            _controlLoopTransit.LoopOn(loopType, action);
         }
 
         public void LoopOff(int loopType)
         {
-            controlLoopTransit.LoopOff(loopType);
+            _controlLoopTransit.LoopOff(loopType);
         }
 
         public void Initialize()
         {
-            controlLoopTransit.Initialize();
+            _controlLoopTransit.Initialize();
         }
 
         public void Uninitialize()
         {
-            controlLoopTransit.Uninitialize();
+            _controlLoopTransit.Uninitialize();
         }
 
         public void Pause()
         {
-            controlLoopTransit.Pause();
+            _controlLoopTransit.Pause();
         }
 
         public void Play()
         {
-            controlLoopTransit.Play();
+            _controlLoopTransit.Play();
         }
 
         public virtual void Drop()
         {
             if (dropped) return;
-            controlLoopTransit.Drop();
+            _controlLoopTransit.Drop();
 
             if (onDrop != null)
                 onDrop(this);

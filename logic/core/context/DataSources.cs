@@ -6,17 +6,17 @@ namespace logic.core.context
 {
     public class DataSources : IChildren<IDescription>
     {
-        private readonly IDictionary<string, IDescription> children = new Dictionary<string, IDescription>();
+        private readonly IDictionary<string, IDescription> _children = new Dictionary<string, IDescription>();
         
        
         public IDescription GetChild(string collectionKey)
         {
-            return children[collectionKey];
+            return _children[collectionKey];
         }
 
         public void AddChild(string collectionKey, IDescription obj)
         {
-            children.Add(collectionKey, obj);
+            _children.Add(collectionKey, obj);
         }
 
         public void RemoveChild(string collectionKey, bool destroy)
@@ -26,12 +26,12 @@ namespace logic.core.context
 
         public bool Exist(string collectionKey)
         {
-            return children.ContainsKey(collectionKey);
+            return _children.ContainsKey(collectionKey);
         }
         
         public T GetChild<T>(string collectionKey) where T : class
         {
-            return (T)children[collectionKey];
+            return (T)_children[collectionKey];
         }
     }
 }

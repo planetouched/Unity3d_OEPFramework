@@ -7,24 +7,24 @@ namespace logic.core.factories
 {
     public static class FactoryManager
     {
-        private static readonly Dictionary<Type, IFactory> factories = new Dictionary<Type, IFactory>();
+        private static readonly Dictionary<Type, IFactory> _factories = new Dictionary<Type, IFactory>();
 
-        private static IDefaultFactory defaultFactory;
+        private static IDefaultFactory _defaultFactory;
 
         public static void SetDefaultFactory(IDefaultFactory factory)
         {
-            defaultFactory = factory;
+            _defaultFactory = factory;
         }
 
         public static IFactory AddFactory(Type factoryType, IFactory factory)
         {
-            factories.Add(factoryType, factory);
+            _factories.Add(factoryType, factory);
             return factory;
         }
 
         public static IFactory GetFactory(Type factoryType)
         {
-            return factories[factoryType];
+            return _factories[factoryType];
         }
         
         #region common
@@ -33,10 +33,10 @@ namespace logic.core.factories
             if (!string.IsNullOrEmpty(key))
             {
                 IFactory factory;
-                if (factories.TryGetValue(type, out factory))
+                if (_factories.TryGetValue(type, out factory))
                     return factory.Build(key);
             }
-            return defaultFactory.Build(type);
+            return _defaultFactory.Build(type);
         }
 
         public static object Build<T1>(Type type, string key, T1 param1)
@@ -44,10 +44,10 @@ namespace logic.core.factories
             if (!string.IsNullOrEmpty(key))
             {
                 IFactory factory;
-                if (factories.TryGetValue(type, out factory))
+                if (_factories.TryGetValue(type, out factory))
                     return factory.Build(key, param1);
             }
-            return defaultFactory.Build(type, param1);
+            return _defaultFactory.Build(type, param1);
         }
 
         public static object Build<T1, T2>(Type type, string key, T1 param1, T2 param2)
@@ -55,10 +55,10 @@ namespace logic.core.factories
             if (!string.IsNullOrEmpty(key))
             {
                 IFactory factory;
-                if (factories.TryGetValue(type, out factory))
+                if (_factories.TryGetValue(type, out factory))
                     return factory.Build(key, param1, param2);
             }
-            return defaultFactory.Build(type, param1, param2);
+            return _defaultFactory.Build(type, param1, param2);
         }
 
         public static object Build<T1, T2, T3>(Type type, string key, T1 param1, T2 param2, T3 param3)
@@ -66,10 +66,10 @@ namespace logic.core.factories
             if (!string.IsNullOrEmpty(key))
             {
                 IFactory factory;
-                if (factories.TryGetValue(type, out factory))
+                if (_factories.TryGetValue(type, out factory))
                     return factory.Build(key, param1, param2, param3);
             }
-            return defaultFactory.Build(type, param1, param2, param3);
+            return _defaultFactory.Build(type, param1, param2, param3);
         }
 
         public static object Build<T1, T2, T3, T4>(Type type, string key, T1 param1, T2 param2, T3 param3, T4 param4)
@@ -77,10 +77,10 @@ namespace logic.core.factories
             if (!string.IsNullOrEmpty(key))
             {
                 IFactory factory;
-                if (factories.TryGetValue(type, out factory))
+                if (_factories.TryGetValue(type, out factory))
                     return factory.Build(key, param1, param2, param3, param4);
             }
-            return defaultFactory.Build(type, param1, param2, param3, param4);
+            return _defaultFactory.Build(type, param1, param2, param3, param4);
         }
 
         public static object Build<T1, T2, T3, T4, T5>(Type type, string key, T1 param1, T2 param2, T3 param3, T4 param4, T5 param5)
@@ -88,10 +88,10 @@ namespace logic.core.factories
             if (!string.IsNullOrEmpty(key))
             {
                 IFactory factory;
-                if (factories.TryGetValue(type, out factory))
+                if (_factories.TryGetValue(type, out factory))
                     return factory.Build(key, param1, param2, param3, param4, param5);
             }
-            return defaultFactory.Build(type, param1, param2, param3, param4, param5);
+            return _defaultFactory.Build(type, param1, param2, param3, param4, param5);
         }
 
         #endregion
@@ -102,20 +102,20 @@ namespace logic.core.factories
         {
             Type type = typeof(TRet);
             IFactory factory;
-            if (factories.TryGetValue(type, out factory))
+            if (_factories.TryGetValue(type, out factory))
                 return (TRet)factory.Build(key, rawNode);
 
-            return (TRet)defaultFactory.Build(type, rawNode);
+            return (TRet)_defaultFactory.Build(type, rawNode);
         }
 
         public static TRet Build<TRet>(string key, RawNode rawNode, IContext context)
         {
             Type type = typeof(TRet);
             IFactory factory;
-            if (factories.TryGetValue(type, out factory))
+            if (_factories.TryGetValue(type, out factory))
                 return (TRet)factory.Build(key, rawNode, context);
 
-            return (TRet)defaultFactory.Build(type, rawNode, context);
+            return (TRet)_defaultFactory.Build(type, rawNode, context);
         }
       
         public static TRet Build<TRet>(RawNode rawNode)
@@ -124,7 +124,7 @@ namespace logic.core.factories
             if (rawNode.CheckKey("type"))
                 return Build<TRet>(rawNode.GetString("type"), rawNode);
 
-            return (TRet)defaultFactory.Build(baseType, rawNode);
+            return (TRet)_defaultFactory.Build(baseType, rawNode);
         }
 
         public static TRet Build<TRet>(RawNode rawNode, IContext context)
@@ -133,7 +133,7 @@ namespace logic.core.factories
             if (rawNode.CheckKey("type"))
                 return Build<TRet>(rawNode.GetString("type"), rawNode, context);
 
-            return (TRet)defaultFactory.Build(baseType, rawNode, context);
+            return (TRet)_defaultFactory.Build(baseType, rawNode, context);
         }
 
         #endregion

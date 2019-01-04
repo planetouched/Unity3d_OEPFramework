@@ -5,10 +5,10 @@ namespace game.assetBundle.repository
 {
     public class AssetBundleRepositoryItem
     {
-        public string[] dependencies { get; private set; }
-        public Hash128 version { get; private set; }
-        public uint crc32 { get; private set; }
-        public int packedSize { get; private set; }
+        public string[] dependencies { get; }
+        public Hash128 version { get; }
+        public uint crc32 { get; }
+        public int packedSize { get; }
 
         public AssetBundleRepositoryItem(RawNode node)
         {

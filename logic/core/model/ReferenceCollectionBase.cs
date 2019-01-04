@@ -13,13 +13,13 @@ namespace logic.core.model
     {
         public TCategories categories { get; }
         public IDescription dataSource { get; }
-        private readonly RawNode initNode;
+        private readonly RawNode _initNode;
         public bool selectable { get; }
 
         protected ReferenceCollectionBase(RawNode initNode, TCategories categories, IContext context, IDescription dataSource) : base(context, null)
         {
             key = dataSource.key;
-            this.initNode = initNode;
+            _initNode = initNode;
             this.dataSource = dataSource;
             this.categories = categories;
             selectable = true;
@@ -37,7 +37,7 @@ namespace logic.core.model
                 }
 
                 var description = (TDescription)dataSource.GetChild(collectionKey);
-                model = Factory(initNode.GetNode(collectionKey), description);
+                model = Factory(_initNode.GetNode(collectionKey), description);
                 AddChild(collectionKey, model);
                 model.Initialization();
 
@@ -75,7 +75,7 @@ namespace logic.core.model
                 }
                 else
                 {
-                    dict.Add(unsortedKey, initNode.GetNode(unsortedKey));
+                    dict.Add(unsortedKey, _initNode.GetNode(unsortedKey));
                 }
             }
 

@@ -5,23 +5,23 @@ namespace OEPFramework.futures.coroutine
 {
     public class CoroutineFuture : CoroutineFutureBase
     {
-        private Func<IEnumerator<IFuture>> func;
+        private Func<IEnumerator<IFuture>> _func;
         
         public CoroutineFuture(Func<IEnumerator<IFuture>> func)
         {
-            this.func = func;
+            _func = func;
         }
         
         protected override void OnRun()
         {
-            enumerator = func();
+            enumerator = _func();
             Next(null);
         }
 
         protected override void OnComplete()
         {
             base.OnComplete();
-            func = null;
+            _func = null;
         }
     }
 }

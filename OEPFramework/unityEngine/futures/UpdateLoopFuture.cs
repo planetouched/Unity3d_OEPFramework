@@ -6,10 +6,11 @@ namespace OEPFramework.unityEngine.futures
 {
     public class UpdateLoopFuture : FutureBehaviour
     {
-        private Action<UpdateLoopFuture> updateAction;
+        private Action<UpdateLoopFuture> _updateAction;
+        
         public UpdateLoopFuture(Action<UpdateLoopFuture> updateAction)
         {
-            this.updateAction = updateAction;
+            _updateAction = updateAction;
         }
         
         protected override void OnRun()
@@ -20,7 +21,7 @@ namespace OEPFramework.unityEngine.futures
 
         private void Update()
         {
-            updateAction(this);
+            _updateAction(this);
         }
 
         protected override void OnComplete()
@@ -31,7 +32,7 @@ namespace OEPFramework.unityEngine.futures
         public override void Drop()
         {
             if (dropped) return;
-            updateAction = null;
+            _updateAction = null;
             base.Drop();
         }
     }

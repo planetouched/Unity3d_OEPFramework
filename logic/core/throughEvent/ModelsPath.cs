@@ -6,16 +6,16 @@ namespace logic.core.throughEvent
 {
     public class ModelsPath
     {
-        private Dictionary<Type, IModel> stack;
-        private List<IModel> models;
+        private Dictionary<Type, IModel> _stack;
+        private List<IModel> _models;
 
         public void Set(IEnumerable<IModel> collection, bool reverse)
         {
-            models = new List<IModel>(collection);
+            _models = new List<IModel>(collection);
 
             if (reverse)
             {
-                models.Reverse();
+                _models.Reverse();
             }
         }
 
@@ -26,34 +26,34 @@ namespace logic.core.throughEvent
 
         public IModel GetSelf()
         {
-            return models[models.Count - 1];
+            return _models[_models.Count - 1];
         }
 
         public T Get<T>() where T : class
         {
-            if (stack == null)
+            if (_stack == null)
             {
-                stack = new Dictionary<Type, IModel>();
-                for (int i = 0; i < models.Count - 1; i++)
+                _stack = new Dictionary<Type, IModel>();
+                for (int i = 0; i < _models.Count - 1; i++)
                 {
-                    stack.Add(models[i].GetType(), models[i]);
+                    _stack.Add(_models[i].GetType(), _models[i]);
                 }
             }
-            return (T)stack[typeof(T)];
+            return (T)_stack[typeof(T)];
         }
 
         public override string ToString()
         {
-            if (models.Count == 0)
+            if (_models.Count == 0)
             {
                 return string.Empty;
             }
 
-            string path = models[0].key + ".";
+            string path = _models[0].key + ".";
 
-            for (int i = 1; i < models.Count; i++)
+            for (int i = 1; i < _models.Count; i++)
             {
-                path += models[i].key + (i < models.Count - 1 ? "." : string.Empty);
+                path += _models[i].key + (i < _models.Count - 1 ? "." : string.Empty);
             }
 
             return path;

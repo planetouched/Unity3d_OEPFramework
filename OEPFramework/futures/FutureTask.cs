@@ -5,41 +5,41 @@ namespace OEPFramework.futures
     public class FutureTask<T> : ThreadSafeFuture
     {
         public T result { get; private set; }
-        private Func<T> func;
+        private Func<T> _func;
         public FutureTask(Func<T> func)
         {
-            this.func = func;
+            _func = func;
         }
 
         protected override void OnRun()
         {
-            result = func();
+            result = _func();
             Complete();
         }
 
         protected override void OnComplete()
         {
-            func = null;
+            _func = null;
         }
     }
     
     public class FutureTask : ThreadSafeFuture
     {
-        private Action action;
+        private Action _action;
         public FutureTask(Action action)
         {
-            this.action = action;
+            _action = action;
         }
 
         protected override void OnRun()
         {
-            action();
+            _action();
             Complete();
         }
 
         protected override void OnComplete()
         {
-            action = null;
+            _action = null;
         }
     }
 }

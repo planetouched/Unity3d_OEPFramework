@@ -5,14 +5,14 @@ namespace common
 {
     public class RawNode
     {
-        public static RawNode emptyNode = new RawNode();
+        public static readonly RawNode emptyNode = new RawNode();
         
-        public string nodeKey { get; private set; }
-        public int nodesCount { get { return array != null ? array.Count : dictionary.Count; } }
+        public string nodeKey { get; }
+        public int nodesCount => array != null ? array.Count : dictionary.Count;
 
         private readonly object _rawData;
-        private KeyValuePair<string, RawNode>[] sortedCache;
-        private KeyValuePair<string, RawNode>[] unsortedCache;
+        private KeyValuePair<string, RawNode>[] _sortedCache;
+        private KeyValuePair<string, RawNode>[] _unsortedCache;
 
         public RawNode(object rawData = null, string nodeKey = null)
         {
@@ -295,21 +295,21 @@ namespace common
         {
             if (dictionary != null)
             {
-                if (sortedCache == null)
+                if (_sortedCache == null)
                 {
                     var keys = new string[dictionary.Count];
-                    sortedCache = new KeyValuePair<string, RawNode>[keys.Length];
+                    _sortedCache = new KeyValuePair<string, RawNode>[keys.Length];
                     dictionary.Keys.CopyTo(keys, 0);
                     Array.Sort(keys, StringComparer.InvariantCulture);
 
                     for (int i = 0; i < keys.Length; i++)
                     {
                         var key = keys[i];
-                        sortedCache[i] = new KeyValuePair<string, RawNode>(key, new RawNode(dictionary[key]));
+                        _sortedCache[i] = new KeyValuePair<string, RawNode>(key, new RawNode(dictionary[key]));
                     }
                 }
 
-                foreach (var pair in sortedCache)
+                foreach (var pair in _sortedCache)
                     yield return pair;
             }
         }
@@ -318,15 +318,15 @@ namespace common
         {
             if (dictionary != null)
             {
-                if (unsortedCache == null)
+                if (_unsortedCache == null)
                 {
-                    unsortedCache = new KeyValuePair<string, RawNode>[dictionary.Count];
+                    _unsortedCache = new KeyValuePair<string, RawNode>[dictionary.Count];
                     int idx = 0;
                     foreach (var pair in dictionary)
-                        unsortedCache[idx++] = new KeyValuePair<string, RawNode>(pair.Key, new RawNode(pair.Value));
+                        _unsortedCache[idx++] = new KeyValuePair<string, RawNode>(pair.Key, new RawNode(pair.Value));
                 }
 
-                foreach (var pair in unsortedCache)
+                foreach (var pair in _unsortedCache)
                     yield return pair;
             }
         }
@@ -391,8 +391,8 @@ namespace common
             if (node == null)
                 return this;
 
-            sortedCache = null;
-            unsortedCache = null;
+            _sortedCache = null;
+            _unsortedCache = null;
 
             var toAddDictionary = dictionary;
             var addDictionary = node.dictionary;

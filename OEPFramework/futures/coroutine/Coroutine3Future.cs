@@ -5,7 +5,7 @@ namespace OEPFramework.futures.coroutine
 {
     public class CoroutineFuture<T1, T2, T3> : CoroutineFutureBase
     {
-        private Func<T1, T2, T3, IEnumerator<IFuture>> func;
+        private Func<T1, T2, T3, IEnumerator<IFuture>> _func;
 
         private readonly T1 param1;
         private readonly T2 param2;
@@ -16,19 +16,19 @@ namespace OEPFramework.futures.coroutine
             this.param1 = param1;
             this.param2 = param2;
             this.param3 = param3;
-            this.func = func;
+            _func = func;
         }
 
         protected override void OnRun()
         {
-            enumerator = func(param1, param2, param3);
+            enumerator = _func(param1, param2, param3);
             Next(null);
         }
 
         protected override void OnComplete()
         {
             base.OnComplete();
-            func = null;
+            _func = null;
         }
     }
 }

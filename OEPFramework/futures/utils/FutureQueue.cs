@@ -5,9 +5,9 @@ namespace OEPFramework.futures.utils
 {
     public class FutureQueue
     {
-        readonly List<IFuture> queueFutures = new List<IFuture>();
-        private IFuture current;
-        public int futuresCount { get { return queueFutures.Count; } }
+        private readonly List<IFuture> _queueFutures = new List<IFuture>();
+        private IFuture _current;
+        public int futuresCount => _queueFutures.Count;
         public event Action<IFuture> onFutureComplete;
 
         public IFuture Add(IFuture future)
@@ -15,11 +15,11 @@ namespace OEPFramework.futures.utils
             if (future.isDone || future.isCancelled || future.wasRun)
                 throw new Exception("future already run or completed");
 
-            queueFutures.Add(future);
+            _queueFutures.Add(future);
             future.AddListener(FutureComplete);
-            if (queueFutures.Count == 1)
+            if (_queueFutures.Count == 1)
             {
-                current = future;
+                _current = future;
                 future.Run();
             }
 
@@ -31,29 +31,29 @@ namespace OEPFramework.futures.utils
             if (onFutureComplete != null)
                 onFutureComplete(f);
 
-            queueFutures.Remove(f);
-            if (queueFutures.Count > 0)
+            _queueFutures.Remove(f);
+            if (_queueFutures.Count > 0)
             {
-                if (current == f)
-                    current = queueFutures[0];
+                if (_current == f)
+                    _current = _queueFutures[0];
             }
             else
-                current = null;
+                _current = null;
 
-            if (current != null)
-                current.Run();
+            if (_current != null)
+                _current.Run();
         }
 
         public void CancelCurrent()
         {
-            if (current != null)
-                current.Cancel();
+            if (_current != null)
+                _current.Cancel();
         }
 
         public void Cancel()
         {
-            var copy = new List<IFuture>(queueFutures);
-            queueFutures.Clear();
+            var copy = new List<IFuture>(_queueFutures);
+            _queueFutures.Clear();
 
             foreach (var future in copy)
             {

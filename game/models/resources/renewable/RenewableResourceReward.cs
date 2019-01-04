@@ -9,12 +9,12 @@ namespace game.models.resources.renewable
 {
     public class RenewableResourceReward : Reward
     {
-        private readonly IAmount amount;
+        private readonly IAmount _amount;
 
         public RenewableResourceReward(RawNode node, IContext context)
             : base(node, context)
         {
-            amount = FactoryManager.Build<Amount>(node.GetNode("amount"), context);
+            _amount = FactoryManager.Build<Amount>(node.GetNode("amount"), context);
         }
 
         public override IRewardResult Calculate()
@@ -27,7 +27,7 @@ namespace game.models.resources.renewable
             }
 
             var resource = path.GetSelf<RenewableResource>();
-            int value = amount.Number();
+            int value = _amount.Number();
             return new RenewableResourceRewardResult(type, resource, value, GetContext());
         }
 

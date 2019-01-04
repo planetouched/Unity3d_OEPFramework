@@ -5,30 +5,31 @@ namespace game.assetBundle
 {
     public class Unloader
     {
-        readonly Dictionary<string, int> counter = new Dictionary<string, int>();
-        private readonly AssetBundleManager manager;
+        private readonly Dictionary<string, int> _counter = new Dictionary<string, int>();
+        private readonly AssetBundleManager _manager;
 
         public Unloader()
         {
-            manager = SingletonManager.Get<AssetBundleManager>();
+            _manager = SingletonManager.Get<AssetBundleManager>();
         }
+        
         public void Add(string resource)
         {
             int count;
-            if (counter.TryGetValue(resource, out count))
-                counter[resource] = ++count;
+            if (_counter.TryGetValue(resource, out count))
+                _counter[resource] = ++count;
             else
-                counter.Add(resource, 1);
+                _counter.Add(resource, 1);
         }
 
         public void Unload()
         {
-            foreach (var pair in counter)
+            foreach (var pair in _counter)
             {
                 for (int i = 0; i < pair.Value; i++)
-                    manager.TryUnload(pair.Key);
+                    _manager.TryUnload(pair.Key);
             }
-            counter.Clear();
+            _counter.Clear();
         }
     }
 }

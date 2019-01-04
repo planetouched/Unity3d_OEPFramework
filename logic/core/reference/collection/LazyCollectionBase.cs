@@ -9,7 +9,7 @@ namespace logic.core.reference.collection
 {
     public abstract class LazyCollectionBase<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>> where TValue : IDescription
     {
-        private readonly WeakRef<IContext> weakContext;
+        private readonly WeakRef<IContext> _weakContext;
         protected readonly RawNode descriptionNode;
         protected readonly IDictionary<TKey, TValue> items = new Dictionary<TKey, TValue>();
         
@@ -21,7 +21,7 @@ namespace logic.core.reference.collection
 
             if (context != null)
             {
-                weakContext = new WeakRef<IContext>(context);
+                _weakContext = new WeakRef<IContext>(context);
             }        
         }
         
@@ -46,7 +46,7 @@ namespace logic.core.reference.collection
 
         private IContext GetContext()
         {
-            return weakContext == null ? null : weakContext.obj;
+            return _weakContext == null ? null : _weakContext.obj;
         }
     }
 }

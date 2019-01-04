@@ -9,11 +9,11 @@ namespace game.models.resources.limited
 {
     public class LimitedResourceReward : Reward
     {
-        private readonly IAmount amount;
+        private readonly IAmount _amount;
 
         public LimitedResourceReward(RawNode node, IContext context = null) : base(node, context)
         {
-            amount = FactoryManager.Build<Amount>(node.GetNode("amount"), context);
+            _amount = FactoryManager.Build<Amount>(node.GetNode("amount"), context);
         }
 
         public override IRewardResult Calculate()
@@ -24,7 +24,7 @@ namespace game.models.resources.limited
                 return new RewardResult();
 
             var resource = path.GetSelf<LimitedResource>();
-            int value = amount.Number();
+            int value = _amount.Number();
             return new LimitedResourceRewardResult(type, resource, value, GetContext());
         }
 

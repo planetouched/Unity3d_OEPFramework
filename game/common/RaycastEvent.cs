@@ -24,29 +24,29 @@ namespace game.common
         public delegate void GameObjectHandlerDelegate(GameObject go, RaycastHit hit);
         public delegate void HandlerDelegate(RaycastHit hit);
 
-        private static int overMask, mask;
+        private static int _overMask, _mask;
 
-        private static readonly Dictionary<int, List<GameObjectHandlerDelegate>> [] layerHandlers = new Dictionary<int, List<GameObjectHandlerDelegate>>[8];
-        private static readonly Dictionary<string, List<GameObjectHandlerDelegate>> [] tagHandlers  = new Dictionary<string, List<GameObjectHandlerDelegate>>[8];
-        private static readonly Dictionary<GameObject, List<HandlerDelegate>> [] goHandlers  = new Dictionary<GameObject, List<HandlerDelegate>>[8];
+        private static readonly Dictionary<int, List<GameObjectHandlerDelegate>> [] _layerHandlers = new Dictionary<int, List<GameObjectHandlerDelegate>>[8];
+        private static readonly Dictionary<string, List<GameObjectHandlerDelegate>> [] _tagHandlers  = new Dictionary<string, List<GameObjectHandlerDelegate>>[8];
+        private static readonly Dictionary<GameObject, List<HandlerDelegate>> [] _goHandlers  = new Dictionary<GameObject, List<HandlerDelegate>>[8];
 
-        private static bool down0, up0, down1, up1;
+        private static bool _down0, _up0, _down1, _up1;
 
-        private static readonly int[] addedLayers = new int[32];
-        private static readonly int[] addedOverLayers = new int[32];
-        private static bool click0;
-        private static float clickTime;
-        private static Vector3 clickPos;
-        private static bool click1;
-        private static GameObject clickedGo;
-        private static bool active;
-        private static GameObject lastOverGameObject;
+        private static readonly int[] _addedLayers = new int[32];
+        private static readonly int[] _addedOverLayers = new int[32];
+        private static bool _click0;
+        private static float _clickTime;
+        private static Vector3 _clickPos;
+        private static bool _click1;
+        private static GameObject _clickedGo;
+        private static bool _active;
+        private static GameObject _lastOverGameObject;
 
         static void AddHandlerList(int ht)
         {
-            layerHandlers[ht] =  new Dictionary<int, List<GameObjectHandlerDelegate>>();
-            tagHandlers[ht] = new Dictionary<string, List<GameObjectHandlerDelegate>>();
-            goHandlers[ht] = new Dictionary<GameObject, List<HandlerDelegate>>();
+            _layerHandlers[ht] =  new Dictionary<int, List<GameObjectHandlerDelegate>>();
+            _tagHandlers[ht] = new Dictionary<string, List<GameObjectHandlerDelegate>>();
+            _goHandlers[ht] = new Dictionary<GameObject, List<HandlerDelegate>>();
         }
 
         static RaycastEvent()
@@ -59,26 +59,26 @@ namespace game.common
             AddHandlerList(MouseEventHandlerType.Down1);
             AddHandlerList(MouseEventHandlerType.Over);
             AddHandlerList(MouseEventHandlerType.ResetOver);
-            active = true;
+            _active = true;
         }
 
         static void CreateOverMask()
         {
-            overMask = 0;
+            _overMask = 0;
             for (int i = 0; i < 32; i++)
             {
-                if (addedOverLayers[i] > 0)
-                    overMask = overMask | 1 << i;
+                if (_addedOverLayers[i] > 0)
+                    _overMask = _overMask | 1 << i;
             }
         }
         
         static void CreateMask()
         {
-            mask = 0;
+            _mask = 0;
             for (int i = 0; i < 32; i++)
             {
-                if (addedLayers[i] > 0)
-                    mask = mask | 1 << i;
+                if (_addedLayers[i] > 0)
+                    _mask = _mask | 1 << i;
             }
         }
 
@@ -95,14 +95,14 @@ namespace game.common
             {
                 if (type == MouseEventHandlerType.Over)
                 {
-                    addedOverLayers[layer]++;
+                    _addedOverLayers[layer]++;
                     
                     if (!noUpdate)
                         CreateOverMask();
                 }
                 else
                 {
-                    addedLayers[layer]++;
+                    _addedLayers[layer]++;
                     
                     if (!noUpdate)
                         CreateMask();
@@ -113,16 +113,16 @@ namespace game.common
             {
                 if (type == MouseEventHandlerType.Over)
                 {
-                    if (addedOverLayers[layer] > 0)
-                        addedOverLayers[layer]--;
+                    if (_addedOverLayers[layer] > 0)
+                        _addedOverLayers[layer]--;
                     
                     if (!noUpdate)
                         CreateOverMask();
                 }
                 else
                 {
-                    if (addedLayers[layer] > 0)
-                        addedLayers[layer]--;
+                    if (_addedLayers[layer] > 0)
+                        _addedLayers[layer]--;
                     
                     if (!noUpdate)
                         CreateMask();
@@ -132,7 +132,7 @@ namespace game.common
 
         static void CallLayerDelegates(int layer, int type, GameObject go, RaycastHit hit)
         {
-            var handlers = layerHandlers[type];
+            var handlers = _layerHandlers[type];
             if (handlers.Count == 0) return;
             List<GameObjectHandlerDelegate> list;
             if (handlers.TryGetValue(layer, out list))
@@ -145,7 +145,7 @@ namespace game.common
 
         static void CallTagDelegates(int type, GameObject go, RaycastHit hit)
         {
-            var handlers = tagHandlers[type];
+            var handlers = _tagHandlers[type];
             if (handlers.Count == 0) return;
             List<GameObjectHandlerDelegate> list;
             if (handlers.TryGetValue(go.tag, out list))
@@ -158,7 +158,7 @@ namespace game.common
 
         static void CallGameObjectDelegates(int type, GameObject go, RaycastHit hit)
         {
-            var handlers = goHandlers[type];
+            var handlers = _goHandlers[type];
             if (handlers.Count == 0) return;
             List<HandlerDelegate> list;
             if (handlers.TryGetValue(go, out list))
@@ -174,10 +174,10 @@ namespace game.common
         public static void AddLayerHandler(int layer, GameObjectHandlerDelegate handler, IDroppableItem detacher, int type = MouseEventHandlerType.Click0)
         {
             List<GameObjectHandlerDelegate> list;
-            if (layerHandlers[type].TryGetValue(layer, out list))
+            if (_layerHandlers[type].TryGetValue(layer, out list))
                 list.Add(handler);
             else
-                layerHandlers[type].Add(layer, new List<GameObjectHandlerDelegate> { handler });
+                _layerHandlers[type].Add(layer, new List<GameObjectHandlerDelegate> { handler });
 
             ModifyMask(type, layer, true);
 
@@ -193,11 +193,11 @@ namespace game.common
         public static void RemoveLayerHandler(int layer, GameObjectHandlerDelegate handler, int type = MouseEventHandlerType.Click0)
         {
             List<GameObjectHandlerDelegate> list;
-            if (layerHandlers[type].TryGetValue(layer, out list))
+            if (_layerHandlers[type].TryGetValue(layer, out list))
             {
                 list.Remove(handler);
                 if (list.Count == 0)
-                    layerHandlers[type].Remove(layer);
+                    _layerHandlers[type].Remove(layer);
                 
                 ModifyMask(type, layer, false);
             }
@@ -207,10 +207,10 @@ namespace game.common
         public static void AddTagHandler(string tag, GameObjectHandlerDelegate handler, IDroppableItem detacher, int type = MouseEventHandlerType.Click0)
         {
             List<GameObjectHandlerDelegate> list;
-            if (tagHandlers[type].TryGetValue(tag, out list))
+            if (_tagHandlers[type].TryGetValue(tag, out list))
                 list.Add(handler);
             else
-                tagHandlers[type].Add(tag, new List<GameObjectHandlerDelegate> { handler });
+                _tagHandlers[type].Add(tag, new List<GameObjectHandlerDelegate> { handler });
 
             //все выше стандартных
             for (int i = 8; i < 32; i++)
@@ -232,11 +232,11 @@ namespace game.common
         public static void RemoveTagHandler(string tag, GameObjectHandlerDelegate handler, int type = MouseEventHandlerType.Click0)
         {
             List<GameObjectHandlerDelegate> list;
-            if (tagHandlers[type].TryGetValue(tag, out list))
+            if (_tagHandlers[type].TryGetValue(tag, out list))
             {
                 list.Remove(handler);
                 if (list.Count == 0)
-                    tagHandlers[type].Remove(tag);
+                    _tagHandlers[type].Remove(tag);
 
                 //все выше стандартных
                 for (int i = 8; i < 32; i++)
@@ -251,10 +251,10 @@ namespace game.common
         public static void AddGameObjectHandler(GameObject go, HandlerDelegate handler, IDroppableItem detacher, int type = MouseEventHandlerType.Click0)
         {
             List<HandlerDelegate> list;
-            if (goHandlers[type].TryGetValue(go, out list))
+            if (_goHandlers[type].TryGetValue(go, out list))
                 list.Add(handler);
             else
-                goHandlers[type].Add(go, new List<HandlerDelegate> { handler });
+                _goHandlers[type].Add(go, new List<HandlerDelegate> { handler });
 
             ModifyMask(type, go.layer, true);
 
@@ -270,11 +270,11 @@ namespace game.common
         public static void RemoveGameObjectHandler(GameObject go, HandlerDelegate handler, int type = MouseEventHandlerType.Click0)
         {
             List<HandlerDelegate> list;
-            if (goHandlers[type].TryGetValue(go, out list))
+            if (_goHandlers[type].TryGetValue(go, out list))
             {
                 list.Remove(handler);
                 if (list.Count == 0)
-                    goHandlers[type].Remove(go);
+                    _goHandlers[type].Remove(go);
 
                 ModifyMask(type, go.layer, false);
             }
@@ -295,106 +295,106 @@ namespace game.common
         
         static void InnerOverHandle()
         {
-            int lCount = layerHandlers[MouseEventHandlerType.Over].Count;
-            int tCount = tagHandlers[MouseEventHandlerType.Over].Count;
-            int oCount = goHandlers[MouseEventHandlerType.Over].Count;
+            int lCount = _layerHandlers[MouseEventHandlerType.Over].Count;
+            int tCount = _tagHandlers[MouseEventHandlerType.Over].Count;
+            int oCount = _goHandlers[MouseEventHandlerType.Over].Count;
 
             if (lCount == 0 && tCount == 0 && oCount == 0) return;
 
             RaycastHit hit;
             GameObject go;
-            if (!Cast(out hit, out go, overMask))
+            if (!Cast(out hit, out go, _overMask))
             {
-                if (lastOverGameObject != null)
+                if (_lastOverGameObject != null)
                 {
-                    int lOutCount = layerHandlers[MouseEventHandlerType.ResetOver].Count;
-                    int tOutCount = tagHandlers[MouseEventHandlerType.ResetOver].Count;
-                    int oOutCount = goHandlers[MouseEventHandlerType.ResetOver].Count;
+                    int lOutCount = _layerHandlers[MouseEventHandlerType.ResetOver].Count;
+                    int tOutCount = _tagHandlers[MouseEventHandlerType.ResetOver].Count;
+                    int oOutCount = _goHandlers[MouseEventHandlerType.ResetOver].Count;
 
                     if (lOutCount > 0)
-                        CallLayerDelegates(lastOverGameObject.layer, MouseEventHandlerType.ResetOver, lastOverGameObject, hit);
+                        CallLayerDelegates(_lastOverGameObject.layer, MouseEventHandlerType.ResetOver, _lastOverGameObject, hit);
 
                     if (tOutCount > 0)
-                        CallTagDelegates(MouseEventHandlerType.ResetOver, lastOverGameObject, hit);
+                        CallTagDelegates(MouseEventHandlerType.ResetOver, _lastOverGameObject, hit);
 
                     if (oOutCount > 0)
-                        CallGameObjectDelegates(MouseEventHandlerType.ResetOver, lastOverGameObject, hit);
+                        CallGameObjectDelegates(MouseEventHandlerType.ResetOver, _lastOverGameObject, hit);
 
                 }
 
-                lastOverGameObject = null;
+                _lastOverGameObject = null;
                 return;
             }
 
             if (lCount > 0)
             {
                 CallLayerDelegates(go.layer, MouseEventHandlerType.Over, go, hit);
-                lastOverGameObject = go;
+                _lastOverGameObject = go;
             }
 
             if (tCount > 0)
             {
                 CallTagDelegates(MouseEventHandlerType.Over, go, hit);
-                lastOverGameObject = go;
+                _lastOverGameObject = go;
             }
 
             if (oCount > 0)
             {
                 CallGameObjectDelegates(MouseEventHandlerType.Over, go, hit);
-                lastOverGameObject = go;
+                _lastOverGameObject = go;
             }
         }
 
         static void InnerDownHandle()
         {
-            if (!down0 && !down1) return;
+            if (!_down0 && !_down1) return;
 
             RaycastHit hit;
             GameObject go;
-            if (!Cast(out hit, out go, mask)) return;
+            if (!Cast(out hit, out go, _mask)) return;
 
-            if (down0)
+            if (_down0)
             {
                 CallLayerDelegates(go.layer, MouseEventHandlerType.Down0, go, hit);
                 CallTagDelegates(MouseEventHandlerType.Down0, go, hit);
                 CallGameObjectDelegates(MouseEventHandlerType.Down0, go, hit);
-                click0 = true;
+                _click0 = true;
             }
 
-            if (down1)
+            if (_down1)
             {
                 CallLayerDelegates(go.layer, MouseEventHandlerType.Down1, go, hit);
                 CallTagDelegates(MouseEventHandlerType.Down1, go, hit);
                 CallGameObjectDelegates(MouseEventHandlerType.Down1, go, hit);
-                click1 = true;
+                _click1 = true;
             }
 
-            clickTime = Time.time;
-            clickPos = Input.mousePosition;
-            clickedGo = go;
+            _clickTime = Time.time;
+            _clickPos = Input.mousePosition;
+            _clickedGo = go;
         }
 
         static bool CheckClick(bool click, GameObject go)
         {
-            return click && clickedGo == go && (Time.time - clickTime) < 0.2f &&
-                   Vector2.Distance(Input.mousePosition, clickPos) < Mathf.Sqrt((Screen.width ^ 2) + (Screen.height ^ 2)) / 30;
+            return click && _clickedGo == go && (Time.time - _clickTime) < 0.2f &&
+                   Vector2.Distance(Input.mousePosition, _clickPos) < Mathf.Sqrt((Screen.width ^ 2) + (Screen.height ^ 2)) / 30;
         }
 
         static void InnerUpHandle()
         {
-            if (!up0 && !up1) return;
+            if (!_up0 && !_up1) return;
 
             RaycastHit hit;
             GameObject go;
-            if (!Cast(out hit, out go, mask)) return;
+            if (!Cast(out hit, out go, _mask)) return;
 
-            if (up0)
+            if (_up0)
             {
                 CallLayerDelegates(go.layer, MouseEventHandlerType.Up0, go, hit);
                 CallTagDelegates(MouseEventHandlerType.Up0, go, hit);
                 CallGameObjectDelegates(MouseEventHandlerType.Up0, go, hit);
 
-                if (CheckClick(click0, go))
+                if (CheckClick(_click0, go))
                 {
                     CallLayerDelegates(go.layer, MouseEventHandlerType.Click0, go, hit);
                     CallTagDelegates(MouseEventHandlerType.Click0, go, hit);
@@ -402,13 +402,13 @@ namespace game.common
                 }
             }
 
-            if (up1)
+            if (_up1)
             {
                 CallLayerDelegates(go.layer, MouseEventHandlerType.Up1, go, hit);
                 CallTagDelegates(MouseEventHandlerType.Up1, go, hit);
                 CallGameObjectDelegates(MouseEventHandlerType.Up1, go, hit);
 
-                if (CheckClick(click1, go))
+                if (CheckClick(_click1, go))
                 {
                     CallLayerDelegates(go.layer, MouseEventHandlerType.Click1, go, hit);
                     CallTagDelegates(MouseEventHandlerType.Click1, go, hit);
@@ -416,31 +416,31 @@ namespace game.common
                 }
             }
 
-            click0 = false;
-            click1 = false;
+            _click0 = false;
+            _click1 = false;
         }
 
         public static void SetActive(bool active)
         {
-            RaycastEvent.active = active;
+            RaycastEvent._active = active;
         }
         
         public static void Process()
         {
-            if (!active || Camera.main == null)
+            if (!_active || Camera.main == null)
                 return;
 
-            if (mask == 0 && overMask == 0) return;
+            if (_mask == 0 && _overMask == 0) return;
             
-            if (overMask > 0)
+            if (_overMask > 0)
                 InnerOverHandle();
 
-            if (mask == 0) return;
+            if (_mask == 0) return;
             
-            up0 = Input.GetMouseButtonUp(0);
-            up1 = Input.GetMouseButtonUp(1);
-            down0 = Input.GetMouseButtonDown(0);
-            down1 = Input.GetMouseButtonDown(1);
+            _up0 = Input.GetMouseButtonUp(0);
+            _up1 = Input.GetMouseButtonUp(1);
+            _down0 = Input.GetMouseButtonDown(0);
+            _down1 = Input.GetMouseButtonDown(1);
 
             InnerDownHandle();
             InnerUpHandle();

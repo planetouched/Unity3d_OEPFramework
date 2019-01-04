@@ -8,8 +8,8 @@ namespace logic.essential.requirement
 {
     public class Requirement : DescriptionBase, IRequirement
     {
-        public string type { get; private set; }
-        private ModelsPath cache;
+        public string type { get; }
+        private ModelsPath _cache;
 
         public Requirement(RawNode node, IContext context) : base(node, context)
         {
@@ -18,7 +18,7 @@ namespace logic.essential.requirement
 
         public ModelsPath GetPath()
         {
-            return cache ?? (cache = PathUtil.GetModelPath(GetContext(), node.GetString("path"), null));
+            return _cache ?? (_cache = PathUtil.GetModelPath(GetContext(), node.GetString("path"), null));
         }
 
         public virtual bool Check()

@@ -13,10 +13,10 @@ namespace OEPFramework.futures
 #endif
         IFuture
     {
-        static int globalHashCode;
-        private readonly int hashCode;
+        private static int _globalHashCode;
+        private readonly int _hashCode;
 
-        public object syncRoot { get; private set; }
+        public object syncRoot { get; }
         public bool isCancelled { get; protected set; }
         public bool isDone { get; protected set; }
         public bool wasRun { get; protected set; }
@@ -27,13 +27,13 @@ namespace OEPFramework.futures
 
         public override int GetHashCode()
         {
-            return hashCode;
+            return _hashCode;
         }
 
         protected FutureBase()
         {
             syncRoot = new object();
-            hashCode = Interlocked.Increment(ref globalHashCode);
+            _hashCode = Interlocked.Increment(ref _globalHashCode);
         }
 
         protected void CallRunHandlers()

@@ -4,13 +4,13 @@ namespace OEPFramework.futures.utils
 {
     public class CompositeFuture : FutureBase
     {
-        public int futuresCount { get { return futures.Count; } }
+        public int futuresCount => _futures.Count;
 
-        private readonly List<IFuture> futures = new List<IFuture>();
+        private readonly List<IFuture> _futures = new List<IFuture>();
 
         public List<IFuture> GetFuturesCopy()
         {
-            return new List<IFuture>(futures);
+            return new List<IFuture>(_futures);
         }
 
         public override void Cancel()
@@ -20,7 +20,7 @@ namespace OEPFramework.futures.utils
             isCancelled = true;
             wasRun = false;
             var copy = GetFuturesCopy();
-            futures.Clear();
+            _futures.Clear();
 
             foreach (var future in copy)
             {
@@ -37,16 +37,16 @@ namespace OEPFramework.futures.utils
             if (wasRun || isDone || isCancelled || future.isDone || future.isCancelled)
                 return;
 
-            futures.Add(future);
+            _futures.Add(future);
             future.AddListener(OnFutureComplete);
         }
 
         private void OnFutureComplete(IFuture future)
         {
-            futures.Remove(future);
+            _futures.Remove(future);
             future.RemoveListener(OnFutureComplete);
 
-            if (futures.Count > 0) return;
+            if (_futures.Count > 0) return;
             isDone = true;
             wasRun = false;
 

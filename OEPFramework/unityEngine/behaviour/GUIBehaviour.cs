@@ -5,34 +5,34 @@ using Object = UnityEngine.Object;
 
 namespace OEPFramework.unityEngine.behaviour
 {
-    public abstract partial class GUIBehaviour : ControlLoopBehaviour
+    public abstract class GUIBehaviour : ControlLoopBehaviour
     {
-        private readonly string prefabPath;
-        private RectTransform parent;
-        private readonly bool external;
-
         public GameObject gameObject { get; private set; }
         public RectTransform rectTransform { get; private set; }
-        private Dictionary<string, GameObject> map;
-        private string startWith;
-        private GameObject template;
+        
+        private readonly string _prefabPath;
+        private RectTransform _parent;
+        private readonly bool _external;
+        private Dictionary<string, GameObject> _map;
+        private string _startWith;
+        private GameObject _template;
 
         protected GUIBehaviour(GameObject go)
         {
-            external = true;
+            _external = true;
             gameObject = go;
 			rectTransform = gameObject.GetComponent<RectTransform>();
         }
 
         protected GUIBehaviour(string prefabPath, RectTransform parent)
         {
-            this.parent = parent;
-            this.prefabPath = prefabPath;
+            _parent = parent;
+            _prefabPath = prefabPath;
         }
         protected GUIBehaviour(GameObject template, RectTransform parent)
         {
-            this.parent = parent;
-            this.template = template;
+            _parent = parent;
+            _template = template;
         }
 
         public void ResetRectTransform(bool resetLocalScale = false, bool resetSizeDelta = false, bool resetLocalRotation = false)
@@ -57,16 +57,16 @@ namespace OEPFramework.unityEngine.behaviour
         {
             if (initialized) return;
 
-            if (!external)
+            if (!_external)
             {
-                gameObject = Object.Instantiate(template ?? Resources.Load<GameObject>(prefabPath));
-                template = null;
+                gameObject = Object.Instantiate(_template ?? Resources.Load<GameObject>(_prefabPath));
+                _template = null;
                 rectTransform = gameObject.GetComponent<RectTransform>();
 
-                if (parent != null)
+                if (_parent != null)
                 {
                     gameObject.SetActive(false);
-                    gameObject.transform.SetParent(parent, false);
+                    gameObject.transform.SetParent(_parent, false);
                     gameObject.SetActive(true);
                 }
             }
@@ -78,35 +78,35 @@ namespace OEPFramework.unityEngine.behaviour
 
         public void CreateElementsMap(string prefix = "_")
         {
-            startWith = prefix;
-            map = new Dictionary<string, GameObject>();
+            _startWith = prefix;
+            _map = new Dictionary<string, GameObject>();
             InnerCreateMap(gameObject);
         }
 
         public GameObject GetElement(string elementName)
         {
-            return map[elementName];
+            return _map[elementName];
         }
 
         public T GetElementComponent<T>(string elementName)
         {
-            return map[elementName].GetComponent<T>();
+            return _map[elementName].GetComponent<T>();
         }
 
         public RectTransform GetRectTransform(string name)
         {
-            return map[name].GetComponent<RectTransform>();
+            return _map[name].GetComponent<RectTransform>();
         }
 
-        public void InnerCreateMap(GameObject go)
+        private void InnerCreateMap(GameObject go)
         {
             int count = go.transform.childCount;
             for (int i = 0; i < count; i++)
             {
                 Transform t = go.transform.GetChild(i);
 
-                if (t.name.StartsWith(startWith))
-                    map.Add(t.name, t.gameObject);
+                if (t.name.StartsWith(_startWith))
+                    _map.Add(t.name, t.gameObject);
 
                 if (t.childCount > 0)
                     InnerCreateMap(t.gameObject);
@@ -115,13 +115,13 @@ namespace OEPFramework.unityEngine.behaviour
 
         public void SetParent(RectTransform transform)
         {
-            if (external)
+            if (_external)
                 throw new InvalidOperationException();
 
-            parent = transform;
+            _parent = transform;
 
             rectTransform.gameObject.SetActive(false);
-            rectTransform.parent = parent;
+            rectTransform.parent = _parent;
             rectTransform.gameObject.SetActive(true);
         }
 
@@ -133,7 +133,7 @@ namespace OEPFramework.unityEngine.behaviour
 
         protected override void OnUninitialize()
         {
-            if (!external)
+            if (!_external)
                 Object.Destroy(gameObject);
 			base.OnUninitialize();
         }

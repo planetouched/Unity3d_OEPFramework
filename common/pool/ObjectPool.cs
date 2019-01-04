@@ -5,16 +5,16 @@ namespace common.pool
 {
     public class ObjectPool<T> : IObjectPool where T : class
     {
-        readonly Dictionary<T, bool> checker = new Dictionary<T, bool>();
-        readonly Queue<T> queue = new Queue<T>();
-        readonly object locker = new object();
+        private readonly Dictionary<T, bool> _checker = new Dictionary<T, bool>();
+        private readonly Queue<T> _queue = new Queue<T>();
+        private readonly object _locker = new object();
 
         public int unusedObjectsCount
         {
             get
             {
-                lock (locker)
-                    return queue.Count;
+                lock (_locker)
+                    return _queue.Count;
             }
         }
 
@@ -22,8 +22,8 @@ namespace common.pool
         {
             get
             {
-                lock (locker)
-                    return checker.Count - queue.Count;
+                lock (_locker)
+                    return _checker.Count - _queue.Count;
             }
         }
 
@@ -31,37 +31,37 @@ namespace common.pool
         {
             get
             {
-                lock (locker)
-                    return checker.Count;
+                lock (_locker)
+                    return _checker.Count;
             }
         }
 
-        private Func<T> createFunc;
+        private Func<T> _createFunc;
 
         public ObjectPool(Func<T> createFunc = null)
         {
-            this.createFunc = createFunc;
+            _createFunc = createFunc;
         }
 
         public void SetFactory(Func<T> factory)
         {
-            createFunc = factory;
+            _createFunc = factory;
         }
 
         public void UnsetFactory()
         {
-            createFunc = null;
+            _createFunc = null;
         }
 
         public void Add(T obj)
         {
-            lock (locker)
+            lock (_locker)
             {
-                if (checker.ContainsKey(obj))
-                    throw new Exception("ObjectPool::Add - это объект уже был добавлен в ObjectPool");
+                if (_checker.ContainsKey(obj))
+                    throw new Exception("Add(T obj)");
                 
-                checker.Add(obj, true);
-                queue.Enqueue(obj);
+                _checker.Add(obj, true);
+                _queue.Enqueue(obj);
             }
         }
 
@@ -72,34 +72,34 @@ namespace common.pool
         
         public void Return(T obj)
         {
-            lock (locker)
+            lock (_locker)
             {
-                if (checker[obj])
-                    throw new Exception("ObjectPool::Return - попытка вернуть объект дважды");
+                if (_checker[obj])
+                    throw new Exception("Return(T obj)");
 
-                checker[obj] = true;
-                queue.Enqueue(obj);
+                _checker[obj] = true;
+                _queue.Enqueue(obj);
             }
         }
 
         public T Take()
         {
-            lock (locker)
+            lock (_locker)
             {
                 T obj;
 
-                if (queue.Count == 0)
+                if (_queue.Count == 0)
                 {
-                    if (createFunc == null)
+                    if (_createFunc == null)
                         return null;
 
-                    obj = createFunc();
-                    checker.Add(obj, false);
+                    obj = _createFunc();
+                    _checker.Add(obj, false);
                 }
                 else
                 {
-                    obj = queue.Dequeue();
-                    checker[obj] = false;
+                    obj = _queue.Dequeue();
+                    _checker[obj] = false;
                 }
 
                 return obj;
@@ -111,7 +111,7 @@ namespace common.pool
             if (usedObjectsCount > 0)
                 return false;
 
-            foreach (var item in queue)
+            foreach (var item in _queue)
                 iterationAction(item);
 
             return true;
@@ -124,12 +124,12 @@ namespace common.pool
 
             if (destroyAction != null)
             {
-                foreach (var item in queue)
+                foreach (var item in _queue)
                     destroyAction(item);
             }
 
-            queue.Clear();
-            checker.Clear();
+            _queue.Clear();
+            _checker.Clear();
             return true;
         }
     }

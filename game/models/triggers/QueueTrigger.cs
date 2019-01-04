@@ -8,22 +8,16 @@ namespace game.models.triggers
 {
     public class QueueTrigger : CompositeTrigger
     {
-        private int step;
+        private int _step;
 
-        public Trigger currentStep
-        {
-            get { return GetStep(step); }
-        }
+        public Trigger currentStep => GetStep(_step);
 
-        private Trigger nextStep
-        {
-            get { return GetStep(step + 1); }
-        }
+        private Trigger nextStep => GetStep(_step + 1);
 
         public QueueTrigger(RawNode initNode, TriggerCategories categories, TriggerDescription description, IContext context) 
             : base(initNode, categories, description, context)
         {
-            step = initNode.GetInt("step");
+            _step = initNode.GetInt("step");
         }
 
         private void ActivateCurrentStep()
@@ -47,7 +41,7 @@ namespace game.models.triggers
             }
             else
             {
-                step++;
+                _step++;
                 ActivateCurrentStep();
             }
         }
@@ -71,7 +65,7 @@ namespace game.models.triggers
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict(base.Serialize()).SetArgs("step", step);
+            return SerializeUtil.Dict(base.Serialize()).SetArgs("step", _step);
         }
     }
 }

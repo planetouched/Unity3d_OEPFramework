@@ -4,17 +4,17 @@ namespace logic.essential.time
 {
     public static class Time
     {
-        private static readonly DateTime shift = new DateTime(1970, 1, 1);
-        private static long deltaTime;
+        private static readonly DateTime _shift = new DateTime(1970, 1, 1);
+        private static long _deltaTime;
 
         public static void SetDelta(long unixTimestamp)
         {
-            deltaTime = unixTimestamp - GetUnixTime();
+            _deltaTime = unixTimestamp - GetUnixTime();
         }
 
         public static long GetUnixTime(long unixTimestamp = 0)
         {
-            return unixTimestamp == 0 ? (long)(DateTime.UtcNow - shift).TotalSeconds + deltaTime : unixTimestamp;
+            return unixTimestamp == 0 ? (long)(DateTime.UtcNow - _shift).TotalSeconds + _deltaTime : unixTimestamp;
         }
     }
 }

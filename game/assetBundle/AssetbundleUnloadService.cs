@@ -7,29 +7,29 @@ namespace game.assetBundle
     {
         public static string TRY_UNLOAD = GEvent.GetUniqueCategory();
 
-        private readonly AssetBundleManager assetBundleManager;
-        private Timer timer;
-        private AsyncOperation lastAsyncOperation;
-        private int packedSize;
-        private readonly float cleanPeriod;
+        private readonly AssetBundleManager _assetBundleManager;
+        private Timer _timer;
+        private AsyncOperation _lastAsyncOperation;
+        private int _packedSize;
+        private readonly float _cleanPeriod;
 
         public AssetBundleUnloadService(AssetBundleManager manager, int unloadPackedSizeInBytes, float cleanPeriod = -1)
         {
-            this.cleanPeriod = cleanPeriod;
-            assetBundleManager = manager;
-            packedSize = unloadPackedSizeInBytes;
+            _cleanPeriod = cleanPeriod;
+            _assetBundleManager = manager;
+            _packedSize = unloadPackedSizeInBytes;
         }
 
         public void SetUnloadPacketSize(int sizeInBytes)
         {
-            packedSize = sizeInBytes;
+            _packedSize = sizeInBytes;
         }
 
 
         public void Start()
         {
-            if (cleanPeriod > 0)
-                StartSchedule(cleanPeriod);
+            if (_cleanPeriod > 0)
+                StartSchedule(_cleanPeriod);
 
             GEvent.Attach(TRY_UNLOAD, OnTryUnload, null);
         }
@@ -43,14 +43,14 @@ namespace game.assetBundle
         public void StartSchedule(float period)
         {
             StopShedule();
-            timer = Timer.Create(period, OnTimer, null);
+            _timer = Timer.Create(period, OnTimer, null);
         }
 
         public void StopShedule()
         {
-            if (timer != null)
-                timer.Drop();
-            timer = null;
+            if (_timer != null)
+                _timer.Drop();
+            _timer = null;
         }
 
         private void OnTryUnload(object o)
@@ -65,17 +65,17 @@ namespace game.assetBundle
 
         public void TryUnload()
         {
-            if (assetBundleManager.loadedPackedSize >= packedSize)
+            if (_assetBundleManager.loadedPackedSize >= _packedSize)
                 ForceTryUnload();
         }
 
         public AsyncOperation ForceTryUnload()
         {
-            if (lastAsyncOperation != null && !lastAsyncOperation.isDone)
-                return lastAsyncOperation;
+            if (_lastAsyncOperation != null && !_lastAsyncOperation.isDone)
+                return _lastAsyncOperation;
 
-            lastAsyncOperation = assetBundleManager.UnloadUnused();
-            return lastAsyncOperation;
+            _lastAsyncOperation = _assetBundleManager.UnloadUnused();
+            return _lastAsyncOperation;
         }
     }
 }

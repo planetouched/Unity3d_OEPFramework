@@ -5,41 +5,41 @@ namespace OEPFramework.futures
 {
     public abstract class ThreadSafeFuture : IFuture
     {
-        static int globalHashCode;
-        private readonly int hashCode;
+        static int _globalHashCode;
+        private readonly int _hashCode;
 
-        public object syncRoot { get; private set; }
+        public object syncRoot { get; }
         public bool isCancelled { get; private set; }
         public bool isDone { get; private set; }
         public bool wasRun { get; private set; }
 
-        event Action<IFuture> onComplete;
-        event Action<IFuture> onRun;
-        private bool promise;
+        private event Action<IFuture> _onComplete;
+        private event Action<IFuture> _onRun;
+        private bool _promise;
 
         protected ThreadSafeFuture ()
         {
             syncRoot = new object();
-            hashCode = Interlocked.Increment(ref globalHashCode);
+            _hashCode = Interlocked.Increment(ref _globalHashCode);
         }
 
         public override int GetHashCode()
         {
-            return hashCode;
+            return _hashCode;
         }
 
         void CallRunHandlers()
         {
-            if (onRun != null)
-                onRun(this);
-            onRun = null;
+            if (_onRun != null)
+                _onRun(this);
+            _onRun = null;
         }
 
         void CallHandlers()
         {
-            if (onComplete != null)
-                onComplete(this);
-            onComplete = null;
+            if (_onComplete != null)
+                _onComplete(this);
+            _onComplete = null;
         }
 
         public IFuture AddListenerOnRun(Action<IFuture> method)
@@ -48,7 +48,7 @@ namespace OEPFramework.futures
             lock (syncRoot)
             {
                 if (!wasRun)
-                    onRun += method;
+                    _onRun += method;
                 else
                     call = true;
             }
@@ -62,7 +62,7 @@ namespace OEPFramework.futures
         public void RemoveListenerOnRun(Action<IFuture> method)
         {
             lock (syncRoot)
-                onRun -= method;
+                _onRun -= method;
         }
 
         public IFuture AddListener(Action<IFuture> method)
@@ -71,7 +71,7 @@ namespace OEPFramework.futures
             lock (syncRoot)
             {
                 if (!isDone && !isCancelled)
-                    onComplete += method;
+                    _onComplete += method;
                 else
                     call = true;
             }
@@ -86,14 +86,14 @@ namespace OEPFramework.futures
         public void RemoveListener(Action<IFuture> method)
         {
             lock (method)
-                onComplete -= method;
+                _onComplete -= method;
         }
 
         public void Cancel()
         {
             lock (syncRoot)
             {
-                if (promise || isCancelled || isDone)
+                if (_promise || isCancelled || isDone)
                     return;
                 isCancelled = true;
             }
@@ -143,7 +143,7 @@ namespace OEPFramework.futures
 
         public IFuture SetAsPromise()
         {
-            promise = true;
+            _promise = true;
             return this;
         }
     }

@@ -4,21 +4,21 @@ namespace game.assetBundle.futures
 {
     public class CascadeLoadingPromise : Future
     {
-        private readonly CascadeLoading cascade;
+        private readonly CascadeLoading _cascade;
         public CascadeLoadingPromise(CascadeLoading cascade)
         {
             SetAsPromise();
-            this.cascade = cascade;
+            _cascade = cascade;
         }
         protected override void OnRun()
         {
-            cascade.onComplete = Complete;
-            cascade.Run();
+            _cascade.onComplete = Complete;
+            _cascade.Run();
         }
 
         protected override void OnComplete()
         {
-            cascade.onComplete = null;
+            _cascade.onComplete = null;
         }
     }
 }

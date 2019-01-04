@@ -6,22 +6,22 @@ namespace game.assetBundle.futures
 {
     public class ProcessFuture : FutureBehaviour, IProcess
     {
-        public float loadingProgress { get { return process.loadingProgress; } }
-        public float unpackProgress { get { return process.unpackProgress; } }
+        public float loadingProgress => _process.loadingProgress;
+        public float unpackProgress => _process.unpackProgress;
         public Action<IProcess> onProcessComplete { get; set; }
         public bool isComplete { get; private set; }
 
-        private readonly IProcess process;
+        private readonly IProcess _process;
 
         public ProcessFuture(IProcess process)
         {
-            this.process = process;
+            _process = process;
             LoopOn(Loops.UPDATE, Update);
         }
 
         private void Update()
         {
-            if (process.isComplete)
+            if (_process.isComplete)
                 Complete();
         }
 

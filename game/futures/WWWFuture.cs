@@ -10,37 +10,37 @@ namespace game.futures
         public string error { get; private set; }
         public WWW request { get; private set; }
 
-        private readonly string url;
-        private readonly int tryCount;
-        private readonly WWWForm form;
-        private readonly byte[] data;
-        private readonly Dictionary<string, string> headers;
-        private Hash128? hash128;
-        private readonly uint crc32;
+        private readonly string _url;
+        private readonly int _tryCount;
+        private readonly WWWForm _form;
+        private readonly byte[] _data;
+        private readonly Dictionary<string, string> _headers;
+        private Hash128? _hash128;
+        private readonly uint _crc32;
 
-        private int resendCounter;
+        private int _resendCounter;
 
         public WWWFuture(string url, WWWForm form, int tryCount = 1)
         {
-            this.url = url;
-            this.form = form;
-            this.tryCount = tryCount;
+            _url = url;
+            _form = form;
+            _tryCount = tryCount;
         }
 
         public WWWFuture(string url, int tryCount = 1, Hash128? version = null, uint crc32 = 0)
         {
-            this.url = url;
-            this.tryCount = tryCount;
-            hash128 = version;
-            this.crc32 = crc32;
+            _url = url;
+            _tryCount = tryCount;
+            _hash128 = version;
+            _crc32 = crc32;
         }
 
         public WWWFuture(string url, byte[] data, Dictionary<string, string> headers, int tryCount = 1)
         {
-            this.data = data;
-            this.headers = headers;
-            this.url = url;
-            this.tryCount = tryCount;
+            _data = data;
+            _headers = headers;
+            _url = url;
+            _tryCount = tryCount;
         }
 
         private void Update()
@@ -63,26 +63,26 @@ namespace game.futures
         bool Request()
         {
             if (request != null)
-                Debug.LogWarning("Request error: " + request.error + ", Reload... " + url);
+                Debug.LogWarning("Request error: " + request.error + ", Reload... " + _url);
 
-            if (resendCounter++ < tryCount)
+            if (_resendCounter++ < _tryCount)
             {
-                if (form != null)
+                if (_form != null)
                 {
-                    request = new WWW(url, form);
+                    request = new WWW(_url, _form);
                     return true;
                 }
 
-                if (data != null && headers != null)
+                if (_data != null && _headers != null)
                 {
-                    request = new WWW(url, data, headers);
+                    request = new WWW(_url, _data, _headers);
                     return true;
                 }
 
-                if (hash128 == null)
-                    request = new WWW(url);
+                if (_hash128 == null)
+                    request = new WWW(_url);
                 else
-                    request = crc32 == 0 ? WWW.LoadFromCacheOrDownload(url, hash128.Value) : WWW.LoadFromCacheOrDownload(url, hash128.Value, crc32);
+                    request = _crc32 == 0 ? WWW.LoadFromCacheOrDownload(_url, _hash128.Value) : WWW.LoadFromCacheOrDownload(_url, _hash128.Value, _crc32);
 
                 return true;
             }

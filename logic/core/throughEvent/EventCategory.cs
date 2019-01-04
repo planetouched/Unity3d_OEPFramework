@@ -2,19 +2,20 @@
 {
     public class EventCategory
     {
-        private static int id;
-        private readonly int hashCode;
-        public string description { get; private set; }
+        public string description { get; }
+        
+        private static int _id;
+        private readonly int _hashCode;
 
         public EventCategory(string description = null)
         {
-            hashCode = id++;
+            _hashCode = _id++;
             this.description = description;
         }
 
         public override int GetHashCode()
         {
-            return hashCode;
+            return _hashCode;
         }
     }
 }

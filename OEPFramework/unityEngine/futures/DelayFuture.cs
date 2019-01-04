@@ -5,25 +5,25 @@ namespace OEPFramework.unityEngine.futures
 {
     public class DelayFuture : Future, IPlayable
     {
-        private readonly float delay;
-        private readonly IFuture delayFuture;
-        private Timer timer;
+        private readonly float _delay;
+        private readonly IFuture _delayFuture;
+        private Timer _timer;
         public DelayFuture(float delay, IFuture delayFuture)
         {
-            this.delay = delay;
-            this.delayFuture = delayFuture;
+            _delay = delay;
+            _delayFuture = delayFuture;
         }
         protected override void OnRun()
         {
-            delayFuture.AddListener(f =>
+            _delayFuture.AddListener(f =>
             {
                 if (f.isDone)
                     Complete();
             });
 
-            timer = Timer.Create(delay, () =>
+            _timer = Timer.Create(_delay, () =>
             {
-                delayFuture.Run();
+                _delayFuture.Run();
             }, null, true);
         }
 
@@ -31,23 +31,23 @@ namespace OEPFramework.unityEngine.futures
         {
             if (isCancelled)
             {
-                delayFuture.Cancel();
+                _delayFuture.Cancel();
             }
 
-            if (timer != null)
-                timer.Drop();
+            if (_timer != null)
+                _timer.Drop();
         }
 
         public void Pause()
         {
-            if (timer != null)
-                timer.Pause();
+            if (_timer != null)
+                _timer.Pause();
         }
 
         public void Play()
         {
-            if (timer != null)
-                timer.Resume();
+            if (_timer != null)
+                _timer.Resume();
         }
     }
 }

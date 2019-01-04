@@ -4,16 +4,16 @@ namespace OEPFramework.unityEngine.futures
 {
     public class SyncLoopFuture : Future
     {
-        private readonly int loopType;
+        private readonly int _loopType;
 
         public SyncLoopFuture(int loopType)
         {
-            this.loopType = loopType;
+            _loopType = loopType;
         }
 
         protected override void OnRun()
         {
-            Sync.Add(Complete, loopType);
+            Sync.Add(Complete, _loopType);
         }
 
         protected override void OnComplete()

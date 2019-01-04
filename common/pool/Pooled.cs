@@ -10,18 +10,18 @@ namespace common.pool
     #endif
     IPooled
     {
-        private readonly WeakRef<IObjectPool> weakPool;
+        private readonly WeakRef<IObjectPool> _weakPool;
 
         protected Pooled(IObjectPool pool)
         {
-            weakPool = new WeakRef<IObjectPool>(pool);
+            _weakPool = new WeakRef<IObjectPool>(pool);
         }
 
         public virtual void Release()
         {
             ToInitialState();
-            if (weakPool.isAlive)
-                weakPool.obj.ReturnObj(this);
+            if (_weakPool.isAlive)
+                _weakPool.obj.ReturnObj(this);
         }
 
         public abstract void ToInitialState();

@@ -8,9 +8,9 @@ namespace logic.essential.price
 {
     public class Price : DescriptionBase, IPrice
     {
-        public string type { get; private set; }
-        public int amount { get; private set; }
-        private ModelsPath cache;
+        public string type { get; }
+        public int amount { get; }
+        private ModelsPath _cache;
 
         public Price(RawNode node, IContext context) : base(node, context)
         {
@@ -20,7 +20,7 @@ namespace logic.essential.price
 
         public ModelsPath GetPath()
         {
-            return cache ?? (cache = PathUtil.GetModelPath(GetContext(), node.GetString("path"), null));
+            return _cache ?? (_cache = PathUtil.GetModelPath(GetContext(), node.GetString("path"), null));
         }
 
         public virtual bool Check()

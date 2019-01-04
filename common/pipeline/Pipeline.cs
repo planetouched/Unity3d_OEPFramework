@@ -5,53 +5,53 @@ namespace common.pipeline
 {
     public class Pipeline
     {
-        internal class PipelineOption
+        private class PipelineOption
         {
-            private readonly Func<IPipelineHandler> factory;
-            private readonly IPipelineHandler handler;
+            private readonly Func<IPipelineHandler> _factory;
+            private readonly IPipelineHandler _handler;
 
             public PipelineOption(Func<IPipelineHandler> factory, IPipelineHandler handler)
             {
-                this.factory = factory;
-                this.handler = handler;
+                _factory = factory;
+                _handler = handler;
             }
 
             public IPipelineHandler GetHandler()
             {
-                if (factory != null)
-                    return factory();
+                if (_factory != null)
+                    return _factory();
 
-                return handler;
+                return _handler;
             }
         }
 
-        private readonly List<PipelineOption> pipelineHandlers = new List<PipelineOption>();
+        private readonly List<PipelineOption> _pipelineHandlers = new List<PipelineOption>();
 
         public event Action<IPipelineHandler> onError;
         public event Action<IPipelineHandler> onHandlerPassed;
 
         public Pipeline AddHandler(Func<IPipelineHandler> handlerFactory)
         {
-            pipelineHandlers.Add(new PipelineOption(handlerFactory, null));
+            _pipelineHandlers.Add(new PipelineOption(handlerFactory, null));
             return this;
         }
 
         public Pipeline AddHandler(IPipelineHandler handler)
         {
-            pipelineHandlers.Add(new PipelineOption(null, handler));
+            _pipelineHandlers.Add(new PipelineOption(null, handler));
             return this;
         }
 
         public Pipeline RemoveHandler(int idx)
         {
-            pipelineHandlers.RemoveAt(idx);
+            _pipelineHandlers.RemoveAt(idx);
             return this;
         }
 
         public object Start(object item)
         {
             object currentItem = item;
-            foreach (var factory in pipelineHandlers)
+            foreach (var factory in _pipelineHandlers)
             {
                 var handler = factory.GetHandler();
                 handler.Create(currentItem);

@@ -5,34 +5,35 @@ namespace OEPFramework.unityEngine.futures
 {
     public class WaitFuture : Future, IPlayable
     {
-        private readonly float sec;
-        private Timer waitTimer;
+        private readonly float _sec;
+        private Timer _waitTimer;
+        
         public WaitFuture(float sec)
         {
-            this.sec = sec;
+            _sec = sec;
         }
 
         protected override void OnRun()
         {
-            waitTimer = Timer.Create(sec, Complete, null, true);
+            _waitTimer = Timer.Create(_sec, Complete, null, true);
         }
 
         protected override void OnComplete()
         {
-            if (waitTimer != null)
-                waitTimer.Drop();
+            if (_waitTimer != null)
+                _waitTimer.Drop();
         }
 
         public void Pause()
         {
-            if (waitTimer != null)
-                waitTimer.Pause();
+            if (_waitTimer != null)
+                _waitTimer.Pause();
         }
 
         public void Play()
         {
-            if (waitTimer != null)
-                waitTimer.Resume();
+            if (_waitTimer != null)
+                _waitTimer.Resume();
         }
     }
 }

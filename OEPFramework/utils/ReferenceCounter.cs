@@ -5,37 +5,36 @@ namespace OEPFramework.utils
 {
     public class ReferenceCounter
     {
-        static readonly Dictionary<Type, int> references = new Dictionary<Type, int>();
-        static readonly object syncRoot = new object();
-        private readonly Type classType;
+        private static readonly Dictionary<Type, int> _references = new Dictionary<Type, int>();
+        private static readonly object _syncRoot = new object();
+        private readonly Type _classType;
 
         public static int GetCount(Type type)
         {
-            lock (syncRoot)
+            lock (_syncRoot)
             {
-                if (!references.ContainsKey(type)) return 0;
-                return references[type];
+                if (!_references.ContainsKey(type)) return 0;
+                return _references[type];
             }
         }
 
         public ReferenceCounter()
         {
-            lock (syncRoot)
+            lock (_syncRoot)
             {
-                classType = GetType();
-                if (!references.ContainsKey(classType))
+                _classType = GetType();
+                if (!_references.ContainsKey(_classType))
                 {
-                    references.Add(classType, 0);
+                    _references.Add(_classType, 0);
                 }
-                references[classType]++;
+                _references[_classType]++;
 
-                //пройдемся по base классам
-                foreach (var baseType in GetBaseTypes(classType))
+                foreach (var baseType in GetBaseTypes(_classType))
                 {
-                    if (!references.ContainsKey(baseType))
-                        references.Add(baseType, 0);
+                    if (!_references.ContainsKey(baseType))
+                        _references.Add(baseType, 0);
 
-                    references[baseType]++;
+                    _references[baseType]++;
                 }
             }
         }
@@ -52,13 +51,13 @@ namespace OEPFramework.utils
 
         ~ReferenceCounter()
         {
-            lock (syncRoot)
+            lock (_syncRoot)
             {
-                references[classType]--;
+                _references[_classType]--;
                 //пройдемся по base классам
-                foreach (var baseType in GetBaseTypes(classType))
+                foreach (var baseType in GetBaseTypes(_classType))
                 {
-                    references[baseType]--;
+                    _references[baseType]--;
                 }
             }
         }

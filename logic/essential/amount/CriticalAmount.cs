@@ -11,7 +11,7 @@ namespace logic.essential.amount
         public int critical { get; }
         public int regular { get; }
         public bool wasCritical { get; private set; }
-        private readonly Random random;
+        private readonly Random _random;
 
         public CriticalAmount(RawNode node, IContext context)
             : base(node, context)
@@ -19,12 +19,12 @@ namespace logic.essential.amount
             probability = node.GetDouble("probability");
             critical = node.GetInt("critical");
             regular = node.GetInt("regular");
-            random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
+            _random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
         }
 
         public override int Number()
         {
-            wasCritical = random.NextDouble() <= probability;
+            wasCritical = _random.NextDouble() <= probability;
             return wasCritical ? critical : regular;
         }
     }

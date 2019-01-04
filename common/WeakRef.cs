@@ -4,17 +4,17 @@ namespace common
 {
     public class WeakRef<T> where T : class
     {
-        private readonly WeakReference reference;
+        private readonly WeakReference _reference;
 
-        public T obj { get { return isAlive ? (T)reference.Target : null; } }
+        public T obj => isAlive ? (T)_reference.Target : null;
 
-        public bool isAlive { get { return reference != null && reference.IsAlive; } }
+        public bool isAlive => _reference != null && _reference.IsAlive;
 
-        public bool trackResurrection { get { return reference.TrackResurrection; } }
+        public bool trackResurrection => _reference.TrackResurrection;
 
         public WeakRef(T reference)
         {
-            this.reference = reference == null ? null : new WeakReference(reference);
+            _reference = reference == null ? null : new WeakReference(reference);
         }
     }
 }

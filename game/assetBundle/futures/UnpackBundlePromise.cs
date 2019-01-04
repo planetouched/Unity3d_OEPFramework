@@ -6,16 +6,17 @@ namespace game.assetBundle.futures
 {
     public class UnpackBundlePromise : FutureBehaviour
     {
-        private readonly AssetBundle assetBundle;
         public AssetBundleRequest asyncOperation { get; private set; } 
         public Object[] allAssets { get; private set; }
-        private readonly bool async;
+        
+        private readonly AssetBundle _assetBundle;
+        private readonly bool _async;
 
         public UnpackBundlePromise(AssetBundle assetBundle, bool async)
         {
             SetAsPromise();
-            this.async = async;
-            this.assetBundle = assetBundle;
+            _async = async;
+            _assetBundle = assetBundle;
             LoopOn(Loops.UPDATE, Update);
         }
 
@@ -30,11 +31,11 @@ namespace game.assetBundle.futures
 
         protected override void OnRun()
         {
-            if (async)
-                asyncOperation = assetBundle.LoadAllAssetsAsync();
+            if (_async)
+                asyncOperation = _assetBundle.LoadAllAssetsAsync();
             else
             {
-                allAssets = assetBundle.LoadAllAssets();
+                allAssets = _assetBundle.LoadAllAssets();
                 Complete();
                 return;
             }

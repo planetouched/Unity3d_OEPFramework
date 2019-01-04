@@ -11,7 +11,7 @@ namespace logic.core.model
         where TDescription : IDescription
         where TCategories : class
     {
-        private int lastId; 
+        private int _lastId; 
         
         protected InstanceCollection(RawNode initNode, TCategories categories, TDescription description, IContext context) : base(initNode, categories, description, context)
         {
@@ -27,31 +27,31 @@ namespace logic.core.model
             
             foreach (var pair in collectionNode.GetUnsortedCollection())
             {
-                lastId = Math.Max(lastId, int.Parse(pair.Key)); 
+                _lastId = Math.Max(_lastId, int.Parse(pair.Key)); 
                 base.AddChild(pair.Key, Factory(collectionNode.GetNode(pair.Key)));
             }
         }
 
         public override void AddChild(string collectionKey, IModel model)
         {
-            lastId = Math.Max(lastId, int.Parse(collectionKey));
-            model.key = lastId.ToString();            
-            base.AddChild(lastId.ToString(), model);
+            _lastId = Math.Max(_lastId, int.Parse(collectionKey));
+            model.key = _lastId.ToString();            
+            base.AddChild(_lastId.ToString(), model);
         }
 
         public void AddChild(TModel model)
         {
-            lastId++;
-            model.key = lastId.ToString();
-            base.AddChild(lastId.ToString(), model);
+            _lastId++;
+            model.key = _lastId.ToString();
+            base.AddChild(_lastId.ToString(), model);
         }
         
         public TModel AddChild(RawNode modelNode)
         {
-            lastId++;
+            _lastId++;
             var model = Factory(modelNode);
-            model.key = lastId.ToString();            
-            base.AddChild(lastId.ToString(), model);
+            model.key = _lastId.ToString();            
+            base.AddChild(_lastId.ToString(), model);
             return model;
         }
         

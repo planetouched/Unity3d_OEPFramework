@@ -50,8 +50,8 @@ namespace common
         #endregion
 
         public T currentState { get; private set; }
-        readonly Dictionary<T, State> states = new Dictionary<T, State>();
-        private IFuture leaveFuture;
+        private readonly Dictionary<T, State> _states = new Dictionary<T, State>();
+        private IFuture _leaveFuture;
 
         public StateMachine(T startState)
         {
@@ -70,14 +70,14 @@ namespace common
         public void Add(T state, Action<object> onEnter = null, Func<IFuture> onLeave = null, Action<object> onUpdate = null)
         {
             var newState = new State(onEnter, onLeave, onUpdate);
-            states.Add(state, newState);
+            _states.Add(state, newState);
         }
 
         State Get(T state)
         {
-            if (!states.ContainsKey(state))
+            if (!_states.ContainsKey(state))
                 throw new Exception("State machine don't have " + state + " condition");
-            return states[state];
+            return _states[state];
         }
 
         public void Remove(T state)
@@ -88,51 +88,51 @@ namespace common
                 removeState.CallOnLeave();
                 removeState.Clear();
             }
-            states.Remove(state);
+            _states.Remove(state);
         }
 
         public void Clear(bool leaveSignal = false)
         {
-            if (states.Count == 0) return;
+            if (_states.Count == 0) return;
 
-            if (states.ContainsKey(currentState) && leaveSignal)
-                states[currentState].CallOnLeave();
+            if (_states.ContainsKey(currentState) && leaveSignal)
+                _states[currentState].CallOnLeave();
             
-            foreach (var state in states.Values)
+            foreach (var state in _states.Values)
                 state.Clear();
             
-            states.Clear();
+            _states.Clear();
         }
         
         public void SetState(T state, object obj = null)
         {
-            if (leaveFuture != null)
+            if (_leaveFuture != null)
                 return;
 
-            if (states.ContainsKey(currentState))
+            if (_states.ContainsKey(currentState))
             {
                 if (currentState.Equals(state))
                 {
-                    states[currentState].CallOnUpdate(obj);
+                    _states[currentState].CallOnUpdate(obj);
                     return;
                 }
-                leaveFuture = states[currentState].CallOnLeave();
+                _leaveFuture = _states[currentState].CallOnLeave();
             }
 
             currentState = state;
 
-            if (states.ContainsKey(currentState))
+            if (_states.ContainsKey(currentState))
             {
-                if (leaveFuture != null)
+                if (_leaveFuture != null)
                 {
-                    leaveFuture.AddListener(future =>
+                    _leaveFuture.AddListener(future =>
                     {
-                        leaveFuture = null;
-                        states[currentState].CallOnEnter(obj);
+                        _leaveFuture = null;
+                        _states[currentState].CallOnEnter(obj);
                     });
                 }
                 else
-                    states[currentState].CallOnEnter(obj);
+                    _states[currentState].CallOnEnter(obj);
             }
         }
     }

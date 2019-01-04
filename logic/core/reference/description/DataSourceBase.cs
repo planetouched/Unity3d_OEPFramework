@@ -9,7 +9,7 @@ namespace logic.core.reference.description
     {
         protected abstract TDescription Factory(RawNode partialNode);
         
-        private WeakRef<IDescription> weakParent;
+        private WeakRef<IDescription> _weakParent;
         
         public TDescription this[string collectionKey] => GetDescription(collectionKey);
 

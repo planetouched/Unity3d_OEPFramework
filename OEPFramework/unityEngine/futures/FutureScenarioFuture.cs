@@ -5,21 +5,21 @@ namespace OEPFramework.unityEngine.futures
 {
     public class FutureScenarioFuture : Future
     {
-        private readonly FutureScenario futureScenario;
+        private readonly FutureScenario _futureScenario;
 
         public FutureScenarioFuture(FutureScenario futureScenario)
         {
-            this.futureScenario = futureScenario;
+            _futureScenario = futureScenario;
         }
         protected override void OnRun()
         {
-            if (futureScenario.isEmpty)
+            if (_futureScenario.isEmpty)
             {
                 Complete();
                 return;
             }
 
-            futureScenario.onComplete += result =>
+            _futureScenario.onComplete += result =>
             {
                 if (!result)
                     Complete();
@@ -27,13 +27,13 @@ namespace OEPFramework.unityEngine.futures
                     Cancel();
             };
 
-            futureScenario.Run();
+            _futureScenario.Run();
         }
 
         protected override void OnComplete()
         {
             if (isCancelled)
-                futureScenario.Cancel();
+                _futureScenario.Cancel();
         }
     }
 }

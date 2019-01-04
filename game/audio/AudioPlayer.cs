@@ -10,40 +10,39 @@ namespace game.audio
 {
     public class AudioPlayer : DroppableItemBase
     {
-        public static readonly List<AudioPlayer> audioPlayers = new List<AudioPlayer>();
-        private static readonly Dictionary<int, bool> muteSettings = new Dictionary<int, bool>();
-        private static readonly Dictionary<int, float> volumeSettings = new Dictionary<int, float>();
-
-        public static string MUTE = GEvent.GetUniqueCategory();
-        public static string SET_VOLUME = GEvent.GetUniqueCategory();
-
         public class AudioSourceData
         {
             public AudioSource source;
             public int layer;
             public AudioFutureBase current;
         }
-
-        public GameObject sourceGroup { get; private set; }
-        private readonly Dictionary<string, AudioSourceData> audioSourceData = new Dictionary<string, AudioSourceData>();
+        
+        public static string MUTE = GEvent.GetUniqueCategory();
+        public static string SET_VOLUME = GEvent.GetUniqueCategory();
+        public GameObject sourceGroup { get; }
+        
+        private static readonly List<AudioPlayer> _audioPlayers = new List<AudioPlayer>();
+        private static readonly Dictionary<int, bool> _muteSettings = new Dictionary<int, bool>();
+        private static readonly Dictionary<int, float> _volumeSettings = new Dictionary<int, float>();
+        private readonly Dictionary<string, AudioSourceData> _audioSourceData = new Dictionary<string, AudioSourceData>();
 
         public AudioPlayer(string sourceGroupId, Transform parent = null)
         {
             sourceGroup = new GameObject(sourceGroupId);
             sourceGroup.transform.SetParent(parent,false);
-            audioPlayers.Add(this);
+            _audioPlayers.Add(this);
         }
 
         public static void Mute(int layer, bool mute)
         {
-            if (muteSettings.ContainsKey(layer))
-                muteSettings[layer] = mute;
+            if (_muteSettings.ContainsKey(layer))
+                _muteSettings[layer] = mute;
             else
-                muteSettings.Add(layer, mute);
+                _muteSettings.Add(layer, mute);
 
-            foreach (var audioPlayer in audioPlayers)
+            foreach (var audioPlayer in _audioPlayers)
             {
-                foreach (var data in audioPlayer.audioSourceData.Values)
+                foreach (var data in audioPlayer._audioSourceData.Values)
                 {
                     if (data.layer == layer)
                         data.source.mute = mute;
@@ -55,14 +54,14 @@ namespace game.audio
 
         public static void SetVolume(int layer, float volume)
         {
-            if (volumeSettings.ContainsKey(layer))
-                volumeSettings[layer] = volume;
+            if (_volumeSettings.ContainsKey(layer))
+                _volumeSettings[layer] = volume;
             else
-                volumeSettings.Add(layer, volume);
+                _volumeSettings.Add(layer, volume);
 
-            foreach (var audioPlayer in audioPlayers)
+            foreach (var audioPlayer in _audioPlayers)
             {
-                foreach (var data in audioPlayer.audioSourceData.Values)
+                foreach (var data in audioPlayer._audioSourceData.Values)
                 {
                     if (data.layer == layer)
                         data.source.volume = volume;
@@ -74,15 +73,15 @@ namespace game.audio
 
         public static float GetVolume(int layer)
         {
-            if (volumeSettings.ContainsKey(layer))
-                return volumeSettings[layer];
+            if (_volumeSettings.ContainsKey(layer))
+                return _volumeSettings[layer];
 
             return 0.5f;
         }
 
         public static bool IsMuted(int layer)
         {
-            return muteSettings.ContainsKey(layer) && muteSettings[layer];
+            return _muteSettings.ContainsKey(layer) && _muteSettings[layer];
         }
 
         public AudioSource AddNewSimpleSource(string key, int layer)
@@ -95,7 +94,7 @@ namespace game.audio
             var source = go.AddComponent<AudioSource>();
             source.mute = IsMuted(layer);
             source.volume = GetVolume(layer);
-            audioSourceData.Add(key, new AudioSourceData { layer = layer, source = source });
+            _audioSourceData.Add(key, new AudioSourceData { layer = layer, source = source });
             return source;
         }
 
@@ -107,13 +106,13 @@ namespace game.audio
             source.mute = IsMuted(layer);
             source.volume = GetVolume(layer);
 
-            audioSourceData.Add(key, new AudioSourceData { layer = layer, source = source });
+            _audioSourceData.Add(key, new AudioSourceData { layer = layer, source = source });
             return source;
         }
 
         public AudioSourceData GetSource(string key)
         {
-            return audioSourceData[key];
+            return _audioSourceData[key];
         }
 
         public void RemoveSource(string key)
@@ -121,23 +120,23 @@ namespace game.audio
             if (dropped)
                 throw new Exception("Dropped");
 
-            var data = audioSourceData[key];
+            var data = _audioSourceData[key];
             if (data.current != null)
                 data.current.Cancel();
 
             Object.Destroy(data.source.gameObject);
 
-            audioSourceData.Remove(key);
+            _audioSourceData.Remove(key);
         }
 
         public void RemoveAllSources()
         {
-            foreach (var key in new List<string>(audioSourceData.Keys))
+            foreach (var key in new List<string>(_audioSourceData.Keys))
             {
                 RemoveSource(key);
             }
 
-            audioSourceData.Clear();
+            _audioSourceData.Clear();
         }
 
         public AudioFutureBase Play(string sourceKey, AudioClip[] clips, bool start = true)
@@ -157,7 +156,7 @@ namespace game.audio
             if (dropped)
                 throw new Exception("Dropped");
 
-            var sourceData = audioSourceData[sourceKey];
+            var sourceData = _audioSourceData[sourceKey];
 
             if (clip == null && clips == null && sourceData.source.clip == null)
                 return null;
@@ -178,7 +177,7 @@ namespace game.audio
 
         public string GetFreeSource()
         {
-            foreach (var pair in audioSourceData)
+            foreach (var pair in _audioSourceData)
             {
                 if (pair.Value.current == null)
                     return pair.Key;
@@ -210,7 +209,7 @@ namespace game.audio
 
             RemoveAllSources();
             Object.Destroy(sourceGroup);
-            audioPlayers.Remove(this);
+            _audioPlayers.Remove(this);
             base.Drop();
         }
     }

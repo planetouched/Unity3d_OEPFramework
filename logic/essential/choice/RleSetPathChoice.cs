@@ -9,8 +9,8 @@ namespace logic.essential.choice
 {
     public class RleSetPathChoice : PathChoice
     {
-        private readonly List<object[]> list = new List<object[]>();
-        private readonly int length;
+        private readonly List<object[]> _list = new List<object[]>();
+        private readonly int _length;
         
         public RleSetPathChoice(RawNode node, IContext context)
             : base(node, context)
@@ -20,18 +20,18 @@ namespace logic.essential.choice
             {
                 var l = (List<object>)obj;
                 var arr = new [] { l[0], Convert.ToInt32(l[1]) };
-                list.Add(arr);
+                _list.Add(arr);
             }
 
-            foreach (var pair in list)
-                length += (int)pair[1];
+            foreach (var pair in _list)
+                _length += (int)pair[1];
         }
 
         public override ModelsPath GetModelPath()
         {
-            int pos = random.Range(0, length);
+            int pos = random.Range(0, _length);
             int currentPos = 0;
-            foreach (object[] pair in list)
+            foreach (object[] pair in _list)
             {
                 if (pos >= currentPos && pos < currentPos + (int)pair[1])
                     return PathUtil.GetModelPath(GetContext(), (string)pair[0], random);
@@ -43,9 +43,9 @@ namespace logic.essential.choice
 
         public override T GetDescription<T>()
         {
-            int pos = random.Range(0, length);
+            int pos = random.Range(0, _length);
             int currentPos = 0;
-            foreach (object[] pair in list)
+            foreach (object[] pair in _list)
             {
                 if (pos >= currentPos && pos < currentPos + (int)pair[1])
                     return PathUtil.GetDescription<T>(GetContext(), (string)pair[0], random);

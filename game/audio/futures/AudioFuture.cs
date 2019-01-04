@@ -5,24 +5,24 @@ namespace game.audio.futures
 {
     public class AudioFuture : AudioFutureBase
     {
-        private readonly AudioClip clip;
+        private readonly AudioClip _clip;
         
         public AudioFuture(AudioSource audioSource, AudioClip clip)
         {
             this.audioSource = audioSource;
-            this.clip = clip;
+            _clip = clip;
         }
 
         protected override void OnRun()
         {
-            if (audioSource == null || clip == null)
+            if (audioSource == null || _clip == null)
             {
                 Cancel();
                 return;
             }
 
-            if (clip != null)
-                audioSource.clip = clip;
+            if (_clip != null)
+                audioSource.clip = _clip;
 
             audioSource.Play();
             LoopOn(Loops.UPDATE, Update);
@@ -47,7 +47,7 @@ namespace game.audio.futures
             {
                 audioSource.Stop();
 
-                if (clip != null)
+                if (_clip != null)
                     audioSource.clip = null;
             }
         }

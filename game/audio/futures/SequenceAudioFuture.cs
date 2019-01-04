@@ -7,24 +7,24 @@ namespace game.audio.futures
 {
     public class SequenceAudioFuture : AudioFutureBase
     {
-        private IFuture coroutine;
-        private readonly AudioClip[] clips;
+        private IFuture _coroutine;
+        private readonly AudioClip[] _clips;
 
         public SequenceAudioFuture(AudioSource audioSource, AudioClip[] clips)
         {
             this.audioSource = audioSource;
-            this.clips = clips;
+            _clips = clips;
         }
 
         protected override void OnRun()
         {
-            if (audioSource == null || clips == null || clips.Length == 0)
+            if (audioSource == null || _clips == null || _clips.Length == 0)
             {
                 Cancel();
                 return;
             }
 
-            coroutine = FutureUtils.Coroutine(C0).Run().AddListener(f =>
+            _coroutine = FutureUtils.Coroutine(C0).Run().AddListener(f =>
             {
                 if (f.isDone)
                     Complete();
@@ -33,7 +33,7 @@ namespace game.audio.futures
 
         private IEnumerator<IFuture> C0()
         {
-            foreach (var clip in clips)
+            foreach (var clip in _clips)
             {
                 yield return new AudioFuture(audioSource, clip).Run();
             }
@@ -42,7 +42,7 @@ namespace game.audio.futures
         protected override void OnComplete()
         {
             if (isCancelled)
-                coroutine.Cancel();
+                _coroutine.Cancel();
         }
     }
 }

@@ -9,31 +9,31 @@ namespace logic.essential.amount
 {
     public class RleSetAmount : Amount
     {
-        private readonly IList<int[]> list = new List<int[]>();
-        private readonly int length;
-        private readonly Random random;
+        private readonly IList<int[]> _list = new List<int[]>();
+        private readonly int _length;
+        private readonly Random _random;
 
         public RleSetAmount(RawNode node, IContext context)
             : base(node, context)
         {
-            random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
+            _random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
             var rows = node.GetNode("elements").array;
 
             foreach (var obj in rows)
             {
                 var pair = (List<object>) obj;
                 var arr = new [] { Convert.ToInt32(pair[0]), Convert.ToInt32(pair[1]) };
-                list.Add(arr);
+                _list.Add(arr);
             }
 
-            foreach (var pair in list)
-                length += pair[1];
+            foreach (var pair in _list)
+                _length += pair[1];
         }
         public override int Number()
         {
-            int pos = random.Range(0, length);
+            int pos = _random.Range(0, _length);
             int currentPos = 0;
-            foreach (int[] pair in list)
+            foreach (int[] pair in _list)
             {
                 if (pos >= currentPos && pos < currentPos + pair[1])
                     return pair[0];

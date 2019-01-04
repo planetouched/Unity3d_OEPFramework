@@ -8,17 +8,17 @@ namespace OEPFramework.unityEngine.loop
 {
     public static class EngineLoopManager
     {
-        private static readonly List<EngineLoop> loops = new List<EngineLoop>();
+        private static readonly List<EngineLoop> _loops = new List<EngineLoop>();
 
         public static int LoopsCount()
         {
-            return loops.Count;
+            return _loops.Count;
         }
 
         static bool CheckInit()
         {
 #if UNITY_EDITOR
-            if (loops.Count == 0)
+            if (_loops.Count == 0)
             {
                 Debug.LogError("Loops is not adjusted. Use Loops.Setup()");
                 EditorApplication.isPlaying = false;
@@ -31,20 +31,20 @@ namespace OEPFramework.unityEngine.loop
 
         public static EngineLoop GetEngineLoop(int loopType)
         {
-            return loops[loopType];
+            return _loops[loopType];
         }
 
         public static int AddNewEngineLoop()
         {
-            int loop = loops.Count;
-            loops.Add(new EngineLoop(loop));
+            int loop = _loops.Count;
+            _loops.Add(new EngineLoop(loop));
             return loop;
         }
 
         public static void Execute(int loopType)
         {
             if (!CheckInit()) return;
-            loops[loopType].CallAllBehavioursActions();
+            _loops[loopType].CallAllBehavioursActions();
         }
     }
 }

@@ -5,63 +5,60 @@ namespace OEPFramework.unityEngine.loop
 {
     public class EngineLoop
     {
-        internal class InnerComparer : IComparer<LoopBehaviour>
+        private class InnerComparer : IComparer<LoopBehaviour>
         {
-            private readonly int loopType;
+            private readonly int _loopType;
 
             public InnerComparer(int loopType)
             {
-                this.loopType = loopType;
+                _loopType = loopType;
             }
 
             public int Compare(LoopBehaviour x, LoopBehaviour y)
             {
-                if (x.GetOrder(loopType) > y.GetOrder(loopType)) return 1;
-                if (x.GetOrder(loopType) < y.GetOrder(loopType)) return -1;
+                if (x.GetOrder(_loopType) > y.GetOrder(_loopType)) return 1;
+                if (x.GetOrder(_loopType) < y.GetOrder(_loopType)) return -1;
                 return 0;
             }
         }
 
-        private readonly InnerComparer comparer;
+        private readonly InnerComparer _comparer;
 
-        public List<LoopBehaviour> items = new List<LoopBehaviour>();
-        readonly List<LoopBehaviour> toAdd = new List<LoopBehaviour>();
-        readonly List<LoopBehaviour> toRemove = new List<LoopBehaviour>();
+        private readonly List<LoopBehaviour> _items = new List<LoopBehaviour>();
+        private readonly List<LoopBehaviour> _toAdd = new List<LoopBehaviour>();
+        private readonly List<LoopBehaviour> _toRemove = new List<LoopBehaviour>();
 
-        private int behaviourOrder;
-        private readonly int loopType;
+        private int _behaviourOrder;
+        private readonly int _loopType;
 
         public EngineLoop(int loopType)
         {
-            comparer = new InnerComparer(loopType);
-            this.loopType = loopType;
+            _comparer = new InnerComparer(loopType);
+            _loopType = loopType;
         }
 
         public void AddToLast(LoopBehaviour behaviour)
         {
-            toAdd.Add(behaviour);
+            _toAdd.Add(behaviour);
         }
 
         public void Remove(LoopBehaviour behaviour)
         {
-            int idx = toAdd.IndexOf(behaviour);
+            int idx = _toAdd.IndexOf(behaviour);
             if (idx != -1)
-                toAdd.RemoveAt(idx);
+                _toAdd.RemoveAt(idx);
             else
-                toRemove.Add(behaviour);
+                _toRemove.Add(behaviour);
         }
 
         public void CallAllBehavioursActions()
         {
-            Sync.Process(loopType);
+            Sync.Process(_loopType);
             
-            //если были добавлены из циклов другого типа
             ModifyIfNeeded();
 
-            //вызов существующих циклов
-            InnerCall(items);
+            InnerCall(_items);
 
-            //вызов новых добавленых циклов
             for (;;)
             {
                 var newLoops = ModifyIfNeeded();
@@ -76,49 +73,49 @@ namespace OEPFramework.unityEngine.loop
             }
         }
 
-        void InnerCall(List<LoopBehaviour> loops)
+        private void InnerCall(List<LoopBehaviour> loops)
         {
             for (int i = 0; i < loops.Count; i++)
             {
                 var current = loops[i];
-                if (current != null && (!current.dropped && current.callActions))
-                    current.ExecuteAction(loopType);
+                if (current != null && !current.dropped && current.callActions)
+                    current.ExecuteAction(_loopType);
             }
         }
 
-        public List<LoopBehaviour> ModifyIfNeeded()
+        private List<LoopBehaviour> ModifyIfNeeded()
         {
-            if (toRemove.Count > 0)
+            if (_toRemove.Count > 0)
             {
-                foreach (var behaviour in toRemove)
+                foreach (var behaviour in _toRemove)
                 {
                     int idx = GetIndex(behaviour);
                     if (idx >= 0)
-                        items.RemoveAt(idx);
+                        _items.RemoveAt(idx);
                 }
 
-                toRemove.Clear();
+                _toRemove.Clear();
             }
 
-            if (toAdd.Count > 0)
+            if (_toAdd.Count > 0)
             {
-                foreach (var behaviour in toAdd)
+                foreach (var behaviour in _toAdd)
                 {
-                    items.Add(behaviour);
-                    behaviour.SetOrder(loopType, behaviourOrder++);
+                    _items.Add(behaviour);
+                    behaviour.SetOrder(_loopType, _behaviourOrder++);
                 }
 
-                var newLoops = new List<LoopBehaviour>(toAdd);
-                toAdd.Clear();
+                var newLoops = new List<LoopBehaviour>(_toAdd);
+                _toAdd.Clear();
                 return newLoops;
             }
 
             return null;
         }
 
-        public int GetIndex(LoopBehaviour behaviour)
+        private int GetIndex(LoopBehaviour behaviour)
         {
-            return items.BinarySearch(behaviour, comparer);
+            return _items.BinarySearch(behaviour, _comparer);
         }
     }
 }

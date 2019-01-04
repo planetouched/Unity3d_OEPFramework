@@ -4,15 +4,15 @@ namespace common
 {
     public class Lazy<T>
     {
-        private T value;
-
         public bool isCreated { get; private set; }
-        private Func<T> initFunc;
         public Action<T> onCreate  { get; set; }
 
+        private T _value;
+        private Func<T> _initFunc;
+        
         public Lazy(Func<T> initFunc)
         {
-            this.initFunc = initFunc;
+            _initFunc = initFunc;
         }
 
         public void Create()
@@ -23,21 +23,21 @@ namespace common
         public T GetValue()
         {
             if (isCreated)
-                return value;
+                return _value;
 
-            value = initFunc();
-            initFunc = null;
+            _value = _initFunc();
+            _initFunc = null;
             isCreated = true;
             
             if (onCreate != null)
-                onCreate(value);
+                onCreate(_value);
 
-            return value;
+            return _value;
         }
 
         public void ClearFactory()
         {
-            initFunc = null;
+            _initFunc = null;
         }
     }
 }

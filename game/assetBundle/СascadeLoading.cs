@@ -7,48 +7,54 @@ namespace game.assetBundle
 {
     public class CascadeLoading
     {
-        readonly List<CompositeFuture> compositeFutures = new List<CompositeFuture>();
-        private CompositeFuture current;
         public Action onComplete;
+        private readonly List<CompositeFuture> _compositeFutures = new List<CompositeFuture>();
+        private CompositeFuture _current;
+        
         public CascadeLoading()
         {
-            compositeFutures.Add(new CompositeFuture());
-            current = compositeFutures[0];
-            current.AddListener(CompleteFuture);
+            _compositeFutures.Add(new CompositeFuture());
+            _current = _compositeFutures[0];
+            _current.AddListener(CompleteFuture);
         }
+        
         void CompleteFuture(IFuture future)
         {
             IFuture nextFuture = null;
-            compositeFutures.RemoveAt(0);
-            if (compositeFutures.Count > 0)
-                nextFuture = compositeFutures[0];
+            _compositeFutures.RemoveAt(0);
+            if (_compositeFutures.Count > 0)
+                nextFuture = _compositeFutures[0];
             if (nextFuture == null)
                 Complete();
             else
                 nextFuture.Run();
         }
+        
         void Complete()
         {
-            current = null;
+            _current = null;
             if (onComplete != null)
                 onComplete();
             onComplete = null;
         }
+        
         public void Next()
         {
-            if (current.futuresCount == 0) return;
+            if (_current.futuresCount == 0) return;
             var newFuture = new CompositeFuture();
-            compositeFutures.Add(newFuture);
+            _compositeFutures.Add(newFuture);
             newFuture.AddListener(CompleteFuture);
-            current = newFuture;
+            _current = newFuture;
         }
+        
         public void Run()
         {
-            compositeFutures[0].Run();
+            _compositeFutures[0].Run();
         }
+        
         public void AddFuture(IFuture future)
         {
-            current.AddFuture(future);
+            _current.AddFuture(future);
         }
     }
 }

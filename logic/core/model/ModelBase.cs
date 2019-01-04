@@ -10,14 +10,14 @@ namespace logic.core.model
     public abstract class ModelBase : IModel, IEnumerable<KeyValuePair<string, IModel>>
     {
         public string key { get; set; }
-        private readonly WeakRef<IContext> weakContext;
-        private WeakRef<IModel> weakParent;
-        private Event modelEvent;
-        private IOrderedDictionary children;
+        private readonly WeakRef<IContext> _weakContext;
+        private WeakRef<IModel> _weakParent;
+        private Event _modelEvent;
+        private IOrderedDictionary _children;
 
         protected ModelBase(IContext context, IModel parent = null)
         {
-            weakContext = new WeakRef<IContext>(context);
+            _weakContext = new WeakRef<IContext>(context);
 
             if (parent != null)
             {
@@ -27,17 +27,17 @@ namespace logic.core.model
 
         protected IDictionary GetChildren()
         {
-            return children ?? (children = new OrderedDictionary());
+            return _children ?? (_children = new OrderedDictionary());
         }
         
         public IContext GetContext()
         {
-            return weakContext.obj;
+            return _weakContext.obj;
         }
 
         public Event GetEvent()
         {
-            return modelEvent ?? (modelEvent = new Event());
+            return _modelEvent ?? (_modelEvent = new Event());
         }
 
         public void Attach(EventCategory category, Event.EventHandler func)
@@ -58,16 +58,16 @@ namespace logic.core.model
         {
             if (parent == null)
             {
-                weakParent = null;
+                _weakParent = null;
                 return;
             }
             
-            weakParent = new WeakRef<IModel>(parent);
+            _weakParent = new WeakRef<IModel>(parent);
         }
 
         public IModel GetParent()
         {
-            return weakParent != null ? weakParent.obj : null;
+            return _weakParent != null ? _weakParent.obj : null;
         }
 
         public virtual IModel GetChild(string collectionKey)
@@ -83,11 +83,11 @@ namespace logic.core.model
 
         public void RemoveChild(string collectionKey, bool destroy)
         {
-            if (children == null) return;
+            if (_children == null) return;
 
             var child = GetChild(collectionKey);
             child.SetParent(null);
-            children.Remove(collectionKey);
+            _children.Remove(collectionKey);
 
             if (destroy)
             {
@@ -148,9 +148,9 @@ namespace logic.core.model
 
         public virtual void Destroy()
         {
-            if (modelEvent != null)
+            if (_modelEvent != null)
             {
-                modelEvent.Clear();
+                _modelEvent.Clear();
             }
 
             SetParent(null);

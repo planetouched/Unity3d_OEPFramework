@@ -10,28 +10,29 @@ namespace OEPFramework.unityEngine
     {
         public delegate void OnTimeUp(object o);
         public delegate void OnTimeUpVoid();
-        private static readonly List<Timer> timers = new List<Timer>();
-
-        private float timeStep;
-        private float timeElapsed;
         public OnTimeUp onTimeUpEvent;
         public OnTimeUpVoid onTimeUpVoidEvent;
-        private object firedObj;
-        private bool work;
-        private bool once;
-        private static DateTime lastTime;
-        private bool realtime;
-        private IDroppableItem dropper;
+        
+        private static readonly List<Timer> _timers = new List<Timer>();
+        private static DateTime _lastTime;
+
+        private float _timeStep;
+        private float _timeElapsed;
+        private object _firedObj;
+        private bool _work;
+        private bool _once;
+        private bool _realtime;
+        private IDroppableItem _dropper;
 
         static Timer()
         {
-            lastTime = DateTime.UtcNow;
+            _lastTime = DateTime.UtcNow;
         }
 
-        void Call()
+        private void Call()
         {
             if (onTimeUpEvent != null)
-                onTimeUpEvent(firedObj);
+                onTimeUpEvent(_firedObj);
 
             if (onTimeUpVoidEvent != null)
                 onTimeUpVoidEvent();
@@ -39,17 +40,17 @@ namespace OEPFramework.unityEngine
 
         public void Pause()
         {
-            work = false;
+            _work = false;
         }
 
         public void Reset()
         {
-            timeElapsed = 0;
+            _timeElapsed = 0;
         }
 
         public void Resume()
         {
-            work = true;
+            _work = true;
         }
 
         public static Timer Create(float sec, OnTimeUp func, object obj, IDroppableItem dropper, bool once = false)
@@ -90,15 +91,15 @@ namespace OEPFramework.unityEngine
             if (func != null)
                 onTimeUpEvent = func;
 
-            once = onceCall;
-            realtime = realtimeTimer;
-            firedObj = obj;
+            _once = onceCall;
+            _realtime = realtimeTimer;
+            _firedObj = obj;
 
             if (Mathf.Approximately(sec, 0))
             {
                 Call();
 
-                if (once)
+                if (_once)
                 {
                     onTimeUpEvent = null;
                     onTimeUpVoidEvent = null;
@@ -106,16 +107,16 @@ namespace OEPFramework.unityEngine
                 }
             }
 
-            timeStep = sec;
-            work = true;
+            _timeStep = sec;
+            _work = true;
 
             if (timerDropper != null)
             {
-                dropper = timerDropper;
-                dropper.onDrop += InternalDrop;
+                _dropper = timerDropper;
+                _dropper.onDrop += InternalDrop;
             }
 
-            Sync.Add(() => timers.Add(this), Loops.TIMER);
+            Sync.Add(() => _timers.Add(this), Loops.TIMER);
         }
 
         public static void Process()
@@ -123,29 +124,29 @@ namespace OEPFramework.unityEngine
             Sync.Process(Loops.TIMER);
             var now = DateTime.UtcNow;
             var dt = Time.deltaTime;
-            var dtReal = (float)(now - lastTime).TotalSeconds;
-            lastTime = now;
+            var dtReal = (float)(now - _lastTime).TotalSeconds;
+            _lastTime = now;
 
-            foreach (var task in timers)
+            foreach (var task in _timers)
                 task.TimerProcess(dt, dtReal);
         }
 
         private void TimerProcess(float dt, float dtReal)
         {
-            if (!work) return;
-            timeElapsed += !realtime ? dt : dtReal;
-            if (timeElapsed >= timeStep)
+            if (!_work) return;
+            _timeElapsed += !_realtime ? dt : dtReal;
+            if (_timeElapsed >= _timeStep)
             {
-                timeElapsed -= timeStep;
+                _timeElapsed -= _timeStep;
 
                 Call();
 
-                if (once)
+                if (_once)
                     Drop();
             }
         }
 
-        void InternalDrop(IDroppableItem obj)
+        private void InternalDrop(IDroppableItem obj)
         {
             Drop();
         }
@@ -154,16 +155,16 @@ namespace OEPFramework.unityEngine
         {
             if (dropped) return;
 
-            if (dropper != null)
-                dropper.onDrop -= InternalDrop;
-            dropper = null;
+            if (_dropper != null)
+                _dropper.onDrop -= InternalDrop;
+            _dropper = null;
 
             Pause();
 
             onTimeUpEvent = null;
             onTimeUpVoidEvent = null;
 
-            Sync.Add(() => timers.Remove(this), Loops.TIMER);
+            Sync.Add(() => _timers.Remove(this), Loops.TIMER);
 
             base.Drop();
         }

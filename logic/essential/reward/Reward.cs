@@ -11,9 +11,9 @@ namespace logic.essential.reward
 {
     public class Reward : DescriptionBase, IReward
     {
-        public string type { get; private set; }
-        private readonly IPathChoice choice;
-        private readonly ModelsPath path;
+        public string type { get; }
+        private readonly IPathChoice _choice;
+        private readonly ModelsPath _path;
 
         public Reward(RawNode node, IContext context = null) : base(node, context)
         {
@@ -21,13 +21,13 @@ namespace logic.essential.reward
 
             if (node.CheckKey("choice"))
             {
-                choice = FactoryManager.Build<PathChoice>(node.GetNode("choice"), context);
+                _choice = FactoryManager.Build<PathChoice>(node.GetNode("choice"), context);
             }
             else
             {
                 if (node.CheckKey("path"))
                 {
-                    path = PathUtil.GetModelPath(GetContext(), node.GetNode("path"));
+                    _path = PathUtil.GetModelPath(GetContext(), node.GetNode("path"));
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace logic.essential.reward
 
         protected ModelsPath RewardPath()
         {
-            return choice != null ? choice.GetModelPath() : path;
+            return _choice != null ? _choice.GetModelPath() : _path;
         }
     }
 }

@@ -17,13 +17,14 @@ namespace game.assetBundle
             public AssetBundle assetBundle { get; set; }
             public WWW request { get; set; }
             public int loadedCount { get; set; }
-            private readonly string name;
-            public bool dependency { get; private set; }
+            public bool dependency { get; }
 
+            private readonly string _name;
+            
             public AssetBundleRef(string name, bool dependency)
             {
                 this.dependency = dependency;
-                this.name = name;
+                _name = name;
                 loadedCount = 1;
             }
 
@@ -39,7 +40,7 @@ namespace game.assetBundle
             }
             public T FindAsset<T>() where T : Object
             {
-                return FindAsset<T>(name);
+                return FindAsset<T>(_name);
             }
         }
 
@@ -47,8 +48,8 @@ namespace game.assetBundle
 
         internal class DependenceNode
         {
-            public DependenceNode parentNode;
-            public string assetBundleName;
+            public readonly DependenceNode parentNode;
+            public readonly string assetBundleName;
             public readonly List<DependenceNode> nodes = new List<DependenceNode>();
             public bool stop;
 
@@ -59,10 +60,11 @@ namespace game.assetBundle
             }
         }
 
-        public AssetBundlesRepository repository { get; private set; }
-        private readonly Dictionary<string, LoadBundlePromise> loading = new Dictionary<string, LoadBundlePromise>();
-        private readonly Dictionary<string, AssetBundleRef> loaded = new Dictionary<string, AssetBundleRef>();
-        public string assetBundlesUrl { get; private set; }
+        public AssetBundlesRepository repository { get; }
+        public string assetBundlesUrl { get; }
+        
+        private readonly Dictionary<string, LoadBundlePromise> _loading = new Dictionary<string, LoadBundlePromise>();
+        private readonly Dictionary<string, AssetBundleRef> _loaded = new Dictionary<string, AssetBundleRef>();
 
         public AssetBundleManager(RawNode repositoryNode, string assetBundlesUrl)
         {
@@ -72,23 +74,23 @@ namespace game.assetBundle
 
         public T GetAsset<T>(string assetBundle) where T : Object
         {
-            return loaded[assetBundle].FindAsset<T>();
+            return _loaded[assetBundle].FindAsset<T>();
         }
 
         public T GetAsset<T>(string assetBundle, string assetName) where T : Object
         {
-            return loaded[assetBundle].FindAsset<T>(assetName);
+            return _loaded[assetBundle].FindAsset<T>(assetName);
         }
 
         public int GetLoadedCount(string assetBundle)
         {
-            return loaded[assetBundle].loadedCount;
+            return _loaded[assetBundle].loadedCount;
         }
 
         public AsyncOperation UnloadUnused()
         {
             List<string> remove = new List<string>();
-            foreach (var pair in loaded)
+            foreach (var pair in _loaded)
             {
                 if (pair.Value.loadedCount == 0)
                 {
@@ -105,7 +107,7 @@ namespace game.assetBundle
             }
 
             foreach (var key in remove)
-                loaded.Remove(key);
+                _loaded.Remove(key);
 
             return Resources.UnloadUnusedAssets();
         }
@@ -119,7 +121,7 @@ namespace game.assetBundle
             {
                 foreach (var assetBundle in assetBundles)
                 {
-                    var assetBundleRef = loaded[assetBundle.assetBundleName];
+                    var assetBundleRef = _loaded[assetBundle.assetBundleName];
                     assetBundleRef.loadedCount--;
                     if (assetBundleRef.loadedCount < 0)
                         throw new Exception("loadedCount < 0, assetBundle: " + assetBundle);
@@ -136,7 +138,7 @@ namespace game.assetBundle
 
         public bool IsLoaded(string assetBundle)
         {
-            return loaded.ContainsKey(assetBundle);
+            return _loaded.ContainsKey(assetBundle);
         }
 
 
@@ -145,37 +147,37 @@ namespace game.assetBundle
             foreach (var assetBundleNode in assetBundles)
             {
                 string assetBundle = assetBundleNode.assetBundleName;
-                if (loading.ContainsKey(assetBundle))
+                if (_loading.ContainsKey(assetBundle))
                 {
                     //loading at this moment
-                    var loader = loading[assetBundle];
+                    var loader = _loading[assetBundle];
                     cascase.AddFuture(loader);
 
                     if (processList != null)
                         processList.Add(loader);
-                    loaded[assetBundle].loadedCount++;
+                    _loaded[assetBundle].loadedCount++;
                 }
                 else
                 {
-                    if (loaded.ContainsKey(assetBundle) && !loading.ContainsKey(assetBundle))
+                    if (_loaded.ContainsKey(assetBundle) && !_loading.ContainsKey(assetBundle))
                     {
                         //already downloaded
-                        loaded[assetBundle].loadedCount++;
+                        _loaded[assetBundle].loadedCount++;
                         continue;
                     }
 
                     //first load
                     var node = repository[assetBundle];
                     var loader = new LoadBundlePromise(assetBundle, assetBundlesUrl, assetBundleNode.parentNode != null, async, node.version, node.crc32);
-                    loading.Add(assetBundle, loader);
-                    loaded.Add(assetBundle, new AssetBundleRef(assetBundle, assetBundleNode.parentNode != null));
+                    _loading.Add(assetBundle, loader);
+                    _loaded.Add(assetBundle, new AssetBundleRef(assetBundle, assetBundleNode.parentNode != null));
                     string bundle = assetBundle;
 
                     loader.AddListener(future =>
                     {
                         loadedPackedSize += repository[bundle].packedSize;
-                        loading.Remove(bundle);
-                        var ab = loaded[bundle];
+                        _loading.Remove(bundle);
+                        var ab = _loaded[bundle];
                         ab.allAssets = loader.GetAssets();
                         ab.assetBundle = loader.assetBundle;
                         ab.request = loader.request;

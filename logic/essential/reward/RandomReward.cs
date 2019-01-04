@@ -8,15 +8,15 @@ namespace logic.essential.reward
 {
     public class RandomReward : WrappedReward
     {
-        private readonly Random random;
-        public double probability { get; private set; }
+        public double probability { get; }
+        private readonly Random _random;
 
         public RandomReward(RawNode rawNode, IContext context)
             : base(rawNode, context)
         {
             if (rawNode.CheckKey("random"))
             {
-                random = PathUtil.GetModelPath(GetContext(), rawNode.GetString("random"), null).GetSelf<Random>();
+                _random = PathUtil.GetModelPath(GetContext(), rawNode.GetString("random"), null).GetSelf<Random>();
             }
 
             probability = rawNode.GetDouble("probability");
@@ -24,7 +24,7 @@ namespace logic.essential.reward
 
         public override IRewardResult Calculate()
         {
-            var check = random.NextDouble() <= probability;
+            var check = _random.NextDouble() <= probability;
             var result = check ? new WrappedRewardResult(type, innerReward.Calculate()) : new RewardResult();
             return result;
         }

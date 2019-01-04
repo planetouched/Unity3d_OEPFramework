@@ -5,12 +5,12 @@ namespace OEPFramework.futures.utils
 {
     public class FutureScenario
     {
-        readonly List<CompositeFuture> compositeFutures = new List<CompositeFuture>();
-        private CompositeFuture current;
+        private readonly List<CompositeFuture> _compositeFutures = new List<CompositeFuture>();
+        private CompositeFuture _current;
         public event Action<bool> onComplete;
         public bool isRun { get; private set; }
         public bool isCancelled { get; private set; }
-        public bool isEmpty { get { return compositeFutures.Count == 1 && compositeFutures[0].futuresCount == 0; } }
+        public bool isEmpty => _compositeFutures.Count == 1 && _compositeFutures[0].futuresCount == 0;
 
         public FutureScenario()
         {
@@ -20,9 +20,9 @@ namespace OEPFramework.futures.utils
         void CompleteFuture(IFuture future)
         {
             IFuture nextFuture = null;
-            compositeFutures.RemoveAt(0);
-            if (compositeFutures.Count > 0)
-                nextFuture = compositeFutures[0];
+            _compositeFutures.RemoveAt(0);
+            if (_compositeFutures.Count > 0)
+                nextFuture = _compositeFutures[0];
 
             if (nextFuture == null)
                 Complete();
@@ -32,7 +32,7 @@ namespace OEPFramework.futures.utils
 
         void Complete()
         {
-            current = null;
+            _current = null;
             isRun = false;
             Init();
 
@@ -43,27 +43,27 @@ namespace OEPFramework.futures.utils
         
         void Init()
         {
-            compositeFutures.Add(new CompositeFuture());
-            current = compositeFutures[0];
-            current.AddListener(CompleteFuture);
+            _compositeFutures.Add(new CompositeFuture());
+            _current = _compositeFutures[0];
+            _current.AddListener(CompleteFuture);
         }
         
         public void Next()
         {
-            if (current.futuresCount == 0) return;
+            if (_current.futuresCount == 0) return;
             var newFuture = new CompositeFuture();
 
-            compositeFutures.Add(newFuture);
+            _compositeFutures.Add(newFuture);
             newFuture.AddListener(CompleteFuture);
-            current = newFuture;
+            _current = newFuture;
         }
 
         public void Run()
         {
-            if (isRun || compositeFutures[0].futuresCount == 0) return;
+            if (isRun || _compositeFutures[0].futuresCount == 0) return;
             isRun = true;
             isCancelled = false;
-            compositeFutures[0].Run();
+            _compositeFutures[0].Run();
         }
 
         public void AddFuture(IFuture future)
@@ -71,7 +71,7 @@ namespace OEPFramework.futures.utils
             if (future.wasRun || future.isCancelled || future.isDone)
                 throw new Exception("future already run or completed");
 
-            current.AddFuture(future);
+            _current.AddFuture(future);
         }
 
         public void ExecuteTask(Action method)
@@ -83,8 +83,8 @@ namespace OEPFramework.futures.utils
         {
             if (isCancelled) return;
             isCancelled = true;
-            var cpy = new List<CompositeFuture>(compositeFutures);
-            compositeFutures.Clear();
+            var cpy = new List<CompositeFuture>(_compositeFutures);
+            _compositeFutures.Clear();
 
             foreach (var f in cpy)
             {

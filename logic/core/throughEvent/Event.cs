@@ -15,35 +15,35 @@ namespace logic.core.throughEvent
                 return 0;
             }
         }
-
-        private static readonly InnerComparer comparer = new InnerComparer();
-        private static int globalAttachId;
-        private int attachId;
         public delegate void EventHandler(CoreParams cp, object args);
-        readonly IDictionary<EventCategory, IList<KeyValuePair<int, EventHandler>>> handlers = new Dictionary<EventCategory, IList<KeyValuePair<int, EventHandler>>>();
+
+        private static readonly InnerComparer _comparer = new InnerComparer();
+        private static int _globalAttachId;
+        private int _attachId;
+        private readonly IDictionary<EventCategory, IList<KeyValuePair<int, EventHandler>>> _handlers = new Dictionary<EventCategory, IList<KeyValuePair<int, EventHandler>>>();
 
         void InnerAttach(EventCategory category, EventHandler func)
         {
             IList<KeyValuePair<int, EventHandler>> list;
-            if (handlers.TryGetValue(category, out list))
-                list.Add(new KeyValuePair<int, EventHandler>(attachId, func));
+            if (_handlers.TryGetValue(category, out list))
+                list.Add(new KeyValuePair<int, EventHandler>(_attachId, func));
             else
             {
-                list = new List<KeyValuePair<int, EventHandler>> { new KeyValuePair<int, EventHandler>(attachId, func) };
-                handlers.Add(category, list);
+                list = new List<KeyValuePair<int, EventHandler>> { new KeyValuePair<int, EventHandler>(_attachId, func) };
+                _handlers.Add(category, list);
             }
         }
 
         public void Attach(EventCategory category, EventHandler func)
         {
-            attachId = globalAttachId++;
+            _attachId = _globalAttachId++;
             InnerAttach(category, func);
         }
 
         void InnerDetach(EventCategory category, EventHandler func)
         {
             IList<KeyValuePair<int, EventHandler>> list;
-            if (handlers.TryGetValue(category, out list))
+            if (_handlers.TryGetValue(category, out list))
             {
                 if (list.Count == 1)
                     list.RemoveAt(0);
@@ -72,14 +72,14 @@ namespace logic.core.throughEvent
             foreach (var model in models)
             {
                 IList<KeyValuePair<int, EventHandler>> tmp;
-                if (model.GetEvent().handlers.TryGetValue(category, out tmp))
-                    toCall.AddRange(model.GetEvent().handlers[category]);
+                if (model.GetEvent()._handlers.TryGetValue(category, out tmp))
+                    toCall.AddRange(model.GetEvent()._handlers[category]);
             }
 
             if (toCall.Count == 0) return;
 
             if (toCall.Count > 1)
-                toCall.Sort(comparer);
+                toCall.Sort(_comparer);
 
             var eventCallStack = new ModelsPath();
             eventCallStack.Set(models, true);
@@ -125,7 +125,7 @@ namespace logic.core.throughEvent
 
         public void Clear()
         {
-            handlers.Clear();
+            _handlers.Clear();
         }
     }
 }

@@ -7,39 +7,40 @@ namespace common.thread
 {
     public class SingleThreadExecutor : IExecutor
     {
-        readonly Queue<IFuture> tasks = new Queue<IFuture>();
-        readonly ManualResetEvent manualResetEvent = new ManualResetEvent(false);
-        private readonly object syncRoot = new object();
-        private volatile bool shutdown;
-        private readonly Thread thread;
-        public int taskCount { get { return _taskCount; } }
-        int _taskCount;
+        public int taskCount => _taskCount;
+        
+        private readonly Queue<IFuture> _tasks = new Queue<IFuture>();
+        private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(false);
+        private readonly object _syncRoot = new object();
+        private volatile bool _shutdown;
+        private readonly Thread _thread;
+        private int _taskCount;
 
         public SingleThreadExecutor(ThreadPriority threadPriority = ThreadPriority.Normal)
         {
-            thread = new Thread(Work) { Priority = threadPriority, IsBackground = true };
-            thread.Start();
-            while (!thread.IsAlive) {}
+            _thread = new Thread(Work) { Priority = threadPriority, IsBackground = true };
+            _thread.Start();
+            while (!_thread.IsAlive) {}
         }
 
         void Work()
         {
-            while (!shutdown)
+            while (!_shutdown)
             {
-                lock (syncRoot)
+                lock (_syncRoot)
                 {
-                    if (tasks.Count == 0)
-                        manualResetEvent.Reset();
+                    if (_tasks.Count == 0)
+                        _manualResetEvent.Reset();
                 }
 
-                manualResetEvent.WaitOne();
+                _manualResetEvent.WaitOne();
 
-                while (tasks.Count > 0)
+                while (_tasks.Count > 0)
                 {
                     IFuture future;
 
-                    lock (syncRoot)
-                        future = tasks.Dequeue();
+                    lock (_syncRoot)
+                        future = _tasks.Dequeue();
 
                     future.Run();
                     Interlocked.Decrement(ref _taskCount);
@@ -49,54 +50,54 @@ namespace common.thread
 
         public void Shutdown()
         {
-            shutdown = true;
+            _shutdown = true;
 
-            lock (syncRoot)
+            lock (_syncRoot)
             {
-                manualResetEvent.Set();
+                _manualResetEvent.Set();
             }
         }
 
         public T Execute<T>(T future) where T : IFuture
         {
-            if (shutdown)
+            if (_shutdown)
                 throw new Exception("executor was shutdown");
 
             Interlocked.Increment(ref _taskCount);
-            lock (syncRoot)
+            lock (_syncRoot)
             {
-                tasks.Enqueue(future);
-                manualResetEvent.Set();
+                _tasks.Enqueue(future);
+                _manualResetEvent.Set();
             }
             return future;
         }
 
         public IFuture Execute(Action action)
         {
-            if (shutdown)
+            if (_shutdown)
                 throw new Exception("executor Shutdown");
 
             Interlocked.Increment(ref _taskCount);
             IFuture future = new FutureTask(action);
-            lock (syncRoot)
+            lock (_syncRoot)
             {
-                tasks.Enqueue(future);
-                manualResetEvent.Set();
+                _tasks.Enqueue(future);
+                _manualResetEvent.Set();
             }
             return future;
         }
 
         public IFuture Execute<T>(Func<T> func)
         {
-            if (shutdown)
+            if (_shutdown)
                 throw new Exception("executor Shutdown");
 
             Interlocked.Increment(ref _taskCount);
             IFuture future = new FutureTask<T>(func);
-            lock (syncRoot)
+            lock (_syncRoot)
             {
-                tasks.Enqueue(future);
-                manualResetEvent.Set();
+                _tasks.Enqueue(future);
+                _manualResetEvent.Set();
             }
 
             return future;
@@ -104,7 +105,7 @@ namespace common.thread
 
         public void Join()
         {
-            thread.Join();
+            _thread.Join();
         }
     }
 }

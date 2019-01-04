@@ -4,7 +4,7 @@ namespace OEPFramework.futures.utils.threadsafe
 {
     public class FutureWatcher
     {
-        private readonly object locker = new object();
+        private readonly object _locker = new object();
         //public List<IFuture> futures = new List<IFuture>();
         public HashSet<IFuture> futures = new HashSet<IFuture>();
         public int futuresCount { get { return futures.Count; } }
@@ -13,7 +13,7 @@ namespace OEPFramework.futures.utils.threadsafe
         {
             if (future == null) return;
 
-            lock (locker)
+            lock (_locker)
             {
                 if (futures.Contains(future)) return;
                 futures.Add(future);
@@ -24,7 +24,7 @@ namespace OEPFramework.futures.utils.threadsafe
 
         private void InnerRemoveFuture(IFuture future)
         {
-            lock (locker)
+            lock (_locker)
                 futures.Remove(future);
 
             future.RemoveListener(InnerRemoveFuture);
@@ -33,7 +33,7 @@ namespace OEPFramework.futures.utils.threadsafe
         public void CancelFutures()
         {
             IList<IFuture> copy;
-            lock (locker)
+            lock (_locker)
             {
                 copy = new List<IFuture>(futures);
                 futures.Clear();

@@ -6,12 +6,15 @@ namespace logic.core.reference.description
 {
     public abstract class DescriptionBase : IDescription
     {
-        protected readonly RawNode node;
-        private readonly WeakRef<IContext> weakContext;
-        private WeakRef<IDescription> weakParent;
-        private IDictionary<string, IDescription> items;
         public bool selectable { get; }
         public string key { get; }
+        
+        protected readonly RawNode node;
+        
+        private readonly WeakRef<IContext> _weakContext;
+        private WeakRef<IDescription> _weakParent;
+        private IDictionary<string, IDescription> _items;
+        
 
         protected DescriptionBase(RawNode node, IContext context = null)
         {
@@ -21,7 +24,7 @@ namespace logic.core.reference.description
 
             if (context != null)
             {
-                weakContext = new WeakRef<IContext>(context);
+                _weakContext = new WeakRef<IContext>(context);
             }
         }
 
@@ -46,7 +49,7 @@ namespace logic.core.reference.description
 
         protected IDictionary<string, IDescription> GetChildren()
         {
-            return items ?? (items = new Dictionary<string, IDescription>());
+            return _items ?? (_items = new Dictionary<string, IDescription>());
         }
         
         public virtual IDescription GetChild(string collectionKey)
@@ -79,23 +82,23 @@ namespace logic.core.reference.description
 
         public IContext GetContext()
         {
-            return weakContext.obj;
+            return _weakContext.obj;
         }
 
         public void SetParent(IDescription parent)
         {
             if (parent == null)
             {
-                weakParent = null;
+                _weakParent = null;
                 return;
             }
             
-            weakParent = new WeakRef<IDescription>(parent);
+            _weakParent = new WeakRef<IDescription>(parent);
         }
 
         public IDescription GetParent()
         {
-            return weakParent == null ? null : weakParent.obj;
+            return _weakParent == null ? null : _weakParent.obj;
         }
     }
 }

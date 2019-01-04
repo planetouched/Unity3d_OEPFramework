@@ -8,13 +8,13 @@ namespace OEPFramework.unityEngine.behaviour
     {
         public bool callActions { get; protected set; }
 
-        private readonly Action[] actions;
-        private readonly int[] orders;
+        private readonly Action[] _actions;
+        private readonly int[] _orders;
 
         protected LoopBehaviour()
         {
-            actions = new Action[EngineLoopManager.LoopsCount()];
-            orders = new int[EngineLoopManager.LoopsCount()];
+            _actions = new Action[EngineLoopManager.LoopsCount()];
+            _orders = new int[EngineLoopManager.LoopsCount()];
             callActions = true;
         }
 
@@ -23,59 +23,44 @@ namespace OEPFramework.unityEngine.behaviour
             if (dropped)
                 throw new Exception("Dropped");
 
-            if (actions[loopType] == null)
+            if (_actions[loopType] == null)
             {
                 EngineLoopManager.GetEngineLoop(loopType).AddToLast(this);
-                actions[loopType] = action;
+                _actions[loopType] = action;
             }
         }
 
         public void SetOrder(int loopType, int order)
         {
-            orders[loopType] = order;
+            _orders[loopType] = order;
         }
 
         public int GetOrder(int loopType)
         {
-            return orders[loopType];
+            return _orders[loopType];
         }
 
         public void ExecuteAction(int loopType)
         {
-            if (actions[loopType] != null)
-                actions[loopType]();
+            if (_actions[loopType] != null)
+                _actions[loopType]();
         }
 
         public void LoopOff(int loopType)
         {
-            if (actions[loopType] != null)
+            if (_actions[loopType] != null)
             {
                 EngineLoopManager.GetEngineLoop(loopType).Remove(this);
-                actions[loopType] = null;
+                _actions[loopType] = null;
             }
         }
-
-        /*
-        public void SetIndexToLast(int loopType)
-        {
-            EngineLoopManager.GetEngineLoop(loopType).Remove(this);
-            EngineLoopManager.GetEngineLoop(loopType).AddToLast(this);
-        }
-        public void SwapWith(LoopBehaviour target, int loopType)
-        {
-            throw new NotImplementedException();
-        }
-        public void SetIndexToFirst(int loopType)
-        {
-            throw new NotImplementedException();
-        }*/
 
         public override void Drop()
         {
             if (dropped) return;
             callActions = false;
 
-            for (int i = 0; i < actions.Length; i++)
+            for (int i = 0; i < _actions.Length; i++)
                 LoopOff(i);
 
             base.Drop();

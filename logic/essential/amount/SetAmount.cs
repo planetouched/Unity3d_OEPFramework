@@ -7,19 +7,19 @@ namespace logic.essential.amount
 {
     public class SetAmount : Amount
     {
-        private readonly int[] elements;
-        private readonly Random random;
+        private readonly int[] _elements;
+        private readonly Random _random;
 
         public SetAmount(RawNode node, IContext context)
             : base(node, context)
         {
-            elements = node.GetIntArray("elements");
-            random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
+            _elements = node.GetIntArray("elements");
+            _random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
         }
 
         public override int Number()
         {
-            return elements[random.Range(0, elements.Length)];
+            return _elements[_random.Range(0, _elements.Length)];
         }
     }
 }
