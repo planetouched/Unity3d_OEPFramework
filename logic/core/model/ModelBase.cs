@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using common;
@@ -14,6 +15,7 @@ namespace logic.core.model
         private WeakRef<IModel> _weakParent;
         private Event _modelEvent;
         private IOrderedDictionary _children;
+        public event Action<IModel> onDestroy;
 
         protected ModelBase(IContext context, IModel parent = null)
         {
@@ -81,18 +83,14 @@ namespace logic.core.model
             model.SetParent(this);
         }
 
-        public void RemoveChild(string collectionKey, bool destroy)
+        public void RemoveChild(string collectionKey)
         {
             if (_children == null) return;
 
             var child = GetChild(collectionKey);
             child.SetParent(null);
             _children.Remove(collectionKey);
-
-            if (destroy)
-            {
-                child.Destroy();
-            }
+            onDestroy = null;
         }
 
         public bool Exist(string collectionKey)
@@ -154,6 +152,10 @@ namespace logic.core.model
             }
 
             SetParent(null);
+
+            if (onDestroy != null)
+                onDestroy(this);
+            onDestroy = null;
         }
     }
 }

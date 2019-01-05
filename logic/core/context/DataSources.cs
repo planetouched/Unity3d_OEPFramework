@@ -19,7 +19,7 @@ namespace logic.core.context
             _children.Add(collectionKey, obj);
         }
 
-        public void RemoveChild(string collectionKey, bool destroy)
+        public void RemoveChild(string collectionKey)
         {
             throw new System.NotImplementedException();
         }

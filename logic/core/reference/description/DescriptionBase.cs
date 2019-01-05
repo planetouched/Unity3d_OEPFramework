@@ -63,7 +63,7 @@ namespace logic.core.reference.description
             description.SetParent(this);
         }
 
-        public virtual void RemoveChild(string collectionKey, bool destroy)
+        public virtual void RemoveChild(string collectionKey)
         {
             var description = GetChildren()[collectionKey];
             description.SetParent(null);

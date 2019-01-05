@@ -4,7 +4,7 @@
     {
         T GetChild(string collectionKey);
         void AddChild(string collectionKey, T obj);
-        void RemoveChild(string collectionKey, bool destroy);
+        void RemoveChild(string collectionKey);
         bool Exist(string collectionKey);
     }
 }
