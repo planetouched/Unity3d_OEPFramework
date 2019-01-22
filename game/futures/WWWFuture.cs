@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using common.logger;
 using OEPFramework.unityEngine.behaviour;
 using OEPFramework.unityEngine.loop;
 using UnityEngine;
@@ -63,7 +64,7 @@ namespace game.futures
         bool Request()
         {
             if (request != null)
-                Debug.LogWarning("Request error: " + request.error + ", Reload... " + _url);
+                Deb.LogWarning("Request error: " + request.error + ", Reload... " + _url);
 
             if (_resendCounter++ < _tryCount)
             {

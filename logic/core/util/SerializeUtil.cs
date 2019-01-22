@@ -5,7 +5,7 @@ namespace logic.core.util
 {
     public static class SerializeUtil
     {
-        public static Dictionary<string, object> SetArgs(this Dictionary<string, object> dict, params object[] args)
+        public static IDictionary<string, object> SetArgs(this IDictionary<string, object> dict, params object[] args)
         {
             for (int i = 0; i < args.Length / 2; i++)
             {
@@ -14,30 +14,40 @@ namespace logic.core.util
 
             return dict;
         }
+        
+        public static IList<Dictionary<string, object>> SetArgs(this IList<Dictionary<string, object>> dictArray, params object[] args)
+        {
+            var dict = new Dictionary<string, object>();
+            dictArray.Add(dict);
+            
+            for (int i = 0; i < args.Length / 2; i++)
+            {
+                dict.Add((string) args[i * 2], args[i * 2 + 1]);
+            }
 
-        public static Dictionary<string, object> Dict(object fromDictionary = null)
+            return dictArray;
+        }
+
+        public static IDictionary<string, object> Dict(object fromDictionary = null)
         {
             if (fromDictionary != null)
             {
-                return (Dictionary<string, object>) fromDictionary;
+                return (IDictionary<string, object>) fromDictionary;
             }
 
             return new Dictionary<string, object>();
         }
-
-        /*
-        public static Dictionary<string, object> Dict(params object[] args)
+        
+        public static IList<Dictionary<string, object>> DictArray(object fromDictArray = null)
         {
-            var dict = new Dictionary<string, object>();
-
-            for (int i = 0; i < args.Length / 2; i++)
+            if (fromDictArray != null)
             {
-                dict[(string)args[i * 2]] = args[i * 2 + 1];
+                return (IList<Dictionary<string, object>>) fromDictArray;
             }
 
-            return dict;
-        }*/
-        
+            return new List<Dictionary<string, object>>();
+        }
+
         public static IList<object> SerializeArray<T>(IEnumerable<T> collection) where T : ISerialize
         {
             var list = new List<object>();

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using common.logger;
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,7 +21,7 @@ namespace OEPFramework.unityEngine.loop
 #if UNITY_EDITOR
             if (_loops.Count == 0)
             {
-                Debug.LogError("Loops is not adjusted. Use Loops.Setup()");
+                Deb.LogError("Loops is not adjusted. Use Loops.Setup()");
                 EditorApplication.isPlaying = false;
                 return false;
             }

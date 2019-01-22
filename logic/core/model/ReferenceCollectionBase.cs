@@ -64,7 +64,7 @@ namespace logic.core.model
 
             foreach (var unsortedKey in dataSource.GetNode().GetUnsortedKeys())
             {
-                if (Exist(unsortedKey))
+                if (Exist(unsortedKey) || !_initNode.IsInit())
                 {
                     var serialized = this[unsortedKey].Serialize();
 

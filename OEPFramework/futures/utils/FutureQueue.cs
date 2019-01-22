@@ -17,6 +17,7 @@ namespace OEPFramework.futures.utils
 
             _queueFutures.Add(future);
             future.AddListener(FutureComplete);
+            
             if (_queueFutures.Count == 1)
             {
                 _current = future;
@@ -28,10 +29,8 @@ namespace OEPFramework.futures.utils
 
         private void FutureComplete(IFuture f)
         {
-            if (onFutureComplete != null)
-                onFutureComplete(f);
-
             _queueFutures.Remove(f);
+            
             if (_queueFutures.Count > 0)
             {
                 if (_current == f)
@@ -40,6 +39,9 @@ namespace OEPFramework.futures.utils
             else
                 _current = null;
 
+            if (onFutureComplete != null)
+                onFutureComplete(f);
+            
             if (_current != null)
                 _current.Run();
         }
