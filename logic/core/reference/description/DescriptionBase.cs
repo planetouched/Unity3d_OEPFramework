@@ -57,10 +57,10 @@ namespace logic.core.reference.description
             return GetChildren()[collectionKey];
         }
 
-        public void AddChild(string collectionKey, IDescription description)
+        public void AddChild(string collectionKey, IDescription child)
         {
-            GetChildren().Add(collectionKey, description);
-            description.SetParent(this);
+            GetChildren().Add(collectionKey, child);
+            child.SetParent(this);
         }
 
         public virtual void RemoveChild(string collectionKey)

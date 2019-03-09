@@ -7,8 +7,7 @@ using logic.core.util;
 
 namespace logic.core.model
 {
-    public abstract class
-        InstanceCollection<TModel, TCategories, TDescription> : ReferenceModelBase<TCategories, TDescription>
+    public abstract class InstanceCollection<TModel, TCategories, TDescription> : ReferenceModelBase<TCategories, TDescription>
         where TModel : IModel
         where TDescription : IDescription
         where TCategories : class
@@ -35,19 +34,17 @@ namespace logic.core.model
             }
         }
 
-        public override void AddChild(string collectionKey, IModel model)
+        public override void AddChild(string collectionKey, IModel child)
         {
             _lastId = Math.Max(_lastId, int.Parse(collectionKey));
-            model.key = _lastId.ToString();
-            model.onDestroy += OnDestroy;
-            base.AddChild(_lastId.ToString(), model);
+            child.key = _lastId.ToString();
+            base.AddChild(_lastId.ToString(), child);
         }
 
         public void AddChild(TModel model)
         {
             _lastId++;
             model.key = _lastId.ToString();
-            model.onDestroy += OnDestroy;
             base.AddChild(_lastId.ToString(), model);
         }
 
@@ -56,14 +53,8 @@ namespace logic.core.model
             _lastId++;
             var model = Factory(modelNode);
             model.key = _lastId.ToString();
-            model.onDestroy += OnDestroy;
             base.AddChild(_lastId.ToString(), model);
             return model;
-        }
-
-        private void OnDestroy(IModel model)
-        {
-            RemoveChild(model.key);
         }
 
         protected abstract TModel Factory(RawNode modelInitNode);
@@ -78,18 +69,6 @@ namespace logic.core.model
             }
 
             return SerializeUtil.Dict().SetArgs("collection", dict);
-        }
-
-        public override void Destroy()
-        {
-            var copy = new List<KeyValuePair<string, IModel>>(this);
-
-            foreach (var pair in copy)
-            {
-                pair.Value.Destroy();
-            }
-
-            base.Destroy();
         }
     }
 }

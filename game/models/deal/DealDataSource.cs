@@ -12,9 +12,7 @@ namespace game.models.deal
 
         protected override DealDescription Factory(RawNode partialNode)
         {
-            var description = new DealDescription(partialNode, GetContext());
-            description.Initialization();
-            return description;
+            return new DealDescription(partialNode, GetContext());
         }
     }
 }

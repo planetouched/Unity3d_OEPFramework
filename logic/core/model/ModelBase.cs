@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using common;
 using logic.core.context;
@@ -69,7 +70,7 @@ namespace logic.core.model
 
         public IModel GetParent()
         {
-            return _weakParent != null ? _weakParent.obj : null;
+            return _weakParent?.obj;
         }
 
         public virtual IModel GetChild(string collectionKey)
@@ -77,10 +78,16 @@ namespace logic.core.model
             return (IModel)GetChildren()[collectionKey];
         }
 
-        public virtual void AddChild(string collectionKey, IModel model)
+        public virtual void AddChild(string collectionKey, IModel child)
         {
-            GetChildren().Add(collectionKey, model);
-            model.SetParent(this);
+            GetChildren().Add(collectionKey, child);
+            child.SetParent(this);
+            child.onDestroy += OnDestroy;
+        }
+
+        private void OnDestroy(IModel model)
+        {
+            RemoveChild(model.key);
         }
 
         public void RemoveChild(string collectionKey)
@@ -89,8 +96,8 @@ namespace logic.core.model
 
             var child = GetChild(collectionKey);
             child.SetParent(null);
+            child.onDestroy -= OnDestroy;
             _children.Remove(collectionKey);
-            onDestroy = null;
         }
 
         public bool Exist(string collectionKey)
@@ -146,15 +153,16 @@ namespace logic.core.model
 
         public virtual void Destroy()
         {
-            if (_modelEvent != null)
-            {
-                _modelEvent.Clear();
-            }
+            _modelEvent?.Clear();
 
             SetParent(null);
 
-            if (onDestroy != null)
-                onDestroy(this);
+            foreach (var model in new List<IModel>((Collection<IModel>)_children.Values))
+            {
+                model.Destroy();
+            }
+
+            onDestroy?.Invoke(this);
             onDestroy = null;
         }
     }

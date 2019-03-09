@@ -22,11 +22,5 @@ namespace logic.core.model
             this.categories = categories;
             selectable = description.selectable;
         }
-
-        public override void Initialization()
-        {
-            base.Initialization();
-            description.Initialization();
-        }
     }
 }

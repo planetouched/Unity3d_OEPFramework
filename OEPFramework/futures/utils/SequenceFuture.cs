@@ -1,60 +1,39 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace OEPFramework.futures.utils
 {
-    public class CompositeFuture : FutureBase
+    public class SequenceFuture : FutureBase
     {
-        public int futuresCount => _futures.Count;
-
         private readonly List<IFuture> _futures = new List<IFuture>();
-
-        public List<IFuture> GetFuturesCopyList()
+        
+        public List<IFuture> GetFuturesCopy()
         {
             return new List<IFuture>(_futures);
         }
-
-        public CompositeFuture(IEnumerable<IFuture> futures)
-        {
-            foreach (var future in futures)
-            {
-                if (future == null) continue;
-                AddFuture(future);
-            }
-        }
-
-        public CompositeFuture(params IFuture[] futures)
-        {
-            foreach (var future in futures)
-            {
-                if (future == null) continue;
-                AddFuture(future);
-            }
-        }
         
-        public override void Cancel()
+        public SequenceFuture(IEnumerable<IFuture> futures)
         {
-            if (promise || isCancelled || isDone)
-                return;
-            isCancelled = true;
-            wasRun = false;
-            var copy = GetFuturesCopyList();
-            _futures.Clear();
-
-            foreach (var future in copy)
+            foreach (var future in futures)
             {
-                if (future.isCancelled) continue;
-                future.RemoveListener(OnFutureComplete);
-                future.Cancel();
+                if (future == null) continue;
+                AddFuture(future);
             }
+        }
 
-            CallHandlers();
+        public SequenceFuture(params IFuture[] futures)
+        {
+            foreach (var future in futures)
+            {
+                if (future == null) continue;
+                AddFuture(future);
+            }
         }
 
         public void AddFuture(IFuture future)
         {
             if (wasRun || isDone || isCancelled || future.isDone || future.isCancelled)
                 return;
-
+            
             _futures.Add(future);
             future.AddListener(OnFutureComplete);
         }
@@ -64,7 +43,12 @@ namespace OEPFramework.futures.utils
             _futures.Remove(future);
             future.RemoveListener(OnFutureComplete);
 
-            if (_futures.Count > 0) return;
+            if (_futures.Count > 0)
+            {
+                _futures[0].Run();
+                return;
+            }
+            
             isDone = true;
             wasRun = false;
 
@@ -75,11 +59,9 @@ namespace OEPFramework.futures.utils
         {
             if (wasRun) return this;
             wasRun = true;
-            var copyList = GetFuturesCopyList();
-            isDone = copyList.Count == 0;
-
             CallRunHandlers();
-
+            isDone = _futures.Count == 0;
+            
             if (isDone)
             {
                 wasRun = false;
@@ -87,10 +69,30 @@ namespace OEPFramework.futures.utils
             }
             else
             {
-                foreach (var future in copyList)
-                    future.Run();
+                _futures[0].Run();
             }
+            
             return this;
+        }
+        
+        public override void Cancel()
+        {
+            if (promise || isCancelled || isDone)
+                return;
+            isCancelled = true;
+            wasRun = false;
+
+            var copy = GetFuturesCopy();
+            _futures.Clear();
+
+            foreach (var future in copy)
+            {
+                if (future.isCancelled) continue;
+                future.RemoveListener(OnFutureComplete);
+                future.Cancel();
+            }
+
+            CallHandlers();
         }
     }
 }

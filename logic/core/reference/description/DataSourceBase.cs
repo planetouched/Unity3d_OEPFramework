@@ -26,6 +26,7 @@ namespace logic.core.reference.description
 
             value = Factory(node.GetNode(collectionKey));
             AddChild(collectionKey, value);
+            value.Initialization();
             return (TDescription)value;            
         }
 

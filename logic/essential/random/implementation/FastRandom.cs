@@ -16,7 +16,7 @@
                 seed++;
 
             int t = (x ^ (x << 11)) & 0x7fffffff;
-            return RealUnitInt * (0x7FFFFFFF & ((W ^ (W >> 19)) ^ (t ^ (t >> 8))));
+            return RealUnitInt * (0x7FFFFFFF & (W ^ (W >> 19) ^ t ^ (t >> 8)));
         }
 
         public int NextInt(ref int seed, int exlusiveMax, bool incSeed)

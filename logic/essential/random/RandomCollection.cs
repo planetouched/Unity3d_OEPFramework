@@ -9,6 +9,9 @@ namespace logic.essential.random
     {
         public RandomCollection(RawNode initNode, RandomCategories categories, IContext context, IDescription dataSource) : base(initNode, categories, context, dataSource)
         {
+            foreach (var model in this)
+            {
+            }
         }
 
         protected override Random Factory(RawNode initNode, RandomDescription description)

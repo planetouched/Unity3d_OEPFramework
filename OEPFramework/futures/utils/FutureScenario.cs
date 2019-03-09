@@ -38,7 +38,6 @@ namespace OEPFramework.futures.utils
 
             if (onComplete != null)
                 onComplete(isCancelled);
-            onComplete = null;
         }
         
         void Init()

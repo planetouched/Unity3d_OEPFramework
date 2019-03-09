@@ -62,9 +62,14 @@ namespace logic.core.model
         {
             var dict = SerializeUtil.Dict();
 
+            if (!_initNode.IsInit())
+            {
+                return dict;
+            }
+
             foreach (var unsortedKey in dataSource.GetNode().GetUnsortedKeys())
             {
-                if (Exist(unsortedKey) || !_initNode.IsInit())
+                if (Exist(unsortedKey))
                 {
                     var serialized = this[unsortedKey].Serialize();
 

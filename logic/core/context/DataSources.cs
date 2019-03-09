@@ -14,9 +14,9 @@ namespace logic.core.context
             return _children[collectionKey];
         }
 
-        public void AddChild(string collectionKey, IDescription obj)
+        public void AddChild(string collectionKey, IDescription child)
         {
-            _children.Add(collectionKey, obj);
+            _children.Add(collectionKey, child);
         }
 
         public void RemoveChild(string collectionKey)
