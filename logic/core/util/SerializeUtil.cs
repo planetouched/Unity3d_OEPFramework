@@ -9,7 +9,12 @@ namespace logic.core.util
         {
             for (int i = 0; i < args.Length / 2; i++)
             {
-                dict[(string)args[i * 2]] = args[i * 2 + 1];
+                var value = args[i * 2 + 1];
+                
+                if (value != null)
+                {
+                    dict[(string) args[i * 2]] = value;
+                }
             }
 
             return dict;

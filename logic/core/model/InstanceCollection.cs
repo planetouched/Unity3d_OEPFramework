@@ -30,7 +30,9 @@ namespace logic.core.model
             foreach (var pair in collectionNode.GetUnsortedCollection())
             {
                 _lastId = Math.Max(_lastId, int.Parse(pair.Key));
-                base.AddChild(pair.Key, Factory(collectionNode.GetNode(pair.Key)));
+                var model = Factory(collectionNode.GetNode(pair.Key));
+                model.Initialization();
+                base.AddChild(pair.Key, model);
             }
         }
 
@@ -53,6 +55,7 @@ namespace logic.core.model
             _lastId++;
             var model = Factory(modelNode);
             model.key = _lastId.ToString();
+            model.Initialization();
             base.AddChild(_lastId.ToString(), model);
             return model;
         }

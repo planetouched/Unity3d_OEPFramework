@@ -9,7 +9,7 @@ namespace logic.essential.choice
 {
     public class PathChoice : DescriptionBase, IPathChoice
     {
-        protected IRandom random;
+        protected readonly IRandom random;
 
         public PathChoice(RawNode node, IContext context) : base(node, context)
         {

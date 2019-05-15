@@ -1,49 +1,41 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Linq;
 
 namespace OEPFramework.futures.utils.threadsafe
 {
     public class FutureWatcher
     {
-        private readonly object _locker = new object();
-        //public List<IFuture> futures = new List<IFuture>();
-        public HashSet<IFuture> futures = new HashSet<IFuture>();
-        public int futuresCount { get { return futures.Count; } }
+        private readonly ConcurrentDictionary<IFuture, bool> _futures = new ConcurrentDictionary<IFuture, bool>(); 
+        public IFuture[] futures => _futures.Keys.ToArray();
+
+        public int futuresCount => _futures.Count;
 
         public void AddFuture(IFuture future)
         {
             if (future == null) return;
 
-            lock (_locker)
+            if (_futures.TryAdd(future, true))
             {
-                if (futures.Contains(future)) return;
-                futures.Add(future);
+                future.AddListener(InnerRemoveFuture);
             }
-
-            future.AddListener(InnerRemoveFuture);
         }
 
         private void InnerRemoveFuture(IFuture future)
         {
-            lock (_locker)
-                futures.Remove(future);
-
-            future.RemoveListener(InnerRemoveFuture);
+            bool value;
+            if (_futures.TryRemove(future, out value))
+            {
+                future.RemoveListener(InnerRemoveFuture);
+            }
         }
 
         public void CancelFutures()
         {
-            IList<IFuture> copy;
-            lock (_locker)
+            foreach (var pair in _futures)
             {
-                copy = new List<IFuture>(futures);
-                futures.Clear();
+                pair.Key.RemoveListener(InnerRemoveFuture);
+                pair.Key.Cancel();
             }
-
-            foreach (var f in copy)
-            {
-                f.RemoveListener(InnerRemoveFuture);
-                f.Cancel();
-            }
-        }
+        }    
     }
 }

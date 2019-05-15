@@ -15,7 +15,7 @@ namespace logic.essential.reward
         private readonly IPathChoice _choice;
         private readonly ModelsPath _path;
 
-        public Reward(RawNode node, IContext context = null) : base(node, context)
+        public Reward(RawNode node, IContext context) : base(node, context)
         {
             type = node.GetString("type");
 
