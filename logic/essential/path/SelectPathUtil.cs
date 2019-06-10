@@ -11,22 +11,22 @@ namespace logic.essential.path
             return !(IsRange(rawSelector) || IsExcept(rawSelector) || IsComposite(rawSelector) || IsAll(rawSelector));
         }
 
-        public static bool IsRange(string rawSelector)
+        private static bool IsRange(string rawSelector)
         {
             return rawSelector.Contains("~");
         }
 
-        public static bool IsExcept(string rawSelector)
+        private static bool IsExcept(string rawSelector)
         {
             return rawSelector.Contains("!");
         }
 
-        public static bool IsComposite(string rawSelector)
+        private static bool IsComposite(string rawSelector)
         {
             return rawSelector.Contains(",");
         }
 
-        public static bool IsAll(string rawSelector)
+        private static bool IsAll(string rawSelector)
         {
             return rawSelector == "*";
         }
