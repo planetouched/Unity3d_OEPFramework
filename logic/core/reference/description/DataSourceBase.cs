@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using common;
 using logic.core.context;
@@ -24,6 +25,11 @@ namespace logic.core.reference.description
             if (GetChildren().TryGetValue(collectionKey, out value))
                 return (TDescription)value;
 
+            if (!node.CheckKey(collectionKey))
+            {
+                throw new Exception("Key not found");
+            }
+            
             value = Factory(node.GetNode(collectionKey));
             AddChild(collectionKey, value);
             value.Initialization();

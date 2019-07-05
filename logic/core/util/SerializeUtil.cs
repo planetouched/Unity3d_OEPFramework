@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using fastJSON;
 using logic.core.model;
 
 namespace logic.core.util
@@ -63,6 +64,11 @@ namespace logic.core.util
             }
 
             return list;
+        }
+
+        public static string Json2String(object dict)
+        {
+            return JSON.Instance.ToJSON(dict);
         }
     }
 }

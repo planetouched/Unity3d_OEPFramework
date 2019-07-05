@@ -7,9 +7,18 @@ using common;
 using logic.core.context;
 using logic.core.throughEvent;
 
+#if REFVIEW
+using OEPFramework.utils;
+#endif
+
 namespace logic.core.model
 {
-    public abstract class ModelBase : IModel, IEnumerable<KeyValuePair<string, IModel>>
+    public abstract class ModelBase : 
+    #if REFVIEW
+            ReferenceCounter,
+    #endif
+        
+    IModel, IEnumerable<KeyValuePair<string, IModel>>
     {
         public string key { get; set; }
         private readonly WeakRef<IContext> _weakContext;
@@ -157,9 +166,12 @@ namespace logic.core.model
 
             SetParent(null);
 
-            foreach (var model in new List<IModel>((Collection<IModel>)_children.Values))
+            if (_children != null)
             {
-                model.Destroy();
+                foreach (var model in new List<IModel>((Collection<IModel>) _children.Values))
+                {
+                    model.Destroy();
+                }
             }
 
             onDestroy?.Invoke(this);

@@ -62,11 +62,6 @@ namespace logic.core.model
         {
             var dict = SerializeUtil.Dict();
 
-            if (!_initNode.IsInit())
-            {
-                return dict;
-            }
-
             foreach (var unsortedKey in dataSource.GetNode().GetUnsortedKeys())
             {
                 if (Exist(unsortedKey))
@@ -80,7 +75,12 @@ namespace logic.core.model
                 }
                 else
                 {
-                    dict.Add(unsortedKey, _initNode.GetNode(unsortedKey));
+                    var node = _initNode.GetNode(unsortedKey);
+                    
+                    if (node.IsInit())
+                    {
+                        dict.Add(unsortedKey, _initNode.GetNode(unsortedKey).GetRawData());
+                    }
                 }
             }
 

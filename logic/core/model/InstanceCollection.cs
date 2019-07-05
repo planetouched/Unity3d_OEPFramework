@@ -31,6 +31,7 @@ namespace logic.core.model
             {
                 _lastId = Math.Max(_lastId, int.Parse(pair.Key));
                 var model = Factory(collectionNode.GetNode(pair.Key));
+                model.key = pair.Key;
                 model.Initialization();
                 base.AddChild(pair.Key, model);
             }
@@ -60,6 +61,14 @@ namespace logic.core.model
             return model;
         }
 
+        public IEnumerable<KeyValuePair<string, TModel>> GetCollection()
+        {
+            foreach (var pair in this)
+            {
+                yield return new KeyValuePair<string, TModel>(pair.Key, (TModel)pair.Value);
+            }
+        }
+        
         protected abstract TModel Factory(RawNode modelInitNode);
 
         public override object Serialize()
