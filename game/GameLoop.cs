@@ -1,4 +1,5 @@
-﻿using OEPFramework.unityEngine;
+﻿using game.sections;
+using OEPFramework.unityEngine;
 using OEPFramework.unityEngine.loop;
 using preloader;
 using UnityEngine;
@@ -60,6 +61,7 @@ namespace game
 
         void OnApplicationQuit()
         {
+            SectionSwitcher.Switch(Section.None, false);
             GEvent.Call(EVENT_APP_QUIT);
         }
     }

@@ -8,7 +8,7 @@ namespace game.assetBundle.futures
     {
         public float loadingProgress => _process.loadingProgress;
         public float unpackProgress => _process.unpackProgress;
-        public Action<IProcess> onProcessComplete { get; set; }
+        public event Action<IProcess> onProcessComplete;
         public bool isComplete { get; private set; }
 
         private readonly IProcess _process;
@@ -35,8 +35,7 @@ namespace game.assetBundle.futures
             if (isDone)
             {
                 isComplete = true;
-                if (onProcessComplete != null)
-                    onProcessComplete(this);
+                onProcessComplete?.Invoke(this);
                 onProcessComplete = null;
             }
         }

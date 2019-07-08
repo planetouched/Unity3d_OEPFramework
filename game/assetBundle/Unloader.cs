@@ -15,11 +15,14 @@ namespace game.assetBundle
         
         public void Add(string resource)
         {
-            int count;
-            if (_counter.TryGetValue(resource, out count))
+            if (_counter.TryGetValue(resource, out var count))
+            {
                 _counter[resource] = ++count;
+            }
             else
+            {
                 _counter.Add(resource, 1);
+            }
         }
 
         public void Unload()
@@ -27,7 +30,9 @@ namespace game.assetBundle
             foreach (var pair in _counter)
             {
                 for (int i = 0; i < pair.Value; i++)
+                {
                     _manager.TryUnload(pair.Key);
+                }
             }
             _counter.Clear();
         }

@@ -6,7 +6,7 @@ namespace game.assetBundle
     {
         float loadingProgress { get; }
         float unpackProgress { get; }
-        Action<IProcess> onProcessComplete { get; }
+        event Action<IProcess> onProcessComplete;
         bool isComplete { get; }
     }
 }

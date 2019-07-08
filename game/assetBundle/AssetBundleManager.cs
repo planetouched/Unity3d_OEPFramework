@@ -5,6 +5,7 @@ using game.assetBundle.futures;
 using game.assetBundle.repository;
 using OEPFramework.futures;
 using UnityEngine;
+using UnityEngine.Networking;
 using Object = UnityEngine.Object;
 
 namespace game.assetBundle
@@ -15,7 +16,7 @@ namespace game.assetBundle
         {
             public Object[] allAssets { get; set; }
             public AssetBundle assetBundle { get; set; }
-            public WWW request { get; set; }
+            public UnityWebRequest request { get; set; }
             public int loadedCount { get; set; }
             public bool dependency { get; }
 
@@ -33,7 +34,9 @@ namespace game.assetBundle
                 foreach (var asset in allAssets)
                 {
                     if (asset.name == assetName && asset is T)
-                        return (T)asset;
+                    {
+                        return (T) asset;
+                    }
                 }
 
                 return null;
@@ -44,26 +47,25 @@ namespace game.assetBundle
             }
         }
 
-        public int loadedPackedSize { get; private set; }
-
-        internal class DependenceNode
+        internal class DependencyNode
         {
-            public readonly DependenceNode parentNode;
-            public readonly string assetBundleName;
-            public readonly List<DependenceNode> nodes = new List<DependenceNode>();
-            public bool stop;
+            public DependencyNode parentNode { get; }
+            public string assetBundleName { get; }
+            public List<DependencyNode> nodes { get; set; } = new List<DependencyNode>();
+            public bool stop { get; set; }
 
-            public DependenceNode(string assetBundleName, DependenceNode parent)
+            public DependencyNode(string assetBundleName, DependencyNode parent)
             {
                 parentNode = parent;
                 this.assetBundleName = assetBundleName;
             }
         }
 
+        public int loadedPackedSize { get; private set; }
         public AssetBundlesRepository repository { get; }
         public string assetBundlesUrl { get; }
         
-        private readonly Dictionary<string, LoadBundlePromise> _loading = new Dictionary<string, LoadBundlePromise>();
+        private readonly Dictionary<string, LoadAssetBundlePromise> _loading = new Dictionary<string, LoadAssetBundlePromise>();
         private readonly Dictionary<string, AssetBundleRef> _loaded = new Dictionary<string, AssetBundleRef>();
 
         public AssetBundleManager(RawNode repositoryNode, string assetBundlesUrl)
@@ -107,17 +109,19 @@ namespace game.assetBundle
             }
 
             foreach (var key in remove)
+            {
                 _loaded.Remove(key);
+            }
 
             return Resources.UnloadUnusedAssets();
         }
 
         public void TryUnload(string mainAssetBundle)
         {
-            var node = new DependenceNode(mainAssetBundle, null);
+            var node = new DependencyNode(mainAssetBundle, null);
             CollectDependencies(node);
-            var assetBundles = new List<DependenceNode>();
-            while (!GetLastestDependencies(node, assetBundles))
+            var assetBundles = new List<DependencyNode>();
+            while (!GetLatestDependencies(node, assetBundles))
             {
                 foreach (var assetBundle in assetBundles)
                 {
@@ -133,7 +137,7 @@ namespace game.assetBundle
 
         public bool IsCached(string assetBundle)
         {
-            return Caching.IsVersionCached(assetBundlesUrl + assetBundle, repository[assetBundle].version);
+            return Caching.IsVersionCached(assetBundlesUrl + assetBundle, repository[assetBundle].hash);
         }
 
         public bool IsLoaded(string assetBundle)
@@ -142,7 +146,7 @@ namespace game.assetBundle
         }
 
 
-        void LoadPartial(CascadeLoading cascase, List<IProcess> processList, IEnumerable<DependenceNode> assetBundles, bool async)
+        private void LoadPartial(CascadeLoading cascade, List<IProcess> processList, IEnumerable<DependencyNode> assetBundles, bool async)
         {
             foreach (var assetBundleNode in assetBundles)
             {
@@ -151,10 +155,9 @@ namespace game.assetBundle
                 {
                     //loading at this moment
                     var loader = _loading[assetBundle];
-                    cascase.AddFuture(loader);
+                    cascade.AddFuture(loader);
 
-                    if (processList != null)
-                        processList.Add(loader);
+                    processList?.Add(loader);
                     _loaded[assetBundle].loadedCount++;
                 }
                 else
@@ -168,7 +171,7 @@ namespace game.assetBundle
 
                     //first load
                     var node = repository[assetBundle];
-                    var loader = new LoadBundlePromise(assetBundle, assetBundlesUrl, assetBundleNode.parentNode != null, async, node.version, node.crc32);
+                    var loader = new LoadAssetBundlePromise(assetBundle, assetBundlesUrl, assetBundleNode.parentNode != null, node.hash, node.crc32, async);
                     _loading.Add(assetBundle, loader);
                     _loaded.Add(assetBundle, new AssetBundleRef(assetBundle, assetBundleNode.parentNode != null));
                     string bundle = assetBundle;
@@ -183,9 +186,8 @@ namespace game.assetBundle
                         ab.request = loader.request;
                     });
 
-                    cascase.AddFuture(loader);
-                    if (processList != null)
-                        processList.Add(loader);
+                    cascade.AddFuture(loader);
+                    processList?.Add(loader);
                 }
             }
         }
@@ -193,11 +195,11 @@ namespace game.assetBundle
         public IFuture Load(string mainAssetBundle, out List<IProcess> processList, bool async = true)
         {
             var cascade = new CascadeLoading();
-            var node = new DependenceNode(mainAssetBundle, null);
+            var node = new DependencyNode(mainAssetBundle, null);
             CollectDependencies(node);
-            var assetBundles = new List<DependenceNode>();
+            var assetBundles = new List<DependencyNode>();
             processList = new List<IProcess>();
-            while (!GetLastestDependencies(node, assetBundles))
+            while (!GetLatestDependencies(node, assetBundles))
             {
                 LoadPartial(cascade, processList, assetBundles, async);
                 assetBundles.Clear();
@@ -207,36 +209,45 @@ namespace game.assetBundle
             return new CascadeLoadingPromise(cascade).Run();
         }
 
-        bool GetLastestDependencies(DependenceNode currentNode, List<DependenceNode> list)
+        private bool GetLatestDependencies(DependencyNode currentNode, List<DependencyNode> list)
         {
-            if (currentNode.stop)
+            if (currentNode.stop) 
+            {
                 return true;
+            }
 
             if (currentNode.nodes.Count == 0)
             {
                 list.Add(currentNode);
 
                 if (currentNode.parentNode != null)
+                {
                     currentNode.parentNode.nodes.Remove(currentNode);
+                }
                 else
+                {
                     currentNode.stop = true;
+                }
 
             }
             else
             {
-                var copyCollection = new List<DependenceNode>(currentNode.nodes);
+                var copyCollection = new List<DependencyNode>(currentNode.nodes);
+                
                 foreach (var node in copyCollection)
-                    GetLastestDependencies(node, list);
+                {
+                    GetLatestDependencies(node, list);
+                }
             }
 
             return false;
         }
 
-        void CollectDependencies(DependenceNode parentNode)
+        private void CollectDependencies(DependencyNode parentNode)
         {
             foreach (var name in repository[parentNode.assetBundleName].dependencies)
             {
-                var node = new DependenceNode(name, parentNode);
+                var node = new DependencyNode(name, parentNode);
                 parentNode.nodes.Add(node);
                 CollectDependencies(node);
             }

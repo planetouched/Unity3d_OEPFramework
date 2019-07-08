@@ -8,8 +8,9 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Assets</RootNamespace>
     <AssemblyName>OEPFramework</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -258,6 +259,18 @@
     <Compile Include="OEPFramework\unityEngine\_base\DroppableItemBase.cs" />
     <Compile Include="OEPFramework\unityEngine\_base\IDroppableItem.cs" />
     <Compile Include="OEPFramework\utils\ReferenceCounter.cs" />
+    <Compile Include="test\buildings\Building.cs" />
+    <Compile Include="test\buildings\BuildingCategories.cs" />
+    <Compile Include="test\buildings\BuildingCollection.cs" />
+    <Compile Include="test\buildings\BuildingDataSource.cs" />
+    <Compile Include="test\buildings\BuildingDescription.cs" />
+    <Compile Include="test\buildings\BuildingRequirement.cs" />
+    <Compile Include="test\cities\City.cs" />
+    <Compile Include="test\cities\CityCategories.cs" />
+    <Compile Include="test\cities\CityCollection.cs" />
+    <Compile Include="test\cities\CityDescription.cs" />
+    <Compile Include="test\cities\CityDescriptionDataSource.cs" />
+    <Compile Include="test\cities\CityRequirement.cs" />
     <Compile Include="test\Player.cs" />
     <Compile Include="test\reference\someModel\SomeModel.cs" />
     <Compile Include="test\reference\someModel\SomeModelCategories.cs" />
@@ -271,6 +284,9 @@
     <Compile Include="test\simple\Territories.cs" />
     <Compile Include="test\simple\Territory.cs" />
     <Compile Include="test\simple\TerritoryCategory.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

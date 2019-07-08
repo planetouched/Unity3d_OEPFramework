@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.test.cities;
 using common;
 using game.models.resources.simple;
 using logic.core.context;
@@ -28,10 +29,12 @@ namespace test
             var simpleResources = new SimpleResourceCollection(initNode.GetNode("simple-resources"), new SimpleResourceCategories(), this, new SimpleResourceDataSource(repositoryNode.GetNode("simple-resources"), this));
             var objects = new SomeModelCollection(initNode.GetNode("objects"), new SomeModelCategories(), this, new SomeModelDataSource(repositoryNode.GetNode("objects"), this));
             var random = new RandomCollection(initNode.GetNode("random"), new RandomCategories(), this, new RandomDataSource(repositoryNode.GetNode("random"), this));
+            var cities = new CityCollection(initNode.GetNode("cities"), new CityCategories(), this, new CityDescriptionDataSource(repositoryNode.GetNode("cities"), this));
 
             AddChild("random", random);
             AddChild("simple-resources", simpleResources);
             AddChild("objects", objects);
+            AddChild("cities", cities);
         }
 
         public IModel GetChild(string collectionKey)
@@ -57,6 +60,11 @@ namespace test
         public T GetChild<T>(string collectionKey) where T : class
         {
             return (T)children[collectionKey];
+        }
+
+        public void RemoveChild(string collectionKey)
+        {
+            throw new NotImplementedException();
         }
     }
 }

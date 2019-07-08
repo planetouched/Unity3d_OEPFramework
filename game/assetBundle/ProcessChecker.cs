@@ -11,7 +11,7 @@ namespace game.assetBundle
     {
         public float loadingProgress => CalcLoadingProgress();
         public float unpackProgress => CalcUnpackProgress();
-        public Action<IProcess> onProcessComplete { get; set; }
+        public event Action<IProcess> onProcessComplete;
         public bool isComplete { get; private set; }
 
         private readonly AssetBundleManager _manager;
@@ -34,11 +34,10 @@ namespace game.assetBundle
         {
             isComplete = false;
 
-            if (unloader != null)
-                unloader.Add(resource);
+            unloader?.Add(resource);
 
-            List<IProcess> processList;
-            var compositeFuture = _manager.Load(resource, out processList, async);
+            var compositeFuture = _manager.Load(resource, out var processList, async);
+            
             foreach (var loadFuture in processList)
             {
                 _processes.Add(loadFuture);
@@ -47,23 +46,9 @@ namespace game.assetBundle
             _watcher.AddFuture(compositeFuture);
 
             if (_loading)
-                Subscribe(compositeFuture);
-        }
-
-        void Subscribe(IFuture target)
-        {
-            target.AddListener(future =>
             {
-                if (_watcher.futuresCount == 0 && future.isDone)
-                {
-                    _processes.Clear();
-                    isComplete = true;
-                    _loading = false;
-
-                    if (onProcessComplete != null)
-                        onProcessComplete(this);
-                }
-            });
+                Subscribe(compositeFuture);
+            }
         }
 
         public void Load()
@@ -78,42 +63,65 @@ namespace game.assetBundle
                 Subscribe(future);
             }
         }
+        
+        private void Subscribe(IFuture target)
+        {
+            target.AddListener(future =>
+            {
+                if (_watcher.futuresCount == 0 && future.isDone)
+                {
+                    _processes.Clear();
+                    isComplete = true;
+                    _loading = false;
 
-        bool CallCompleteIfEmpty()
+                    onProcessComplete?.Invoke(this);
+                }
+            });
+        }
+
+        private bool CallCompleteIfEmpty()
         {
             if (_watcher.futuresCount == 0)
             {
                 isComplete = true;
-                if (onProcessComplete != null)
-                    onProcessComplete(this);
+                onProcessComplete?.Invoke(this);
 
                 return true;
             }
             return false;
         }
 
-        float CalcUnpackProgress()
+        private float CalcUnpackProgress()
         {
             if (isComplete) return 1;
             if (_processes.Count == 0)
                 return 0;
 
             float value = 0;
-            foreach (var progress in _processes)
-                value += progress.unpackProgress;
             
+            foreach (var progress in _processes)
+            {
+                value += progress.unpackProgress;
+            }
+
             return value / _processes.Count;
         }
         
-        float CalcLoadingProgress()
+        private float CalcLoadingProgress()
         {
             if (isComplete) return 1;
+            
             if (_processes.Count == 0)
+            {
                 return 0;
+            }
 
             float value = 0;
+            
             foreach (var progress in _processes)
+            {
                 value += progress.loadingProgress;
+            }
 
             return value / _processes.Count;
         }

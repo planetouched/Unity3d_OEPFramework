@@ -25,7 +25,6 @@ namespace game.assetBundle
             _packedSize = sizeInBytes;
         }
 
-
         public void Start()
         {
             if (_cleanPeriod > 0)
@@ -48,11 +47,29 @@ namespace game.assetBundle
 
         public void StopShedule()
         {
-            if (_timer != null)
-                _timer.Drop();
+            _timer?.Drop();
             _timer = null;
         }
 
+        public void TryUnload()
+        {
+            if (_assetBundleManager.loadedPackedSize >= _packedSize)
+            {
+                ForceTryUnload();
+            }
+        }
+
+        public AsyncOperation ForceTryUnload()
+        {
+            if (_lastAsyncOperation != null && !_lastAsyncOperation.isDone)
+            {
+                return _lastAsyncOperation;
+            }
+
+            _lastAsyncOperation = _assetBundleManager.UnloadUnused();
+            return _lastAsyncOperation;
+        }
+        
         private void OnTryUnload(object o)
         {
             TryUnload();
@@ -61,21 +78,6 @@ namespace game.assetBundle
         private void OnTimer()
         {
             TryUnload();
-        }
-
-        public void TryUnload()
-        {
-            if (_assetBundleManager.loadedPackedSize >= _packedSize)
-                ForceTryUnload();
-        }
-
-        public AsyncOperation ForceTryUnload()
-        {
-            if (_lastAsyncOperation != null && !_lastAsyncOperation.isDone)
-                return _lastAsyncOperation;
-
-            _lastAsyncOperation = _assetBundleManager.UnloadUnused();
-            return _lastAsyncOperation;
         }
     }
 }

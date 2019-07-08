@@ -32,7 +32,9 @@ namespace game.assetBundle.futures
         protected override void OnRun()
         {
             if (_async)
+            {
                 asyncOperation = _assetBundle.LoadAllAssetsAsync();
+            }
             else
             {
                 allAssets = _assetBundle.LoadAllAssets();

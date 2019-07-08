@@ -4,38 +4,38 @@ using game.futures;
 using OEPFramework.futures;
 using OEPFramework.unityEngine.utils;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace game.assetBundle.futures
 {
-    public class LoadBundlePromise : Future, IProcess
+    public class LoadAssetBundlePromise : Future, IProcess
     {
         public AssetBundle assetBundle { get; private set; }
-        public WWW request { get; private set; }
+        public UnityWebRequest request { get; private set; } 
+        public float loadingProgress => _loadFuture.request.downloadProgress;
+        public float unpackProgress => _unpackBundlePromise.asyncOperation.progress;
+        public event Action<IProcess> onProcessComplete;
+        public bool isComplete { get; private set; }
+        public bool isDependency { get; }
         
         private readonly string _assetBundleName;
         private readonly string _url;
-        private WWWFuture _wwwFuture;
+        private UnityWebRequestAssetBundleFuture _loadFuture;
         private UnpackBundlePromise _unpackBundlePromise;
         private readonly bool _async;
-        readonly Hash128? _version;
+        private readonly Hash128 _hash;
         private readonly uint _crc32;
 
-        public float loadingProgress => _wwwFuture.request.progress;
-        public float unpackProgress => _unpackBundlePromise.asyncOperation.progress;
-        public Action<IProcess> onProcessComplete { get; set; }
-        public bool isComplete { get; private set; }
-        public bool dependency { get; }
-
-        public LoadBundlePromise(string assetBundleName, string url, bool dependency, bool async = true, Hash128? version = null, uint crc32 = 0)
+        public LoadAssetBundlePromise(string assetBundleName, string url, bool isDependency, Hash128 hash, uint crc32, bool async = true)
         {
             SetAsPromise();
             _crc32 = crc32;
-            _version = version;
+            _hash = hash;
             _async = async;
             _assetBundleName = assetBundleName;
-            _version = version;
+            _hash = hash;
             _url = url;
-            this.dependency = dependency;
+            this.isDependency = isDependency;
         }
 
         protected override void OnRun()
@@ -46,21 +46,22 @@ namespace game.assetBundle.futures
         private IEnumerator<IFuture> LoadingProcess()
         {
             Debug.Log("AssetBundle load: " + _url + _assetBundleName);
-            _wwwFuture = new WWWFuture(_url + _assetBundleName, Int32.MaxValue, _version, _crc32);
-            yield return _wwwFuture.Run();
+            
+            _loadFuture = new UnityWebRequestAssetBundleFuture(_url + _assetBundleName, _hash, _crc32, Int32.MaxValue);
+            yield return _loadFuture.Run();
 
-            assetBundle = _wwwFuture.request.assetBundle;
+            assetBundle = DownloadHandlerAssetBundle.GetContent(_loadFuture.request);
 
-            if (!dependency)
+            if (!isDependency)
             {
                 _unpackBundlePromise = new UnpackBundlePromise(assetBundle, _async);
                 yield return _unpackBundlePromise.Run();
                 assetBundle.Unload(false);
-                _wwwFuture.request.Dispose();
+                _loadFuture.request.Dispose();
             }
             else
             {
-                request = _wwwFuture.request;
+                request = _loadFuture.request;
             }
 
             Complete();
@@ -68,8 +69,10 @@ namespace game.assetBundle.futures
 
         public UnityEngine.Object[] GetAssets()
         {
-            if (!dependency)
+            if (!isDependency)
+            {
                 return _unpackBundlePromise.allAssets;
+            }
 
             return null;
         }
@@ -77,8 +80,7 @@ namespace game.assetBundle.futures
         protected override void OnComplete()
         {
             isComplete = true;
-            if (onProcessComplete != null)
-                onProcessComplete(this);
+            onProcessComplete?.Invoke(this);
             onProcessComplete = null;
         }
     }

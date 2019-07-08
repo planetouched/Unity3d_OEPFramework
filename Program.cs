@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using Assets.test.buildings;
+using Assets.test.cities;
 using test;
 using test.simple;
 using common;
@@ -69,7 +71,9 @@ namespace OEPFramework
                 .AddVariant("not", typeof(NotRequirement))
                 .AddVariant("or", typeof(OrRequirement))
                 .AddVariant("composite", typeof(CompositeRequirement))
-                .AddVariant("false", typeof(FalseRequirement));
+                .AddVariant("false", typeof(FalseRequirement))
+                .AddVariant("city", typeof(CityRequirement))
+                .AddVariant("building", typeof(BuildingRequirement));
 
             FactoryManager.AddFactory(typeof(Amount), new Factory())
                 .AddVariant("simple", typeof(SimpleAmount))
@@ -86,8 +90,10 @@ namespace OEPFramework
             var objectsNode = JSON.Instance.Parse(File.ReadAllText("objects.json"));
             var dealsNode = JSON.Instance.Parse(File.ReadAllText("deals.json"));
 
+            var citiesNode = JSON.Instance.Parse(File.ReadAllText("cities.json"));
+
             var dict = SerializeUtil.Dict().SetArgs("simple-resources", simpleResourceNode, "objects", objectsNode, "random",
-                randomNode, "deals", dealsNode);
+                randomNode, "deals", dealsNode, "cities", citiesNode);
 
             var player = new Player(mockNode, new RawNode(dict));
 
@@ -98,9 +104,18 @@ namespace OEPFramework
             territories["0"].tanks["0"].Attach(territories.category.tank.fire, OnTank);
             territories["0"].tanks["0"].Fire();
 
+            var cities = player.GetChild<CityCollection>("cities");
+            var model = cities["0"];
+
+            cities.Attach(cities.categories.buildings.complete, Handler);
+            model.buildings["0"].Complete();
+
             Console.ReadKey();
         }
 
+        private static void Handler(CoreParams cp, object args)
+        {
+        }
 
         private static void OnSR(CoreParams cp, object args)
         {

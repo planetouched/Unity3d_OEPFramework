@@ -6,7 +6,7 @@ namespace game.assetBundle.repository
     public class AssetBundleRepositoryItem
     {
         public string[] dependencies { get; }
-        public Hash128 version { get; }
+        public Hash128 hash { get; }
         public uint crc32 { get; }
         public int packedSize { get; }
 
@@ -15,7 +15,7 @@ namespace game.assetBundle.repository
             dependencies = node.GetStringArray("dependencies");
             crc32 = node.GetUInt("crc");
             packedSize = node.GetInt("size");
-            version = Hash128.Parse(node.GetString("hash"));
+            hash = Hash128.Parse(node.GetString("hash"));
         }
     }
 }
