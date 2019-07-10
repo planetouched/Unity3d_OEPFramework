@@ -1,10 +1,10 @@
-﻿using common;
-using game.models.triggers._base;
-using logic.core.context;
-using logic.core.throughEvent;
-using logic.core.util;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.ThroughEvent;
+using Basement.BLFramework.Core.Util;
+using Basement.Common;
+using Game.Models.Triggers._Base;
 
-namespace game.models.triggers
+namespace Game.Models.Triggers
 {
     public class QueueTrigger : CompositeTrigger
     {

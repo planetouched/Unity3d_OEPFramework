@@ -1,9 +1,9 @@
-﻿using common;
-using logic.core.context;
-using logic.core.model;
-using logic.core.util;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Model;
+using Basement.BLFramework.Core.Util;
+using Basement.Common;
 
-namespace Assets.test.buildings
+namespace Test.Buildings
 {
     public class Building : ReferenceModelBase<BuildingCategories, BuildingDescription>
     {

@@ -1,7 +1,7 @@
-﻿using logic.core.context;
-using logic.core.model;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Model;
 
-namespace test.simple
+namespace Test.Simple
 {
     public class Territory : ModelBase
     {

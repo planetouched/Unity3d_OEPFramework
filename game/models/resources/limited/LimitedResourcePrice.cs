@@ -1,8 +1,8 @@
-﻿using common;
-using logic.core.context;
-using logic.essential.price;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Essential.Price;
+using Basement.Common;
 
-namespace game.models.resources.limited
+namespace Game.Models.Resources.Limited
 {
     public class LimitedResourcePrice : Price
     {

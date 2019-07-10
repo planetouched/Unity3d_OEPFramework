@@ -1,10 +1,10 @@
-﻿using common;
-using logic.core.context;
-using logic.core.factories;
-using logic.core.reference.description;
-using logic.essential.reward;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Factories;
+using Basement.BLFramework.Core.Reference.Description;
+using Basement.BLFramework.Essential.Reward;
+using Basement.Common;
 
-namespace game.models.triggers
+namespace Game.Models.Triggers
 {
     public class TriggerDescription : DescriptionBase
     {
@@ -18,7 +18,7 @@ namespace game.models.triggers
 
         public override void Initialization()
         {
-            reward = FactoryManager.Build<Reward>(node.GetNode("reward"), GetContext());
+            reward = FactoryManager.Build<Basement.BLFramework.Essential.Reward.Reward>(node.GetNode("reward"), GetContext());
         }
     }
 }

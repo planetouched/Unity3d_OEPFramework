@@ -1,11 +1,11 @@
-using common;
-using game.models.triggers._base;
-using logic.core.context;
-using logic.core.factories;
-using logic.core.model;
-using logic.core.reference.description;
+using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Factories;
+using Basement.BLFramework.Core.Model;
+using Basement.BLFramework.Core.Reference.Description;
+using Basement.Common;
+using Game.Models.Triggers._Base;
 
-namespace game.models.triggers
+namespace Game.Models.Triggers
 {
     public class TriggerCollection : ReferenceCollectionBase<Trigger, TriggerCategories, TriggerDescription>
     {

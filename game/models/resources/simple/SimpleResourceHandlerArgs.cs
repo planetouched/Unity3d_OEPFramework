@@ -1,4 +1,4 @@
-﻿namespace game.models.resources.simple
+﻿namespace Game.Models.Resources.Simple
 {
     public class SimpleResourceHandlerArgs
     {

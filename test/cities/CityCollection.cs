@@ -1,9 +1,9 @@
-﻿using common;
-using logic.core.context;
-using logic.core.model;
-using logic.core.reference.description;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Model;
+using Basement.BLFramework.Core.Reference.Description;
+using Basement.Common;
 
-namespace Assets.test.cities
+namespace Test.Cities
 {
     public class CityCollection : ReferenceCollectionBase<City, CityCategories, CityDescription>
     {

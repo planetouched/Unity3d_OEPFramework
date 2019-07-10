@@ -1,8 +1,8 @@
-﻿using common;
-using logic.core.context;
-using logic.core.util;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Util;
+using Basement.Common;
 
-namespace game.models.triggers._base
+namespace Game.Models.Triggers._Base
 {
     public abstract class CompositeTrigger : Trigger
     {

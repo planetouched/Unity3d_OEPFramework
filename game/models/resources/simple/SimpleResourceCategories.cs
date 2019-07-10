@@ -1,6 +1,6 @@
-﻿using logic.core.throughEvent;
+﻿using Basement.BLFramework.Core.ThroughEvent;
 
-namespace game.models.resources.simple
+namespace Game.Models.Resources.Simple
 {
     public class SimpleResourceCategories
     {

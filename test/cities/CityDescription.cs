@@ -1,10 +1,10 @@
-﻿using common;
-using logic.core.context;
-using logic.core.factories;
-using logic.core.reference.description;
-using logic.essential.requirement;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Factories;
+using Basement.BLFramework.Core.Reference.Description;
+using Basement.BLFramework.Essential.Requirement;
+using Basement.Common;
 
-namespace Assets.test.cities
+namespace Test.Cities
 {
     public class CityDescription : DescriptionBase
     {

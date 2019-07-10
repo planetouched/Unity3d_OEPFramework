@@ -1,4 +1,4 @@
-﻿namespace test.reference.someModel
+﻿namespace Test.Reference.someModel
 {
     public class SomeModelCategories
     {

@@ -1,9 +1,9 @@
-using common;
-using game.models.triggers._base;
-using logic.core.context;
-using logic.core.throughEvent;
+using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.ThroughEvent;
+using Basement.Common;
+using Game.Models.Triggers._Base;
 
-namespace game.models.triggers
+namespace Game.Models.Triggers
 {
     public class OrTrigger : CompositeTrigger
     {

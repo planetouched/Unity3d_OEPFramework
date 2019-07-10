@@ -1,11 +1,11 @@
-﻿using Assets.test.buildings;
-using common;
-using logic.core.context;
-using logic.core.model;
-using logic.core.throughEvent;
-using logic.core.util;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Model;
+using Basement.BLFramework.Core.ThroughEvent;
+using Basement.BLFramework.Core.Util;
+using Basement.Common;
+using Test.Buildings;
 
-namespace Assets.test.cities
+namespace Test.Cities
 {
     public class City : ReferenceModelBase<CityCategories, CityDescription>
     {

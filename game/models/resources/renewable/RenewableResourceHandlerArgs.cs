@@ -1,4 +1,4 @@
-﻿namespace game.models.resources.renewable
+﻿namespace Game.Models.Resources.Renewable
 {
     public class RenewableResourceHandlerArgs
     {

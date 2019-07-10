@@ -1,4 +1,4 @@
-﻿namespace test.simple
+﻿namespace Test.Simple
 {
     public class TerritoryCategory
     {

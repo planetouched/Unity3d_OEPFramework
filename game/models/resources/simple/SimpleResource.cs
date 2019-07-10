@@ -1,10 +1,10 @@
 ﻿using System;
-using common;
-using logic.core.context;
-using logic.core.model;
-using logic.core.util;
+using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Model;
+using Basement.BLFramework.Core.Util;
+using Basement.Common;
 
-namespace game.models.resources.simple
+namespace Game.Models.Resources.Simple
 {
     public class SimpleResource : ReferenceModelBase<SimpleResourceCategories, SimpleResourceDescription>
     {

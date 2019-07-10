@@ -1,11 +1,11 @@
-﻿using common;
-using game.models.triggers._base;
-using logic.core.context;
-using logic.core.util;
-using logic.essential.path;
-using logic.essential.reward.result;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Util;
+using Basement.BLFramework.Essential.Path;
+using Basement.BLFramework.Essential.Reward.Result;
+using Basement.Common;
+using Game.Models.Triggers._Base;
 
-namespace game.models.triggers.reward
+namespace Game.Models.Triggers.Reward
 {
     public class TriggerRewardResult : RewardResult
     {

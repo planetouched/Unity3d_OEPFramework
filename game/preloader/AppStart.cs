@@ -1,4 +1,4 @@
-﻿namespace game.preloader
+﻿namespace Game.Preloader
 {
     static class AppStart
     {

@@ -1,13 +1,13 @@
-﻿using common;
-using logic.core.context;
-using logic.core.factories;
-using logic.core.reference.description;
-using logic.essential.price;
-using logic.essential.requirement;
-using logic.essential.reward;
-using logic.essential.reward.result;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Factories;
+using Basement.BLFramework.Core.Reference.Description;
+using Basement.BLFramework.Essential.Price;
+using Basement.BLFramework.Essential.Requirement;
+using Basement.BLFramework.Essential.Reward;
+using Basement.BLFramework.Essential.Reward.Result;
+using Basement.Common;
 
-namespace game.models.deal
+namespace Game.Models.Deal
 {
     public class DealDescription : DescriptionBase
     {

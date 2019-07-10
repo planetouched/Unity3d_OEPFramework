@@ -1,8 +1,8 @@
-﻿using common;
-using logic.core.context;
-using logic.core.reference.description;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Reference.Description;
+using Basement.Common;
 
-namespace Assets.test.buildings
+namespace Test.Buildings
 {
     public class BuildingDataSource : DataSourceBase<BuildingDescription>
     {

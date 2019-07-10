@@ -1,8 +1,8 @@
-﻿using logic.core.context;
-using logic.core.model;
-using logic.core.throughEvent;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Model;
+using Basement.BLFramework.Core.ThroughEvent;
 
-namespace test.simple
+namespace Test.Simple
 {
     public class Tanks : CollectionBase<Tank>
     {

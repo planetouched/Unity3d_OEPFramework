@@ -1,11 +1,11 @@
 ﻿using System;
-using common;
-using logic.core.context;
-using logic.core.model;
-using logic.core.util;
-using logic.essential.time;
+using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Model;
+using Basement.BLFramework.Core.Util;
+using Basement.BLFramework.Essential.Time;
+using Basement.Common;
 
-namespace game.models.resources.renewable
+namespace Game.Models.Resources.Renewable
 {
     public class RenewableResource : ReferenceModelBase<RenewableResourceCategories, RenewableResourceDescription>
     {

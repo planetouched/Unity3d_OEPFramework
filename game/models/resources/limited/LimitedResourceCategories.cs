@@ -1,6 +1,6 @@
-﻿using logic.core.throughEvent;
+﻿using Basement.BLFramework.Core.ThroughEvent;
 
-namespace game.models.resources.limited
+namespace Game.Models.Resources.Limited
 {
     public class LimitedResourceCategories
     {

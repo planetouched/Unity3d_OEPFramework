@@ -1,4 +1,4 @@
-namespace game.models.triggers
+namespace Game.Models.Triggers
 {
     public class TriggerHandlerArgs
     {

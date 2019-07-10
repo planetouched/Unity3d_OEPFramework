@@ -1,8 +1,8 @@
-﻿using common;
-using logic.core.context;
-using logic.core.reference.description;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Reference.Description;
+using Basement.Common;
 
-namespace game.models.triggers
+namespace Game.Models.Triggers
 {
     public class TriggerDataSource : DataSourceBase<TriggerDescription>
     {

@@ -1,6 +1,6 @@
-﻿using Assets.test.buildings;
+﻿using Test.Buildings;
 
-namespace Assets.test.cities
+namespace Test.Cities
 {
     public class CityCategories
     {

@@ -1,10 +1,10 @@
-﻿using common;
-using logic.core.context;
-using logic.core.factories;
-using logic.core.model;
-using logic.essential.reward.result;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Factories;
+using Basement.BLFramework.Core.Model;
+using Basement.BLFramework.Essential.Reward.Result;
+using Basement.Common;
 
-namespace test.reference.someModel
+namespace Test.Reference.someModel
 {
     public class SomeModel : ReferenceModelBase<SomeModelCategories, SomeModelDescription>
     {

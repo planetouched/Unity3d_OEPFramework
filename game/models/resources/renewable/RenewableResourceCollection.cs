@@ -1,9 +1,9 @@
-﻿using common;
-using logic.core.context;
-using logic.core.model;
-using logic.core.reference.description;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Model;
+using Basement.BLFramework.Core.Reference.Description;
+using Basement.Common;
 
-namespace game.models.resources.renewable
+namespace Game.Models.Resources.Renewable
 {
     public class RenewableResourceCollection : ReferenceCollectionBase<RenewableResource, RenewableResourceCategories, RenewableResourceDescription>
     {

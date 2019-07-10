@@ -1,8 +1,8 @@
-﻿using common;
-using logic.core.context;
-using logic.essential.requirement;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Essential.Requirement;
+using Basement.Common;
 
-namespace game.models.resources.simple
+namespace Game.Models.Resources.Simple
 {
     public class SimpleResourceRequirement : Requirement
     {

@@ -1,13 +1,13 @@
-﻿using common;
-using logic.core.context;
-using logic.core.factories;
-using logic.core.reference.description;
-using logic.essential.amount;
-using logic.essential.price;
-using logic.essential.requirement;
-using logic.essential.reward;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Factories;
+using Basement.BLFramework.Core.Reference.Description;
+using Basement.BLFramework.Essential.Amount;
+using Basement.BLFramework.Essential.Price;
+using Basement.BLFramework.Essential.Requirement;
+using Basement.BLFramework.Essential.Reward;
+using Basement.Common;
 
-namespace test.reference.someModel
+namespace Test.Reference.someModel
 {
     public class SomeModelDescription : DescriptionBase
     {

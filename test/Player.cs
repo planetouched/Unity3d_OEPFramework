@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using Assets.test.cities;
-using common;
-using game.models.resources.simple;
-using logic.core.context;
-using logic.core.model;
-using logic.essential.random;
-using test.reference.someModel;
-using test.simple;
+using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Model;
+using Basement.BLFramework.Essential.Random;
+using Basement.Common;
+using Game.Models.Resources.Simple;
+using Test.Cities;
+using Test.Reference.someModel;
+using Test.Simple;
 
-namespace test
+namespace Test
 {
     public class Player : IContext
     {

@@ -1,10 +1,10 @@
-﻿using common;
-using logic.core.context;
-using logic.core.util;
-using logic.essential.path;
-using logic.essential.reward.result;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Util;
+using Basement.BLFramework.Essential.Path;
+using Basement.BLFramework.Essential.Reward.Result;
+using Basement.Common;
 
-namespace game.models.resources.renewable
+namespace Game.Models.Resources.Renewable
 {
     public class RenewableResourceRewardResult : RewardResult
     {

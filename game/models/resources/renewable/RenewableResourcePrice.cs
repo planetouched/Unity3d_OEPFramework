@@ -1,8 +1,8 @@
-﻿using common;
-using logic.core.context;
-using logic.essential.price;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Essential.Price;
+using Basement.Common;
 
-namespace game.models.resources.renewable
+namespace Game.Models.Resources.Renewable
 {
     public class RenewableResourcePrice : Price
     {

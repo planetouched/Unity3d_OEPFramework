@@ -1,11 +1,11 @@
-﻿using common;
-using logic.core.context;
-using logic.core.factories;
-using logic.essential.amount;
-using logic.essential.reward;
-using logic.essential.reward.result;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Core.Factories;
+using Basement.BLFramework.Essential.Amount;
+using Basement.BLFramework.Essential.Reward;
+using Basement.BLFramework.Essential.Reward.Result;
+using Basement.Common;
 
-namespace game.models.resources.limited
+namespace Game.Models.Resources.Limited
 {
     public class LimitedResourceReward : Reward
     {

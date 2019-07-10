@@ -1,6 +1,6 @@
-﻿using logic.core.throughEvent;
+﻿using Basement.BLFramework.Core.ThroughEvent;
 
-namespace Assets.test.buildings
+namespace Test.Buildings
 {
     public class BuildingCategories
     {

@@ -1,12 +1,11 @@
-using common;
-using game.models.triggers._base;
-using logic.core.context;
-using logic.essential.reward;
-using logic.essential.reward.result;
+using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Essential.Reward.Result;
+using Basement.Common;
+using Game.Models.Triggers._Base;
 
-namespace game.models.triggers.reward
+namespace Game.Models.Triggers.Reward
 {
-    public class ActivateTriggerReward : Reward
+    public class ActivateTriggerReward : Basement.BLFramework.Essential.Reward.Reward
     {
         public ActivateTriggerReward(RawNode rawNode, IContext context) 
             : base(rawNode, context)

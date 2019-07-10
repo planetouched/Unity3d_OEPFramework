@@ -1,24 +1,24 @@
 ﻿using System;
 using System.IO;
-using Assets.test.buildings;
-using Assets.test.cities;
-using test;
-using test.simple;
-using common;
+using Basement.BLFramework.Core.Factories;
+using Basement.BLFramework.Core.ThroughEvent;
+using Basement.BLFramework.Core.Util;
+using Basement.BLFramework.Essential.Amount;
+using Basement.BLFramework.Essential.Choice;
+using Basement.BLFramework.Essential.Price;
+using Basement.BLFramework.Essential.Random.Implementation;
+using Basement.BLFramework.Essential.Requirement;
+using Basement.BLFramework.Essential.Reward;
+using Basement.BLFramework.Essential.Reward.Result;
+using Basement.Common;
+using Game.Models.Resources.Simple;
+using Test;
+using Test.Buildings;
+using Test.Cities;
+using Test.Simple;
 using fastJSON;
-using game.models.resources.simple;
-using logic.core.factories;
-using logic.core.throughEvent;
-using logic.core.util;
-using logic.essential.amount;
-using logic.essential.choice;
-using logic.essential.price;
-using logic.essential.random.implementation;
-using logic.essential.requirement;
-using logic.essential.reward;
-using logic.essential.reward.result;
 
-namespace OEPFramework
+namespace Basement454545
 {
     class Program
     {

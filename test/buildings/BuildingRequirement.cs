@@ -1,8 +1,8 @@
-﻿using common;
-using logic.core.context;
-using logic.essential.requirement;
+﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Essential.Requirement;
+using Basement.Common;
 
-namespace Assets.test.buildings
+namespace Test.Buildings
 {
     public class BuildingRequirement : Requirement
     {
