@@ -6,9 +6,8 @@ using System.Collections.Specialized;
 using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.ThroughEvent;
 using Basement.Common;
-
 #if REFVIEW
-using OEPFramework.utils;
+using Basement.Common.Util;
 #endif
 
 namespace Basement.BLFramework.Core.Model

@@ -1,7 +1,6 @@
 ﻿using System;
-
 #if REFVIEW
-using OEPFramework.utils;
+using Basement.Common.Util;
 #endif
 
 namespace Basement.OEPFramework.UnityEngine._Base
@@ -33,8 +32,7 @@ namespace Basement.OEPFramework.UnityEngine._Base
             if (dropped) return;
             dropped = true;
 
-            if (onDrop != null)
-                onDrop(this);
+            onDrop?.Invoke(this);
             onDrop = null;
         }
     }

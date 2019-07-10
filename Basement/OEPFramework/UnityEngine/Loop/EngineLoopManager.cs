@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -17,17 +18,14 @@ namespace Basement.OEPFramework.UnityEngine.Loop
 
         static bool CheckInit()
         {
-#if UNITY_EDITOR
             if (_loops.Count == 0)
             {
                 Debug.LogError("Loops is not adjusted. Use Loops.Setup()");
                 EditorApplication.isPlaying = false;
                 return false;
             }
-#endif
             return true;
         }
-
 
         public static EngineLoop GetEngineLoop(int loopType)
         {
@@ -43,7 +41,9 @@ namespace Basement.OEPFramework.UnityEngine.Loop
 
         public static void Execute(int loopType)
         {
+#if UNITY_EDITOR
             if (!CheckInit()) return;
+#endif
             _loops[loopType].CallAllBehavioursActions();
         }
     }
