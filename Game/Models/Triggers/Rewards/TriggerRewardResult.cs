@@ -5,7 +5,7 @@ using Basement.BLFramework.Essential.Rewards.Result;
 using Basement.Common;
 using Game.Models.Triggers._Base;
 
-namespace Game.Models.Triggers.Reward
+namespace Game.Models.Triggers.Rewards
 {
     public class TriggerRewardResult : RewardResult
     {

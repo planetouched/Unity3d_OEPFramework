@@ -95,8 +95,8 @@
     <Compile Include="Game\Models\Triggers\AndTrigger.cs" />
     <Compile Include="Game\Models\Triggers\OrTrigger.cs" />
     <Compile Include="Game\Models\Triggers\QueueTrigger.cs" />
-    <Compile Include="Game\Models\Triggers\Reward\ActivateTriggerReward.cs" />
-    <Compile Include="Game\Models\Triggers\Reward\TriggerRewardResult.cs" />
+    <Compile Include="Game\Models\Triggers\Rewards\ActivateTriggerReward.cs" />
+    <Compile Include="Game\Models\Triggers\Rewards\TriggerRewardResult.cs" />
     <Compile Include="Game\Models\Triggers\TriggerCategories.cs" />
     <Compile Include="Game\Models\Triggers\TriggerCollection.cs" />
     <Compile Include="Game\Models\Triggers\TriggerDataSource.cs" />
