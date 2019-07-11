@@ -3,7 +3,7 @@ using Basement.BLFramework.Core.ThroughEvent;
 using Basement.BLFramework.Essential.Path;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Choice
+namespace Basement.BLFramework.Essential.Choices
 {
     public class SimplePathChoice : PathChoice
     {

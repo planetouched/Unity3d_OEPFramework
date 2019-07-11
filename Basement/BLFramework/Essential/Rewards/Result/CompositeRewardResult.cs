@@ -3,7 +3,7 @@ using Basement.BLFramework.Core.Factories;
 using Basement.BLFramework.Core.Util;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Reward.Result
+namespace Basement.BLFramework.Essential.Rewards.Result
 {
     public class CompositeRewardResult : RewardResult
     {

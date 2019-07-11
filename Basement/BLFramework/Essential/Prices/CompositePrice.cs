@@ -2,7 +2,7 @@
 using Basement.BLFramework.Core.Reference.Collection;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Price
+namespace Basement.BLFramework.Essential.Prices
 {
     public class CompositePrice : Price
     {

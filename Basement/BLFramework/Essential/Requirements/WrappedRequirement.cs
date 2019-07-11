@@ -2,7 +2,7 @@
 using Basement.BLFramework.Core.Factories;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Requirement
+namespace Basement.BLFramework.Essential.Requirements
 {
     public abstract class WrappedRequirement : Requirement
     {

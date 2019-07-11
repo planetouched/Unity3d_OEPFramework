@@ -1,7 +1,7 @@
 ﻿using Basement.BLFramework.Core.Context;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Reward.Result
+namespace Basement.BLFramework.Essential.Rewards.Result
 {
     public class RewardResult : IRewardResult
     {

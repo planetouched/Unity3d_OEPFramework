@@ -1,7 +1,7 @@
 ﻿using Basement.BLFramework.Core.Context;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Amount
+namespace Basement.BLFramework.Essential.Amounts
 {
     public class SimpleAmount : Amount
     {

@@ -4,7 +4,7 @@ using Basement.BLFramework.Core.ThroughEvent;
 using Basement.BLFramework.Essential.Path;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Requirement
+namespace Basement.BLFramework.Essential.Requirements
 {
     public class Requirement : DescriptionBase, IRequirement
     {

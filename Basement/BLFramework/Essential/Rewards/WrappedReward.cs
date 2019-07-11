@@ -2,7 +2,7 @@
 using Basement.BLFramework.Core.Factories;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Reward
+namespace Basement.BLFramework.Essential.Rewards
 {
     public abstract class WrappedReward : Reward
     {

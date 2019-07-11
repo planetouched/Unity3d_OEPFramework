@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Basement.BLFramework.Essential.Reward.Result;
+using Basement.BLFramework.Essential.Rewards.Result;
 
-namespace Basement.BLFramework.Essential.Reward
+namespace Basement.BLFramework.Essential.Rewards
 {
     public static class RewardUtil
     {

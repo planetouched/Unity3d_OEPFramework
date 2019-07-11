@@ -2,10 +2,10 @@
 using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.Factories;
 using Basement.BLFramework.Core.Model;
-using Basement.BLFramework.Essential.Random.Implementation;
+using Basement.BLFramework.Essential.EssentialRandom.Implementation;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Random
+namespace Basement.BLFramework.Essential.EssentialRandom
 {
     public class Random : ReferenceModelBase<RandomCategories, RandomDescription>, IRandom
     {

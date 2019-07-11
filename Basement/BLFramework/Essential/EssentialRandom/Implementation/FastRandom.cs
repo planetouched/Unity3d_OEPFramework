@@ -1,4 +1,4 @@
-﻿namespace Basement.BLFramework.Essential.Random.Implementation
+﻿namespace Basement.BLFramework.Essential.EssentialRandom.Implementation
 {
     public class FastRandom : IRandomImplementation
     {

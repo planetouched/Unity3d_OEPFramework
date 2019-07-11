@@ -1,9 +1,9 @@
 ﻿using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.Reference.Collection;
-using Basement.BLFramework.Essential.Reward.Result;
+using Basement.BLFramework.Essential.Rewards.Result;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Reward
+namespace Basement.BLFramework.Essential.Rewards
 {
     public class CompositeReward : Reward
     {

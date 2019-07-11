@@ -1,4 +1,4 @@
-﻿namespace Basement.BLFramework.Essential.Amount
+﻿namespace Basement.BLFramework.Essential.Amounts
 {
     public interface IAmount
     {

@@ -4,8 +4,9 @@ using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.Model;
 using Basement.BLFramework.Core.Reference.Description;
 using Basement.BLFramework.Core.ThroughEvent;
-using Basement.BLFramework.Essential.Random;
+using Basement.BLFramework.Essential.EssentialRandom;
 using Basement.Common;
+using Random = Basement.BLFramework.Essential.EssentialRandom.Random;
 
 namespace Basement.BLFramework.Essential.Path
 {
@@ -39,11 +40,11 @@ namespace Basement.BLFramework.Essential.Path
         public static ModelsPath GetModelPath(IContext context, RawNode node)
         {
             string path = node.CheckKey("path") ? node.GetString("path") : node.ToString();
-            Random.Random random = null;
+            EssentialRandom.Random random = null;
 
             if (node.CheckKey("random"))
             {
-                random = GetModelPath(context, node.GetString("random"), null).GetSelf<Random.Random>();
+                random = GetModelPath(context, node.GetString("random"), null).GetSelf<Random>();
             }
 
             return GetResult(context, path, random);

@@ -1,7 +1,7 @@
 ﻿using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.Util;
 using Basement.BLFramework.Essential.Path;
-using Basement.BLFramework.Essential.Reward.Result;
+using Basement.BLFramework.Essential.Rewards.Result;
 using Basement.Common;
 
 namespace Game.Models.GameResources.Renewable

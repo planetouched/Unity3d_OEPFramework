@@ -1,5 +1,5 @@
 ﻿using Basement.BLFramework.Core.Context;
-using Basement.BLFramework.Essential.Requirement;
+using Basement.BLFramework.Essential.Requirements;
 using Basement.Common;
 
 namespace Game.Models.GameResources.Renewable

@@ -1,7 +1,7 @@
 ﻿using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.Factories;
 using Basement.BLFramework.Core.Reference.Description;
-using Basement.BLFramework.Essential.Reward;
+using Basement.BLFramework.Essential.Rewards;
 using Basement.Common;
 
 namespace Game.Models.Triggers
@@ -18,7 +18,7 @@ namespace Game.Models.Triggers
 
         public override void Initialization()
         {
-            reward = FactoryManager.Build<Basement.BLFramework.Essential.Reward.Reward>(node.GetNode("reward"), GetContext());
+            reward = FactoryManager.Build<Basement.BLFramework.Essential.Rewards.Reward>(node.GetNode("reward"), GetContext());
         }
     }
 }

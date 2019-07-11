@@ -1,5 +1,5 @@
 ﻿using Basement.BLFramework.Core.Context;
-using Basement.BLFramework.Essential.Price;
+using Basement.BLFramework.Essential.Prices;
 using Basement.Common;
 
 namespace Game.Models.GameResources.Limited

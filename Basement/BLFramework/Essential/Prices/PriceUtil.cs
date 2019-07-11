@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Basement.BLFramework.Essential.Price
+namespace Basement.BLFramework.Essential.Prices
 {
     public static class PriceUtil
     {

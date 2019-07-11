@@ -1,7 +1,7 @@
 ﻿using Basement.BLFramework.Core.Context;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Requirement
+namespace Basement.BLFramework.Essential.Requirements
 {
     public class FalseRequirement : Requirement
     {

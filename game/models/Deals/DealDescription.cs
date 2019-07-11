@@ -1,10 +1,10 @@
 ﻿using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.Factories;
 using Basement.BLFramework.Core.Reference.Description;
-using Basement.BLFramework.Essential.Price;
-using Basement.BLFramework.Essential.Requirement;
-using Basement.BLFramework.Essential.Reward;
-using Basement.BLFramework.Essential.Reward.Result;
+using Basement.BLFramework.Essential.Prices;
+using Basement.BLFramework.Essential.Requirements;
+using Basement.BLFramework.Essential.Rewards;
+using Basement.BLFramework.Essential.Rewards.Result;
 using Basement.Common;
 
 namespace Game.Models.Deals

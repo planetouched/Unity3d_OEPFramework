@@ -3,7 +3,7 @@ using Basement.BLFramework.Core.Model;
 using Basement.BLFramework.Core.Reference.Description;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Random
+namespace Basement.BLFramework.Essential.EssentialRandom
 {
     public class RandomCollection : ReferenceCollectionBase<Random, RandomCategories, RandomDescription>
     {

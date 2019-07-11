@@ -4,7 +4,7 @@ using Basement.BLFramework.Core.ThroughEvent;
 using Basement.BLFramework.Essential.Path;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Price
+namespace Basement.BLFramework.Essential.Prices
 {
     public class Price : DescriptionBase, IPrice
     {

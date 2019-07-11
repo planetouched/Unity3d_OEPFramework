@@ -1,4 +1,4 @@
-﻿namespace Basement.BLFramework.Essential.Reward.Result
+﻿namespace Basement.BLFramework.Essential.Rewards.Result
 {
     public class RewardHandlerArgs
     {

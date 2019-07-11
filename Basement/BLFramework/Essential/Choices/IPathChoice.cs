@@ -1,7 +1,7 @@
 ﻿using Basement.BLFramework.Core.Reference.Description;
 using Basement.BLFramework.Core.ThroughEvent;
 
-namespace Basement.BLFramework.Essential.Choice
+namespace Basement.BLFramework.Essential.Choices
 {
     public interface IPathChoice
     {

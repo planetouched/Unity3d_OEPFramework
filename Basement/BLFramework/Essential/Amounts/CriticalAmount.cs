@@ -1,8 +1,9 @@
 ﻿using Basement.BLFramework.Core.Context;
+using Basement.BLFramework.Essential.EssentialRandom;
 using Basement.BLFramework.Essential.Path;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Amount
+namespace Basement.BLFramework.Essential.Amounts
 {
     public class CriticalAmount : Amount
     {
@@ -10,7 +11,7 @@ namespace Basement.BLFramework.Essential.Amount
         public int critical { get; }
         public int regular { get; }
         public bool wasCritical { get; private set; }
-        private readonly Random.Random _random;
+        private readonly Random _random;
 
         public CriticalAmount(RawNode node, IContext context)
             : base(node, context)
@@ -18,7 +19,7 @@ namespace Basement.BLFramework.Essential.Amount
             probability = node.GetDouble("probability");
             critical = node.GetInt("critical");
             regular = node.GetInt("regular");
-            _random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random.Random>();
+            _random = PathUtil.GetModelPath(GetContext(), node.GetString("random"), null).GetSelf<Random>();
         }
 
         public override int Number()

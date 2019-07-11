@@ -1,11 +1,11 @@
 ﻿using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.Reference.Description;
 using Basement.BLFramework.Core.ThroughEvent;
+using Basement.BLFramework.Essential.EssentialRandom;
 using Basement.BLFramework.Essential.Path;
-using Basement.BLFramework.Essential.Random;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Choice
+namespace Basement.BLFramework.Essential.Choices
 {
     public class PathChoice : DescriptionBase, IPathChoice
     {
@@ -15,7 +15,7 @@ namespace Basement.BLFramework.Essential.Choice
         {
             if (node.CheckKey("random"))
             {
-                random = PathUtil.GetModelPath(context, node.GetString("random"), null).GetSelf<Random.Random>();
+                random = PathUtil.GetModelPath(context, node.GetString("random"), null).GetSelf<Random>();
             }
         }
 

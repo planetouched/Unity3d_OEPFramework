@@ -2,7 +2,7 @@
 using Basement.BLFramework.Core.Reference.Description;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Amount
+namespace Basement.BLFramework.Essential.Amounts
 {
     public class Amount : DescriptionBase, IAmount
     {

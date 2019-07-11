@@ -2,12 +2,12 @@
 using Basement.BLFramework.Core.Factories;
 using Basement.BLFramework.Core.Reference.Description;
 using Basement.BLFramework.Core.ThroughEvent;
-using Basement.BLFramework.Essential.Choice;
+using Basement.BLFramework.Essential.Choices;
 using Basement.BLFramework.Essential.Path;
-using Basement.BLFramework.Essential.Reward.Result;
+using Basement.BLFramework.Essential.Rewards.Result;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Reward
+namespace Basement.BLFramework.Essential.Rewards
 {
     public class Reward : DescriptionBase, IReward
     {

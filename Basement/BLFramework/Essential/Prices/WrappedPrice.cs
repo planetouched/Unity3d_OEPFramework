@@ -2,7 +2,7 @@
 using Basement.BLFramework.Core.Factories;
 using Basement.Common;
 
-namespace Basement.BLFramework.Essential.Price
+namespace Basement.BLFramework.Essential.Prices
 {
     public abstract class WrappedPrice : Price
     {

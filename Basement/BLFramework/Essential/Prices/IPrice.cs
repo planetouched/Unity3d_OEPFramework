@@ -1,6 +1,6 @@
 ﻿using Basement.BLFramework.Core.ThroughEvent;
 
-namespace Basement.BLFramework.Essential.Price
+namespace Basement.BLFramework.Essential.Prices
 {
     public interface IPrice
     {

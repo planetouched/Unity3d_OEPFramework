@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.Model;
-using Basement.BLFramework.Essential.Random;
+using Basement.BLFramework.Essential.EssentialRandom;
 using Basement.Common;
 using Game.Models.GameResources.Simple;
 using Test.Cities;

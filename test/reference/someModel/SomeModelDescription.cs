@@ -1,10 +1,10 @@
 ﻿using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.Factories;
 using Basement.BLFramework.Core.Reference.Description;
-using Basement.BLFramework.Essential.Amount;
-using Basement.BLFramework.Essential.Price;
-using Basement.BLFramework.Essential.Requirement;
-using Basement.BLFramework.Essential.Reward;
+using Basement.BLFramework.Essential.Amounts;
+using Basement.BLFramework.Essential.Prices;
+using Basement.BLFramework.Essential.Requirements;
+using Basement.BLFramework.Essential.Rewards;
 using Basement.Common;
 
 namespace Test.Reference.someModel
