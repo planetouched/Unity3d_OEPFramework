@@ -11,12 +11,12 @@ using Basement.BLFramework.Essential.Requirement;
 using Basement.BLFramework.Essential.Reward;
 using Basement.BLFramework.Essential.Reward.Result;
 using Basement.Common;
-using Game.Models.Resources.Simple;
 using Test;
 using Test.Buildings;
 using Test.Cities;
 using Test.Simple;
 using fastJSON;
+using Game.Models.GameResources.Simple;
 
 namespace Basement454545
 {

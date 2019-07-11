@@ -10,8 +10,6 @@ namespace Basement.BLFramework.Core.Reference.Description
     {
         protected abstract TDescription Factory(RawNode partialNode);
         
-        private WeakRef<IDescription> _weakParent;
-        
         public TDescription this[string collectionKey] => GetDescription(collectionKey);
 
         protected DataSourceBase(RawNode node, IContext context = null) : base(node, context)

@@ -4,7 +4,7 @@ using Basement.BLFramework.Core.Context;
 using Basement.BLFramework.Core.Model;
 using Basement.BLFramework.Essential.Random;
 using Basement.Common;
-using Game.Models.Resources.Simple;
+using Game.Models.GameResources.Simple;
 using Test.Cities;
 using Test.Reference.someModel;
 using Test.Simple;

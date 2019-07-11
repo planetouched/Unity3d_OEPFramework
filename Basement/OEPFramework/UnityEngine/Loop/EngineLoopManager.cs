@@ -18,12 +18,14 @@ namespace Basement.OEPFramework.UnityEngine.Loop
 
         static bool CheckInit()
         {
+#if UNITY_EDITOR
             if (_loops.Count == 0)
             {
                 Debug.LogError("Loops is not adjusted. Use Loops.Setup()");
                 EditorApplication.isPlaying = false;
                 return false;
             }
+#endif
             return true;
         }
 
