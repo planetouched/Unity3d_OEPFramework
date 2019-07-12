@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Basement.Common
@@ -358,6 +359,16 @@ namespace Basement.Common
         public RawNode GetNode(int index)
         {
             return _rawData != null ? new RawNode(array[index]) : emptyNode;
+        }
+
+        public bool IsDictionary()
+        {
+            return _rawData is Dictionary<string, object>;
+        }
+        
+        public bool IsArray()
+        {
+            return _rawData is List<object>;
         }
 
         public List<object> array

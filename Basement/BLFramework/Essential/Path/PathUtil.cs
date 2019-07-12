@@ -24,29 +24,25 @@ namespace Basement.BLFramework.Essential.Path
             return selectors;
         }
         
-        /*
-        public static string GetStringPath(IModel model)
-        {
-            var models = model.GetModelPath(false);
-            var arr = new string[models.Count];
-            for (int i = 0; i < arr.Length; i++)
-            {
-                arr[arr.Length - i - 1] = models[i].key;
-            }
-            
-            return string.Join(".", arr);
-        }*/
-
         public static ModelsPath GetModelPath(IContext context, RawNode node)
         {
-            string path = node.CheckKey("path") ? node.GetString("path") : node.ToString();
-            EssentialRandom.Random random = null;
-
-            if (node.CheckKey("random"))
+            string path;
+            Random random = null;
+            
+            if (node.IsDictionary() && node.CheckKey("path"))
             {
-                random = GetModelPath(context, node.GetString("random"), null).GetSelf<Random>();
+                path = node.GetString("path");
+                
+                if (node.CheckKey("random"))
+                {
+                    random = GetModelPath(context, node.GetString("random"), null).GetSelf<Random>();
+                }
             }
-
+            else
+            {
+                path = node.ToString();
+            }
+            
             return GetResult(context, path, random);
         }
 

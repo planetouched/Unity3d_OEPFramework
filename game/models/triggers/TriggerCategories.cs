@@ -6,6 +6,5 @@ namespace Game.Models.Triggers
     {
         public EventCategory completed = new EventCategory();
         public EventCategory activated = new EventCategory();
-        public EventCategory update = new EventCategory();
     }
 }
