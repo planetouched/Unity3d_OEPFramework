@@ -163,7 +163,7 @@ namespace Basement.Game.Futures
         {
             if (isCancelled)
             {
-                request.Dispose();
+                request?.Dispose();
             }
         }
     }

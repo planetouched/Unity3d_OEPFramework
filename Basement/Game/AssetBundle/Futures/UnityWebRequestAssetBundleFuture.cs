@@ -65,7 +65,7 @@ namespace Basement.Game.AssetBundle.Futures
         {
             if (isCancelled)
             {
-                request.Dispose();
+                request?.Dispose();
             }
         }
     }
