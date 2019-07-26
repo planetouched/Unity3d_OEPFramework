@@ -63,6 +63,11 @@ namespace Basement.OEPFramework.UnityEngine.Util
         {
             return new FutureScenarioFuture(futureScenario);
         }
+        
+        public static IFuture SequenceFuture(params IFuture[] futures)
+        {
+            return new SequenceFuture(futures);
+        }
 
         public static IFuture SyncLoop(int loopType)
         {

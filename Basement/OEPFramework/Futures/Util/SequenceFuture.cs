@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Basement.OEPFramework.Futures;
 
-namespace OEPFramework.futures.utils
+namespace Basement.OEPFramework.Futures.Util
 {
     public class SequenceFuture : FutureBase
     {

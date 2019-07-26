@@ -12,8 +12,8 @@ namespace Basement.BLFramework.Essential.Rewards
     public class Reward : DescriptionBase, IReward
     {
         public string type { get; }
-        private readonly IPathChoice _choice;
-        private readonly ModelsPath _path;
+        public IPathChoice choice { get; }
+        public ModelsPath path { get; }
 
         public Reward(RawNode node, IContext context) : base(node, context)
         {
@@ -21,13 +21,13 @@ namespace Basement.BLFramework.Essential.Rewards
 
             if (node.CheckKey("choice"))
             {
-                _choice = FactoryManager.Build<PathChoice>(node.GetNode("choice"), context);
+                choice = FactoryManager.Build<PathChoice>(node.GetNode("choice"), context);
             }
             else
             {
                 if (node.CheckKey("path"))
                 {
-                    _path = PathUtil.GetModelPath(GetContext(), node.GetNode("path"));
+                    path = PathUtil.GetModelPath(GetContext(), node.GetNode("path"));
                 }
             }
         }
@@ -49,7 +49,7 @@ namespace Basement.BLFramework.Essential.Rewards
 
         protected ModelsPath RewardPath()
         {
-            return _choice != null ? _choice.GetModelPath() : _path;
+            return choice != null ? choice.GetModelPath() : path;
         }
     }
 }

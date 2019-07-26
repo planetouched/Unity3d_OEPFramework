@@ -167,7 +167,10 @@ namespace Basement.BLFramework.Core.Model
 
             if (_children != null)
             {
-                foreach (var model in new List<IModel>((Collection<IModel>) _children.Values))
+                IModel[] copyArray = new IModel[_children.Count];
+                _children.Values.CopyTo(copyArray, 0);
+                
+                foreach (var model in copyArray)
                 {
                     model.Destroy();
                 }

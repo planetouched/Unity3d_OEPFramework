@@ -21,7 +21,7 @@ namespace Basement.OEPFramework.UnityEngine.Behaviour
         {
             _external = true;
             gameObject = go;
-			rectTransform = gameObject.GetComponent<RectTransform>();
+            rectTransform = gameObject.GetComponent<RectTransform>();
         }
 
         protected GUIBehaviour(string prefabPath, RectTransform parent)

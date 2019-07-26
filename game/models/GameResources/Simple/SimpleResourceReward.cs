@@ -9,11 +9,11 @@ namespace Game.Models.GameResources.Simple
 {
     public class SimpleResourceReward : Reward
     {
-        private readonly IAmount _amount;
+        public IAmount amount { get; }
 
         public SimpleResourceReward(RawNode node, IContext context = null) : base(node, context)
         {
-            _amount = FactoryManager.Build<Amount>(node.GetNode("amount"), context);
+            amount = FactoryManager.Build<Amount>(node.GetNode("amount"), context);
         }
 
         public override IRewardResult Calculate()
@@ -24,7 +24,7 @@ namespace Game.Models.GameResources.Simple
                 return new RewardResult();
 
             var resource = path.GetSelf<SimpleResource>();
-            int value = _amount.Number();
+            int value = amount.Number();
             return new SimpleResourceRewardResult(type, resource, value, GetContext());
         }
 

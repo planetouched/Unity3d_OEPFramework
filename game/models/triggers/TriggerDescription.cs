@@ -18,7 +18,7 @@ namespace Game.Models.Triggers
 
         public override void Initialization()
         {
-            reward = FactoryManager.Build<Basement.BLFramework.Essential.Rewards.Reward>(node.GetNode("reward"), GetContext());
+            reward = FactoryManager.Build<Reward>(node.GetNode("reward"), GetContext());
         }
     }
 }
