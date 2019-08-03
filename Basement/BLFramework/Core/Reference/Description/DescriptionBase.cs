@@ -57,6 +57,11 @@ namespace Basement.BLFramework.Core.Reference.Description
             return GetChildren()[collectionKey];
         }
 
+        public virtual T GetChild<T>(string collectionKey) where T : IDescription
+        {
+            return (T)GetChildren()[collectionKey];
+        }
+
         public void AddChild(string collectionKey, IDescription child)
         {
             GetChildren().Add(collectionKey, child);
