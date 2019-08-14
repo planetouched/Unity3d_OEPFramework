@@ -14,9 +14,9 @@ namespace Basement.BLFramework.Core.Context
             return _children[collectionKey];
         }
 
-        public void AddChild(string collectionKey, IDescription child)
+        public void AddChild(IDescription child)
         {
-            _children.Add(collectionKey, child);
+            _children.Add(child.key, child);
         }
 
         public void RemoveChild(string collectionKey)

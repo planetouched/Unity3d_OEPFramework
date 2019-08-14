@@ -29,9 +29,9 @@ namespace Basement.BLFramework.Core.Reference.Description
             }
             
             value = Factory(node.GetNode(collectionKey));
-            AddChild(collectionKey, value);
+            AddChild(value);
             value.Initialization();
-            return (TDescription)value;            
+            return (TDescription)value;
         }
 
         public IEnumerator<KeyValuePair<string, TDescription>> GetEnumerator()

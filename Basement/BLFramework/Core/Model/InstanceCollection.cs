@@ -23,41 +23,22 @@ namespace Basement.BLFramework.Core.Model
 
         public override void Initialization()
         {
-            base.Initialization();
-
             var collectionNode = initNode.GetNode("collection");
 
             foreach (var pair in collectionNode.GetUnsortedCollection())
             {
                 _lastId = Math.Max(_lastId, int.Parse(pair.Key));
-                var model = Factory(collectionNode.GetNode(pair.Key));
-                model.key = pair.Key;
+                var model = Factory(pair.Key, collectionNode.GetNode(pair.Key));
+                base.AddChild(model);
                 model.Initialization();
-                base.AddChild(pair.Key, model);
             }
-        }
-
-        public override void AddChild(string collectionKey, IModel child)
-        {
-            _lastId = Math.Max(_lastId, int.Parse(collectionKey));
-            child.key = _lastId.ToString();
-            base.AddChild(_lastId.ToString(), child);
-        }
-
-        public void AddChild(TModel model)
-        {
-            _lastId++;
-            model.key = _lastId.ToString();
-            base.AddChild(_lastId.ToString(), model);
         }
 
         public TModel AddChild(RawNode modelNode)
         {
-            _lastId++;
-            var model = Factory(modelNode);
-            model.key = _lastId.ToString();
+            var model = Factory(IncrementAndGetLastCollectionId(), modelNode);
+            base.AddChild(model);
             model.Initialization();
-            base.AddChild(_lastId.ToString(), model);
             return model;
         }
 
@@ -69,7 +50,12 @@ namespace Basement.BLFramework.Core.Model
             }
         }
         
-        protected abstract TModel Factory(RawNode modelInitNode);
+        protected abstract TModel Factory(string collectionKey, RawNode modelInitNode);
+
+        protected string IncrementAndGetLastCollectionId()
+        {
+            return (++_lastId).ToString();
+        }
 
         public override object Serialize()
         {

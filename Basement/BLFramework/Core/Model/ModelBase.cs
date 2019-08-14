@@ -26,9 +26,10 @@ namespace Basement.BLFramework.Core.Model
         private IOrderedDictionary _children;
         public event Action<IModel> onDestroy;
 
-        protected ModelBase(IContext context, IModel parent = null)
+        protected ModelBase(string key, IContext context, IModel parent = null)
         {
             _weakContext = new WeakRef<IContext>(context);
+            this.key = key;
 
             if (parent != null)
             {
@@ -86,9 +87,9 @@ namespace Basement.BLFramework.Core.Model
             return (IModel)GetChildren()[collectionKey];
         }
 
-        public virtual void AddChild(string collectionKey, IModel child)
+        public virtual void AddChild(IModel child)
         {
-            GetChildren().Add(collectionKey, child);
+            GetChildren().Add(child.key, child);
             child.SetParent(this);
             child.onDestroy += OnDestroy;
         }

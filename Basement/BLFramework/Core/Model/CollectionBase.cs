@@ -5,7 +5,7 @@ namespace Basement.BLFramework.Core.Model
 {
     public abstract class CollectionBase<TModel> : ModelBase where TModel : IModel
     {
-        protected CollectionBase(IContext context, IModel parent) : base(context, parent)
+        protected CollectionBase(string key, IContext context, IModel parent) : base(key, context, parent)
         {
         }
 

@@ -9,5 +9,7 @@ namespace Basement.BLFramework.Core.Context
         DataSources dataSources { get; }
         RawNode repositoryNode { get; }
         T GetChild<T>(string collectionKey) where T : class;
+
+        void Destroy();
     }
 }

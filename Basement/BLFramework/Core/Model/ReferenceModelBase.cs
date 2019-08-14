@@ -14,9 +14,8 @@ namespace Basement.BLFramework.Core.Model
         public bool selectable { get; }
         protected readonly RawNode initNode;
 
-        protected ReferenceModelBase(RawNode initNode, TCategories categories, TDescription description, IContext context) : base(context)
+        protected ReferenceModelBase(RawNode initNode, TCategories categories, TDescription description, IContext context) : base(description.key, context)
         {
-            key = description.key;
             this.initNode = initNode;
             this.description = description;
             this.categories = categories;

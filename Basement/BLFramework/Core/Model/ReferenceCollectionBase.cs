@@ -16,9 +16,8 @@ namespace Basement.BLFramework.Core.Model
         private readonly RawNode _initNode;
         public bool selectable { get; }
 
-        protected ReferenceCollectionBase(RawNode initNode, TCategories categories, IContext context, IDescription dataSource) : base(context, null)
+        protected ReferenceCollectionBase(RawNode initNode, TCategories categories, IContext context, IDescription dataSource) : base(dataSource.key, context, null)
         {
-            key = dataSource.key;
             _initNode = initNode;
             this.dataSource = dataSource;
             this.categories = categories;
@@ -38,7 +37,7 @@ namespace Basement.BLFramework.Core.Model
 
                 var description = (TDescription)dataSource.GetChild(collectionKey);
                 model = Factory(_initNode.GetNode(collectionKey), description);
-                AddChild(collectionKey, model);
+                AddChild(model);
                 model.Initialization();
 
                 return model;
