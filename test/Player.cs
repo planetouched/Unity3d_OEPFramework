@@ -31,10 +31,10 @@ namespace Test
             var random = new RandomCollection(initNode.GetNode("random"), new RandomCategories(), this, new RandomDataSource(repositoryNode.GetNode("random"), this));
             var cities = new CityCollection(initNode.GetNode("cities"), new CityCategories(), this, new CityDescriptionDataSource(repositoryNode.GetNode("cities"), this));
 
-            AddChild("random", random);
-            AddChild("simple-resources", simpleResources);
-            AddChild("objects", objects);
-            AddChild("cities", cities);
+            AddChild(random);
+            AddChild(simpleResources);
+            AddChild(objects);
+            AddChild(cities);
         }
 
         public IModel GetChild(string collectionKey)
@@ -42,9 +42,9 @@ namespace Test
             return (IModel)children[collectionKey];
         }
 
-        public void AddChild(string collectionKey, IModel obj)
+        public void AddChild(IModel child)
         {
-            children.Add(collectionKey, obj);
+            children.Add(child.key, child);
         }
 
         public void RemoveChild(string collectionKey, bool destroy)
@@ -60,6 +60,11 @@ namespace Test
         public T GetChild<T>(string collectionKey) where T : class
         {
             return (T)children[collectionKey];
+        }
+
+        public void Destroy()
+        {
+            throw new NotImplementedException();
         }
 
         public void RemoveChild(string collectionKey)

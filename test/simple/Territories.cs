@@ -7,10 +7,10 @@ namespace Test.Simple
     {
         public TerritoryCategory category;
 
-        public Territories(TerritoryCategory category, IContext context) : base(context, null)
+        public Territories(string key, TerritoryCategory category, IContext context) : base(key, context, null)
         {
             this.category = category;
-            AddChild("0", new Territory(category, context));
+            AddChild(new Territory("territory0", category, context));
         }
     }
 }

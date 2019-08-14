@@ -97,7 +97,7 @@ namespace Basement454545
 
             var player = new Player(mockNode, new RawNode(dict));
 
-            var territories = new Territories(new TerritoryCategory(), player);
+            var territories = new Territories("territories", new TerritoryCategory(), player);
             territories.Attach(territories.category.tank.fire, OnTerritories);
             territories["0"].Attach(territories.category.tank.fire, OnTerritory);
             territories["0"].tanks.Attach(territories.category.tank.fire, OnTanks);

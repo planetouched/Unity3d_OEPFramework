@@ -8,14 +8,14 @@ namespace Test.Simple
     {
         private TankCategory category;
 
-        public Tanks(TankCategory category, IContext context, IModel parent) : base(context, parent)
+        public Tanks(string key, TankCategory category, IContext context, IModel parent) : base(key, context, parent)
         {
             this.category = category;
 
             for (int i = 0; i < 10; i++)
             {
-                var tank = new Tank(category, context);
-                AddChild(i.ToString(), tank);
+                var tank = new Tank(i.ToString(), category, context);
+                AddChild(tank);
                 tank.Attach(category.fire, Func);
             }
         }

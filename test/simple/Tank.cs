@@ -7,7 +7,7 @@ namespace Test.Simple
     {
         private TankCategory category;
 
-        public Tank(TankCategory category, IContext context, IModel parent = null) : base(context, parent)
+        public Tank(string key, TankCategory category, IContext context, IModel parent = null) : base(key, context, parent)
         {
             this.category = category;
         }

@@ -3,7 +3,7 @@ using Basement.OEPFramework.UnityEngine.Loop;
 using Game.Preloader;
 using UnityEngine;
 
-namespace Basement.Game
+namespace Game
 {
     public class GameLoop : MonoBehaviour
     {

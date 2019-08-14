@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Basement.Common.Util
 {
-    public class ReferenceCounter
+    public abstract class ReferenceCounter
     {
         private static readonly Dictionary<Type, int> _references = new Dictionary<Type, int>();
         private static readonly object _syncRoot = new object();
@@ -18,7 +18,7 @@ namespace Basement.Common.Util
             }
         }
 
-        public ReferenceCounter()
+        protected ReferenceCounter()
         {
             lock (_syncRoot)
             {
@@ -54,7 +54,6 @@ namespace Basement.Common.Util
             lock (_syncRoot)
             {
                 _references[_classType]--;
-                //пройдемся по base классам
                 foreach (var baseType in GetBaseTypes(_classType))
                 {
                     _references[baseType]--;

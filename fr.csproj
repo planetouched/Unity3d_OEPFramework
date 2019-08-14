@@ -63,7 +63,8 @@
     <Compile Include="Basement\Common\ByteBuf\ByteBufReader.cs" />
     <Compile Include="Basement\Common\ByteBuf\ByteBufWriter.cs" />
     <Compile Include="Basement\Game\Futures\UnityWebRequestFuture.cs" />
-    <Compile Include="Basement\Game\GameLoop.cs" />
+    <Compile Include="Basement\OEPFramework\Futures\Util\SequenceFuture.cs" />
+    <Compile Include="Game\GameLoop.cs" />
     <Compile Include="Game\Models\Deals\DealDataSource.cs" />
     <Compile Include="Game\Models\Deals\DealDescription.cs" />
     <Compile Include="Game\Models\GameResources\Limited\LimitedResource.cs" />

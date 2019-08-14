@@ -20,7 +20,7 @@ namespace Test.Cities
         public override void Initialization()
         {
             buildings = new BuildingCollection(initNode.GetNode("buildings"), categories.buildings, GetContext(), new BuildingDataSource(description.GetNode().GetNode("buildings"), GetContext()));
-            AddChild("buildings", buildings);
+            AddChild(buildings);
 
             buildings.Attach(categories.buildings.complete, OnBuildingComplete);
         }

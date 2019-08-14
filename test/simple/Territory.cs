@@ -8,11 +8,11 @@ namespace Test.Simple
         public TerritoryCategory category;
         public Tanks tanks;
 
-        public Territory(TerritoryCategory category, IContext context, IModel parent = null) : base(context, parent)
+        public Territory(string key, TerritoryCategory category, IContext context, IModel parent = null) : base(key, context, parent)
         {
             this.category = category;
 
-            tanks = new Tanks(category.tank, context, this);
+            tanks = new Tanks("tanks", category.tank, context, this);
         }
     }
 }
