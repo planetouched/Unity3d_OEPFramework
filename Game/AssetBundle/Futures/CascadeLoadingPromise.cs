@@ -1,6 +1,6 @@
 ﻿using Basement.OEPFramework.Futures;
 
-namespace Basement.Game.AssetBundle.Futures
+namespace Game.AssetBundle.Futures
 {
     public class CascadeLoadingPromise : Future
     {

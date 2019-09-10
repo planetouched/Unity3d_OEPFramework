@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Basement.Common;
 
-namespace Basement.Game.AssetBundle.Repository
+namespace Game.AssetBundle.Repository
 {
     public class AssetBundlesRepository
     {

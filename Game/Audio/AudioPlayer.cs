@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Basement.Game.Audio.Futures;
 using Basement.OEPFramework.UnityEngine;
 using Basement.OEPFramework.UnityEngine._Base;
+using Game.Audio.Futures;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Basement.Game.Audio
+namespace Game.Audio
 {
     public class AudioPlayer : DroppableItemBase
     {

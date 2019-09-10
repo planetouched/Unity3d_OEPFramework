@@ -4,7 +4,7 @@ using Basement.OEPFramework.Futures;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Basement.Game.Futures
+namespace Game.Futures
 {
     public class UnityWebRequestFuture : Future
     {

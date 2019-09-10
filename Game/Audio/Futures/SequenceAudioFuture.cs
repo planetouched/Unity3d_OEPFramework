@@ -3,7 +3,7 @@ using Basement.OEPFramework.Futures;
 using Basement.OEPFramework.UnityEngine.Util;
 using UnityEngine;
 
-namespace Basement.Game.Audio.Futures
+namespace Game.Audio.Futures
 {
     public class SequenceAudioFuture : AudioFutureBase
     {

@@ -2,7 +2,7 @@
 using Basement.OEPFramework.UnityEngine.Behaviour;
 using Basement.OEPFramework.UnityEngine.Loop;
 
-namespace Basement.Game.AssetBundle.Futures
+namespace Game.AssetBundle.Futures
 {
     public class ProcessFuture : FutureBehaviour, IProcess
     {

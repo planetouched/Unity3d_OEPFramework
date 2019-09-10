@@ -2,7 +2,7 @@
 using Basement.OEPFramework.UnityEngine._Base;
 using UnityEngine;
 
-namespace Basement.Game.Common
+namespace Game.Common
 {
     public static class MouseEventHandlerType
     {

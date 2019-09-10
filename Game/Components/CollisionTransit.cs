@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Basement.Game.Components
+namespace Game.Components
 {
     public class CollisionTransit : MonoBehaviour
     {

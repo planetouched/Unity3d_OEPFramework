@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Basement.Common;
-using Basement.Game.AssetBundle.Futures;
-using Basement.Game.AssetBundle.Repository;
 using Basement.OEPFramework.Futures;
+using Game.AssetBundle.Futures;
+using Game.AssetBundle.Repository;
 using UnityEngine;
 using UnityEngine.Networking;
 using Object = UnityEngine.Object;
 
-namespace Basement.Game.AssetBundle
+namespace Game.AssetBundle
 {
     public class AssetBundleManager
     {

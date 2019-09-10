@@ -1,7 +1,7 @@
 ﻿using Basement.OEPFramework.UnityEngine.Loop;
 using UnityEngine;
 
-namespace Basement.Game.Audio.Futures
+namespace Game.Audio.Futures
 {
     public class AudioFuture : AudioFutureBase
     {

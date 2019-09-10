@@ -1,7 +1,7 @@
 ﻿using Basement.OEPFramework.UnityEngine.Behaviour;
 using UnityEngine;
 
-namespace Basement.Game.Audio.Futures
+namespace Game.Audio.Futures
 {
     public abstract class AudioFutureBase : FutureBehaviour
     {

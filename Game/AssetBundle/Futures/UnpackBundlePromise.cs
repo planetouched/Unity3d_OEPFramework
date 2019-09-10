@@ -2,7 +2,7 @@
 using Basement.OEPFramework.UnityEngine.Loop;
 using UnityEngine;
 
-namespace Basement.Game.AssetBundle.Futures
+namespace Game.AssetBundle.Futures
 {
     public class UnpackBundlePromise : FutureBehaviour
     {

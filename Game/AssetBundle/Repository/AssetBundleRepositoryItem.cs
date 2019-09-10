@@ -1,7 +1,7 @@
 ﻿using Basement.Common;
 using UnityEngine;
 
-namespace Basement.Game.AssetBundle.Repository
+namespace Game.AssetBundle.Repository
 {
     public class AssetBundleRepositoryItem
     {

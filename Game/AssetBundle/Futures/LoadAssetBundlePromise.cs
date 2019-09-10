@@ -5,7 +5,7 @@ using Basement.OEPFramework.UnityEngine.Util;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Basement.Game.AssetBundle.Futures
+namespace Game.AssetBundle.Futures
 {
     public class LoadAssetBundlePromise : Future, IProcess
     {

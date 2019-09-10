@@ -1,7 +1,7 @@
 ﻿using Basement.OEPFramework.UnityEngine;
 using UnityEngine;
 
-namespace Basement.Game.AssetBundle
+namespace Game.AssetBundle
 {
     public class AssetBundleUnloadService
     {

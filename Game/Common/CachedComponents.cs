@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Basement.Game.Common
+namespace Game.Common
 {
     public static class CachedComponentsExtensions
     {
