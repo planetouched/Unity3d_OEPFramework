@@ -5,7 +5,7 @@ using System.Text;
 using Ionic.Zip;
 using Ionic.Zlib;
 
-namespace common.utils
+namespace Game.Utils
 {
     public static class ZlibUtil
     {
