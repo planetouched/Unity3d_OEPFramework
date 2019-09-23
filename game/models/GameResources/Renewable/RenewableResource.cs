@@ -10,7 +10,8 @@ namespace Game.Models.GameResources.Renewable
     public class RenewableResource : ReferenceModelBase<RenewableResourceCategories, RenewableResourceDescription>
     {
         public long lastUpdateTime { get; private set; }
-        public int amount { get { return InnerGetAmount(); } }
+        public int amount => InnerGetAmount();
+        
         private int innerAmount;
 
         public RenewableResource(RawNode initNode, RenewableResourceCategories categories, RenewableResourceDescription description, IContext context)
@@ -35,28 +36,31 @@ namespace Game.Models.GameResources.Renewable
                 throw new Exception("value < 0");
             }
 
-            lastUpdateTime = TimeUtil.GetUnixTime();
             int oldAmount = innerAmount;
+            
             innerAmount = setAmount > description.maximum ? description.maximum : setAmount;
 
             Call(categories.changed, new RenewableResourceHandlerArgs { oldAmount = oldAmount, newAmount = innerAmount });
         }
 
-        void Recount()
+        private void Recount()
         {
             if (innerAmount >= description.renewableMaximum) return;
             var currentTime = TimeUtil.GetUnixTime();
 
             var newAmount = innerAmount + (int)(currentTime - lastUpdateTime) / description.recoveryTime * description.recoveryStep;
+            
             lastUpdateTime = currentTime - (currentTime - lastUpdateTime) % description.recoveryTime;
 
             if (newAmount >= description.renewableMaximum && innerAmount <= description.renewableMaximum)
+            {
                 newAmount = description.renewableMaximum;
+            }
 
             innerAmount = newAmount;
         }
 
-        int InnerGetAmount()
+        private int InnerGetAmount()
         {
             int oldAmount = innerAmount;
             Recount();
