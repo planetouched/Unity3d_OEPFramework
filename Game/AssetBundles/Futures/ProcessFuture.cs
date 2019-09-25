@@ -1,7 +1,7 @@
 ﻿using System;
 using Basement.OEPFramework.Futures;
 
-namespace Game.AssetBundle.Futures
+namespace Game.AssetBundles.Futures
 {
     public class ProcessFuture : Future, IProcess
     {
@@ -19,14 +19,18 @@ namespace Game.AssetBundle.Futures
 
         protected override void OnRun()
         {
-            _process.onProcessComplete += _ =>
-            {
-                Complete();
-            };
+            _process.onProcessComplete += OnProcessComplete;
+        }
+
+        private void OnProcessComplete(IProcess _)
+        {
+            Complete();
         }
 
         protected override void OnComplete()
         {
+            _process.onProcessComplete -= OnProcessComplete;
+            
             if (isDone)
             {
                 isComplete = true;

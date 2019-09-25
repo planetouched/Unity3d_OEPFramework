@@ -1,17 +1,18 @@
 ﻿using Basement.OEPFramework.Futures;
 using UnityEngine;
 
-namespace Game.AssetBundle.Futures
+namespace Game.AssetBundles.Futures
 {
     public class UnpackBundlePromise : Future
     {
-        public AssetBundleRequest asyncOperation { get; private set; } 
+        public float asyncOperationProgress => _asyncOperation?.progress ?? 1;  
         public Object[] allAssets { get; private set; }
         
-        private readonly UnityEngine.AssetBundle _assetBundle;
+        private readonly AssetBundle _assetBundle;
         private readonly bool _async;
+        private AssetBundleRequest _asyncOperation;
 
-        public UnpackBundlePromise(UnityEngine.AssetBundle assetBundle, bool async)
+        public UnpackBundlePromise(AssetBundle assetBundle, bool async)
         {
             SetAsPromise();
             _async = async;
@@ -22,20 +23,19 @@ namespace Game.AssetBundle.Futures
         {
             if (_async)
             {
-                asyncOperation = _assetBundle.LoadAllAssetsAsync();
+                _asyncOperation = _assetBundle.LoadAllAssetsAsync();
+                
+                _asyncOperation.completed += _ =>
+                {
+                    allAssets = _asyncOperation.allAssets;
+                    Complete();
+                };
             }
             else
             {
                 allAssets = _assetBundle.LoadAllAssets();
                 Complete();
-                return;
             }
-
-            asyncOperation.completed += _ =>
-            {
-                allAssets = asyncOperation.allAssets;
-                Complete();
-            };
         }
 
         protected override void OnComplete()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Basement.OEPFramework.Futures;
 using Basement.OEPFramework.Futures.Util;
 
-namespace Game.AssetBundle
+namespace Game.AssetBundles
 {
     public class CascadeLoading
     {

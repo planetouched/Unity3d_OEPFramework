@@ -42,7 +42,7 @@ namespace Game
 
         private void Update()
         {
-            Timer.Process();
+            Timer.Process(Loops.TIMER);
             SimulatePhysics();
             EngineLoopManager.Execute(Loops.UPDATE);
         }

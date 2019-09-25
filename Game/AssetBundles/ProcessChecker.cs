@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Basement.Common.Util;
 using Basement.OEPFramework.Futures;
 using Basement.OEPFramework.Futures.Util.ThreadSafe;
-using Game.AssetBundle.Futures;
+using Game.AssetBundles.Futures;
 
-namespace Game.AssetBundle
+namespace Game.AssetBundles
 {
     public class ProcessChecker : IProcess
     {

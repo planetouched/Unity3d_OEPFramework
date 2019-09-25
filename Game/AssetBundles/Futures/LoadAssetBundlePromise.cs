@@ -5,14 +5,14 @@ using Basement.OEPFramework.UnityEngine.Util;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Game.AssetBundle.Futures
+namespace Game.AssetBundles.Futures
 {
     public class LoadAssetBundlePromise : Future, IProcess
     {
-        public UnityEngine.AssetBundle assetBundle { get; private set; }
+        public AssetBundle assetBundle { get; private set; }
         public UnityWebRequest request { get; private set; } 
         public float loadingProgress => _loadFuture.request.downloadProgress;
-        public float unpackProgress => _unpackBundlePromise.asyncOperation.progress;
+        public float unpackProgress => _unpackBundlePromise.asyncOperationProgress;
         public event Action<IProcess> onProcessComplete;
         public bool isComplete { get; private set; }
         public bool isDependency { get; }

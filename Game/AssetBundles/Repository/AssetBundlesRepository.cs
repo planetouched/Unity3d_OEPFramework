@@ -1,16 +1,13 @@
 ﻿using System.Collections.Generic;
 using Basement.Common;
 
-namespace Game.AssetBundle.Repository
+namespace Game.AssetBundles.Repository
 {
     public class AssetBundlesRepository
     {
         readonly Dictionary<string, AssetBundleRepositoryItem> repositoryItems = new Dictionary<string, AssetBundleRepositoryItem>();
 
-        public AssetBundleRepositoryItem this[string key]
-        {
-            get { return repositoryItems[key]; }
-        }
+        public AssetBundleRepositoryItem this[string key] => repositoryItems[key];
 
         public AssetBundlesRepository(RawNode node)
         {
