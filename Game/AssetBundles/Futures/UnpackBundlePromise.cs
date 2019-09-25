@@ -1,10 +1,9 @@
-﻿using Basement.OEPFramework.UnityEngine.Behaviour;
-using Basement.OEPFramework.UnityEngine.Loop;
+﻿using Basement.OEPFramework.Futures;
 using UnityEngine;
 
 namespace Game.AssetBundle.Futures
 {
-    public class UnpackBundlePromise : FutureBehaviour
+    public class UnpackBundlePromise : Future
     {
         public AssetBundleRequest asyncOperation { get; private set; } 
         public Object[] allAssets { get; private set; }
@@ -17,16 +16,6 @@ namespace Game.AssetBundle.Futures
             SetAsPromise();
             _async = async;
             _assetBundle = assetBundle;
-            LoopOn(Loops.UPDATE, Update);
-        }
-
-        private void Update()
-        {
-            if (asyncOperation.isDone)
-            {
-                allAssets = asyncOperation.allAssets;
-                Complete();
-            }
         }
 
         protected override void OnRun()
@@ -42,7 +31,11 @@ namespace Game.AssetBundle.Futures
                 return;
             }
 
-            Play();
+            asyncOperation.completed += _ =>
+            {
+                allAssets = asyncOperation.allAssets;
+                Complete();
+            };
         }
 
         protected override void OnComplete()

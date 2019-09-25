@@ -1,10 +1,9 @@
 ﻿using System;
-using Basement.OEPFramework.UnityEngine.Behaviour;
-using Basement.OEPFramework.UnityEngine.Loop;
+using Basement.OEPFramework.Futures;
 
 namespace Game.AssetBundle.Futures
 {
-    public class ProcessFuture : FutureBehaviour, IProcess
+    public class ProcessFuture : Future, IProcess
     {
         public float loadingProgress => _process.loadingProgress;
         public float unpackProgress => _process.unpackProgress;
@@ -16,18 +15,14 @@ namespace Game.AssetBundle.Futures
         public ProcessFuture(IProcess process)
         {
             _process = process;
-            LoopOn(Loops.UPDATE, Update);
-        }
-
-        private void Update()
-        {
-            if (_process.isComplete)
-                Complete();
         }
 
         protected override void OnRun()
         {
-            Play();
+            _process.onProcessComplete += _ =>
+            {
+                Complete();
+            };
         }
 
         protected override void OnComplete()
