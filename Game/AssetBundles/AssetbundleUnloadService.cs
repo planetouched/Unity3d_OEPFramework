@@ -1,7 +1,7 @@
 ﻿using Basement.OEPFramework.UnityEngine;
 using UnityEngine;
 
-namespace Game.AssetBundle
+namespace Game.AssetBundles
 {
     public class AssetBundleUnloadService
     {
@@ -20,7 +20,7 @@ namespace Game.AssetBundle
             _packedSize = unloadPackedSizeInBytes;
         }
 
-        public void SetUnloadPacketSize(int sizeInBytes)
+        public void SetUnloadPackedSize(int sizeInBytes)
         {
             _packedSize = sizeInBytes;
         }
@@ -35,17 +35,17 @@ namespace Game.AssetBundle
 
         public void Stop()
         {
-            StopShedule();
+            StopSchedule();
             GEvent.Detach(TRY_UNLOAD, OnTryUnload);
         }
 
         public void StartSchedule(float period)
         {
-            StopShedule();
+            StopSchedule();
             _timer = Timer.Create(period, OnTimer, null);
         }
 
-        public void StopShedule()
+        public void StopSchedule()
         {
             _timer?.Drop();
             _timer = null;

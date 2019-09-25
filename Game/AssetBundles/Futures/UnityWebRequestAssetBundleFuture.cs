@@ -2,7 +2,7 @@ using Basement.OEPFramework.Futures;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Game.AssetBundle.Futures
+namespace Game.AssetBundles.Futures
 {
     public class UnityWebRequestAssetBundleFuture : Future
     {

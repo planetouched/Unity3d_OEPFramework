@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Basement.Common.Util;
 
-namespace Game.AssetBundle
+namespace Game.AssetBundles
 {
     public class Unloader
     {

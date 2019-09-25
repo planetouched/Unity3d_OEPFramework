@@ -2,20 +2,20 @@ using System;
 using System.Collections.Generic;
 using Basement.Common;
 using Basement.OEPFramework.Futures;
-using Game.AssetBundle.Futures;
-using Game.AssetBundle.Repository;
+using Game.AssetBundles.Futures;
+using Game.AssetBundles.Repository;
 using UnityEngine;
 using UnityEngine.Networking;
 using Object = UnityEngine.Object;
 
-namespace Game.AssetBundle
+namespace Game.AssetBundles
 {
     public class AssetBundleManager
     {
         private class AssetBundleRef
         {
             public Object[] allAssets { get; set; }
-            public UnityEngine.AssetBundle assetBundle { get; set; }
+            public AssetBundle assetBundle { get; set; }
             public UnityWebRequest request { get; set; }
             public int loadedCount { get; set; }
             public bool dependency { get; }
@@ -51,7 +51,7 @@ namespace Game.AssetBundle
         {
             public DependencyNode parentNode { get; }
             public string assetBundleName { get; }
-            public List<DependencyNode> nodes { get; set; } = new List<DependencyNode>();
+            public List<DependencyNode> nodes { get; } = new List<DependencyNode>();
             public bool stop { get; set; }
 
             public DependencyNode(string assetBundleName, DependencyNode parent)
