@@ -1,18 +1,11 @@
 using System.Collections.Generic;
-using Basement.Common.Util;
 
 namespace Game.AssetBundles
 {
     public class Unloader
     {
         private readonly Dictionary<string, int> _counter = new Dictionary<string, int>();
-        private readonly AssetBundleManager _manager;
 
-        public Unloader()
-        {
-            _manager = SingletonManager.Get<AssetBundleManager>();
-        }
-        
         public void Add(string resource)
         {
             if (_counter.TryGetValue(resource, out var count))
@@ -31,7 +24,7 @@ namespace Game.AssetBundles
             {
                 for (int i = 0; i < pair.Value; i++)
                 {
-                    _manager.TryUnload(pair.Key);
+                    AssetBundleManager.TryUnload(pair.Key);
                 }
             }
             _counter.Clear();

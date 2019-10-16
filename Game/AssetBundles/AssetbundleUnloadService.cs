@@ -3,79 +3,56 @@ using UnityEngine;
 
 namespace Game.AssetBundles
 {
-    public class AssetBundleUnloadService
+    public static class AssetBundleUnloadService
     {
-        public static string TRY_UNLOAD = GEvent.GetUniqueCategory();
+        private static Timer _timer;
+        private static AsyncOperation _lastAsyncOperation;
+        private static int _packedSize;
 
-        private readonly AssetBundleManager _assetBundleManager;
-        private Timer _timer;
-        private AsyncOperation _lastAsyncOperation;
-        private int _packedSize;
-        private readonly float _cleanPeriod;
-
-        public AssetBundleUnloadService(AssetBundleManager manager, int unloadPackedSizeInBytes, float cleanPeriod = -1)
+        public static void Init(int unloadPackedSizeInBytes)
         {
-            _cleanPeriod = cleanPeriod;
-            _assetBundleManager = manager;
             _packedSize = unloadPackedSizeInBytes;
         }
 
-        public void SetUnloadPackedSize(int sizeInBytes)
+        public static void SetUnloadPackedSize(int sizeInBytes)
         {
             _packedSize = sizeInBytes;
         }
 
-        public void Start()
-        {
-            if (_cleanPeriod > 0)
-                StartSchedule(_cleanPeriod);
-
-            GEvent.Attach(TRY_UNLOAD, OnTryUnload, null);
-        }
-
-        public void Stop()
-        {
-            StopSchedule();
-            GEvent.Detach(TRY_UNLOAD, OnTryUnload);
-        }
-
-        public void StartSchedule(float period)
+        public static void StartSchedule(float period)
         {
             StopSchedule();
             _timer = Timer.Create(period, OnTimer, null);
         }
 
-        public void StopSchedule()
+        public static void StopSchedule()
         {
             _timer?.Drop();
             _timer = null;
         }
 
-        public void TryUnload()
+        public static AsyncOperation TryUnload()
         {
-            if (_assetBundleManager.loadedPackedSize >= _packedSize)
+            if (AssetBundleManager.loadedPackedSize >= _packedSize)
             {
-                ForceTryUnload();
+                return ForceTryUnload();
             }
+
+            return null;
         }
 
-        public AsyncOperation ForceTryUnload()
+        public static AsyncOperation ForceTryUnload()
         {
             if (_lastAsyncOperation != null && !_lastAsyncOperation.isDone)
             {
                 return _lastAsyncOperation;
             }
 
-            _lastAsyncOperation = _assetBundleManager.UnloadUnused();
+            _lastAsyncOperation = AssetBundleManager.UnloadUnused();
             return _lastAsyncOperation;
         }
         
-        private void OnTryUnload(object o)
-        {
-            TryUnload();
-        }
-
-        private void OnTimer()
+        private static void OnTimer()
         {
             TryUnload();
         }

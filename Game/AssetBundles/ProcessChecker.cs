@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Basement.Common.Util;
 using Basement.OEPFramework.Futures;
 using Basement.OEPFramework.Futures.Util.ThreadSafe;
 using Game.AssetBundles.Futures;
@@ -14,16 +13,10 @@ namespace Game.AssetBundles
         public event Action<IProcess> onProcessComplete;
         public bool isComplete { get; private set; }
 
-        private readonly AssetBundleManager _manager;
         private readonly FutureWatcher _watcher = new FutureWatcher();
         private readonly List<IProcess> _processes = new List<IProcess>();
         private bool _loading;
-
-        public ProcessChecker()
-        {
-            _manager = SingletonManager.Get<AssetBundleManager>();
-        }
-
+        
         public void Add(IProcess process)
         {
             _processes.Add(process);
@@ -36,7 +29,7 @@ namespace Game.AssetBundles
 
             unloader?.Add(resource);
 
-            var compositeFuture = _manager.Load(resource, out var processList, async);
+            var compositeFuture = AssetBundleManager.Load(resource, out var processList, async);
             
             foreach (var loadFuture in processList)
             {

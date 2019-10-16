@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace Game.AssetBundles
 {
-    public class AssetBundleManager
+    public static class AssetBundleManager
     {
         private class AssetBundleRef
         {
@@ -61,35 +61,35 @@ namespace Game.AssetBundles
             }
         }
 
-        public int loadedPackedSize { get; private set; }
-        public AssetBundlesRepository repository { get; }
-        public string assetBundlesUrl { get; }
+        public static int loadedPackedSize { get; private set; }
+        public static AssetBundlesRepository repository { get; private set; }
+        public static string assetBundlesUrl { get; private set; }
         
-        private readonly Dictionary<string, LoadAssetBundlePromise> _loading = new Dictionary<string, LoadAssetBundlePromise>();
-        private readonly Dictionary<string, AssetBundleRef> _loaded = new Dictionary<string, AssetBundleRef>();
+        private static readonly Dictionary<string, LoadAssetBundlePromise> _loading = new Dictionary<string, LoadAssetBundlePromise>();
+        private static readonly Dictionary<string, AssetBundleRef> _loaded = new Dictionary<string, AssetBundleRef>();
 
-        public AssetBundleManager(RawNode repositoryNode, string assetBundlesUrl)
+        public static void Init(RawNode repositoryNode, string assetBundlesUrl)
         {
-            this.assetBundlesUrl = assetBundlesUrl;
+            AssetBundleManager.assetBundlesUrl = assetBundlesUrl;
             repository = new AssetBundlesRepository(repositoryNode);
         }
 
-        public T GetAsset<T>(string assetBundle) where T : Object
+        public static T GetAsset<T>(string assetBundle) where T : Object
         {
             return _loaded[assetBundle].FindAsset<T>();
         }
 
-        public T GetAsset<T>(string assetBundle, string assetName) where T : Object
+        public static T GetAsset<T>(string assetBundle, string assetName) where T : Object
         {
             return _loaded[assetBundle].FindAsset<T>(assetName);
         }
 
-        public int GetLoadedCount(string assetBundle)
+        public static int GetLoadedCount(string assetBundle)
         {
             return _loaded[assetBundle].loadedCount;
         }
 
-        public AsyncOperation UnloadUnused()
+        public static AsyncOperation UnloadUnused()
         {
             List<string> remove = new List<string>();
             foreach (var pair in _loaded)
@@ -97,6 +97,7 @@ namespace Game.AssetBundles
                 if (pair.Value.loadedCount == 0)
                 {
                     pair.Value.allAssets = null;
+                    
                     if (pair.Value.dependency)
                     {
                         pair.Value.assetBundle.Unload(true);
@@ -116,11 +117,12 @@ namespace Game.AssetBundles
             return Resources.UnloadUnusedAssets();
         }
 
-        public void TryUnload(string mainAssetBundle)
+        public static void TryUnload(string mainAssetBundle)
         {
             var node = new DependencyNode(mainAssetBundle, null);
             CollectDependencies(node);
             var assetBundles = new List<DependencyNode>();
+            
             while (!GetLatestDependencies(node, assetBundles))
             {
                 foreach (var assetBundle in assetBundles)
@@ -135,18 +137,30 @@ namespace Game.AssetBundles
             }
         }
 
-        public bool IsCached(string assetBundle)
+        public static bool ClearOldCachedVersions(string assetBundle)
         {
-            return Caching.IsVersionCached(assetBundlesUrl + assetBundle, repository[assetBundle].hash);
+            return Caching.ready && Caching.ClearOtherCachedVersions(assetBundle, repository[assetBundle].hash);
         }
 
-        public bool IsLoaded(string assetBundle)
+        public static void ClearAllOldCache()
+        {
+            foreach (var pair in repository)
+            {
+                ClearOldCachedVersions(pair.Key);
+            }
+        }
+        
+        public static bool IsCached(string assetBundle)
+        {
+            return Caching.ready && Caching.IsVersionCached(assetBundlesUrl + assetBundle, repository[assetBundle].hash);
+        }
+
+        public static bool IsLoaded(string assetBundle)
         {
             return _loaded.ContainsKey(assetBundle);
         }
 
-
-        private void LoadPartial(CascadeLoading cascade, List<IProcess> processList, IEnumerable<DependencyNode> assetBundles, bool async)
+        private static void LoadPartial(CascadeLoading cascade, List<IProcess> processList, IEnumerable<DependencyNode> assetBundles, bool async)
         {
             foreach (var assetBundleNode in assetBundles)
             {
@@ -192,13 +206,14 @@ namespace Game.AssetBundles
             }
         }
 
-        public IFuture Load(string mainAssetBundle, out List<IProcess> processList, bool async = true)
+        public static IFuture Load(string mainAssetBundle, out List<IProcess> processList, bool async = true)
         {
             var cascade = new CascadeLoading();
             var node = new DependencyNode(mainAssetBundle, null);
             CollectDependencies(node);
             var assetBundles = new List<DependencyNode>();
             processList = new List<IProcess>();
+            
             while (!GetLatestDependencies(node, assetBundles))
             {
                 LoadPartial(cascade, processList, assetBundles, async);
@@ -209,7 +224,7 @@ namespace Game.AssetBundles
             return new CascadeLoadingPromise(cascade).Run();
         }
 
-        private bool GetLatestDependencies(DependencyNode currentNode, List<DependencyNode> list)
+        private static bool GetLatestDependencies(DependencyNode currentNode, List<DependencyNode> list)
         {
             if (currentNode.stop) 
             {
@@ -243,7 +258,7 @@ namespace Game.AssetBundles
             return false;
         }
 
-        private void CollectDependencies(DependencyNode parentNode)
+        private static void CollectDependencies(DependencyNode parentNode)
         {
             foreach (var name in repository[parentNode.assetBundleName].dependencies)
             {
