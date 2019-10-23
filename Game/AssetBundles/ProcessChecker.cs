@@ -123,6 +123,7 @@ namespace Game.AssetBundles
         {
             _processes.Clear();
             _watcher.CancelFutures();
+            onProcessComplete = null;
         }
     }
 }
