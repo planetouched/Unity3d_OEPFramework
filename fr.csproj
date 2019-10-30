@@ -61,6 +61,9 @@
     <Compile Include="Basement\Common\ByteBuf\ByteBufReader.cs" />
     <Compile Include="Basement\Common\ByteBuf\ByteBufWriter.cs" />
     <Compile Include="Basement\OEPFramework\Futures\Util\SequenceFuture.cs" />
+    <Compile Include="Editor\AssetBundles\AssetBundles.cs" />
+    <Compile Include="Editor\RefViewer\RefEntry.cs" />
+    <Compile Include="Editor\RefViewer\ReferenceViewer.cs" />
     <Compile Include="Game\AssetBundles\AssetBundleManager.cs" />
     <Compile Include="Game\AssetBundles\AssetbundleUnloadService.cs" />
     <Compile Include="Game\AssetBundles\Futures\CascadeLoadingPromise.cs" />
@@ -297,6 +300,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Editor\RefViewer\RefEntry.cs.meta" />
+    <Content Include="Editor\RefViewer\ReferenceViewer.cs.meta" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

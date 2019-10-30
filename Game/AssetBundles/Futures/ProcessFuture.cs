@@ -19,6 +19,12 @@ namespace Game.AssetBundles.Futures
 
         protected override void OnRun()
         {
+            if (_process.isComplete)
+            {
+                Complete();
+                return;
+            }
+            
             _process.onProcessComplete += OnProcessComplete;
         }
 

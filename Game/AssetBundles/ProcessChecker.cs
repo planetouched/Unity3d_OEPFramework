@@ -14,81 +14,90 @@ namespace Game.AssetBundles
         public bool isComplete { get; private set; }
 
         private readonly FutureWatcher _watcher = new FutureWatcher();
-        private readonly List<IProcess> _processes = new List<IProcess>();
+        private readonly IList<IProcess> _processes = new List<IProcess>();
         private bool _loading;
+        
+        private readonly IList<(string resource, bool async)> _itemsToLoad = new List<(string resource, bool async)>();
+        private readonly IList<IProcess> _processesToLoad = new List<IProcess>();
         
         public void Add(IProcess process)
         {
-            _processes.Add(process);
-            _watcher.AddFuture(new ProcessFuture(process).Run());
+            _processesToLoad.Add(process);
         }
 
-        public void Add(string resource, Unloader unloader = null, bool async = true)
+        public void Add(string resource, bool async = true)
+        {
+            _itemsToLoad.Add((resource, async));
+        }
+
+        public void Load(Unloader unloader = null)
         {
             isComplete = false;
-
-            unloader?.Add(resource);
-
-            var compositeFuture = AssetBundleManager.Load(resource, out var processList, async);
             
-            foreach (var loadFuture in processList)
+            foreach (var pair in _itemsToLoad)
             {
-                _processes.Add(loadFuture);
-            }
+                var loadFuture = AssetBundleManager.Load(pair.resource, out var processList, pair.async);
+                
+                unloader?.Add(pair.resource);
 
-            _watcher.AddFuture(compositeFuture);
-
-            if (_loading)
-            {
-                Subscribe(compositeFuture);
-            }
-        }
-
-        public void Load()
-        {
-            if (CallCompleteIfEmpty() || _loading)
-                return;
-
-            _loading = true;
-
-            foreach (var future in _watcher.futures)
-            {
-                Subscribe(future);
-            }
-        }
-        
-        private void Subscribe(IFuture target)
-        {
-            target.AddListener(future =>
-            {
-                if (_watcher.futuresCount == 0 && future.isDone)
+                if (!loadFuture.isDone)
                 {
-                    _processes.Clear();
-                    isComplete = true;
-                    _loading = false;
+                    foreach (var process in processList)
+                    {
+                        _processes.Add(process);
+                    }
 
-                    onProcessComplete?.Invoke(this);
+                    AttachFuture(loadFuture);
                 }
-            });
-        }
+            }
+            
+            _itemsToLoad.Clear();
 
-        private bool CallCompleteIfEmpty()
-        {
-            if (_watcher.futuresCount == 0)
+            foreach (var process in _processesToLoad)
+            {
+                if (!process.isComplete)
+                {
+                    _processes.Add(process);
+                    AttachFuture(new ProcessFuture(process).Run());
+                }
+            }
+            
+            _processesToLoad.Clear();
+
+            if (_processes.Count == 0)
             {
                 isComplete = true;
                 onProcessComplete?.Invoke(this);
-
-                return true;
             }
-            return false;
+        }
+
+        private void AttachFuture(IFuture future)
+        {
+            _watcher.AddFuture(future);
+            
+            future.AddListener(f =>
+            {
+                if (_watcher.futuresCount == 0)
+                {
+                    _processes.Clear();
+
+                    if (f.isDone)
+                    {
+                        isComplete = true;
+                        onProcessComplete?.Invoke(this);
+                    }
+                }
+            });
         }
 
         private float CalcUnpackProgress()
         {
             if (isComplete) return 1;
+            
             if (_processes.Count == 0)
+            {
                 return 0;
+            }
 
             float value = 0;
             
