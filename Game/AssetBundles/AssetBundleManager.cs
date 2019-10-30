@@ -47,7 +47,7 @@ namespace Game.AssetBundles
             }
         }
 
-        internal class DependencyNode
+        private class DependencyNode
         {
             public DependencyNode parentNode { get; }
             public string assetBundleName { get; }
@@ -185,7 +185,7 @@ namespace Game.AssetBundles
 
                     //first load
                     var node = repository[assetBundle];
-                    var loader = new LoadAssetBundlePromise(assetBundle, assetBundlesUrl, assetBundleNode.parentNode != null, node.hash, node.crc32, async);
+                    var loader = new LoadAssetBundlePromise(node.file, assetBundlesUrl, assetBundleNode.parentNode != null, node.hash, node.crc32, async);
                     _loading.Add(assetBundle, loader);
                     _loaded.Add(assetBundle, new AssetBundleRef(assetBundle, assetBundleNode.parentNode != null));
                     string bundle = assetBundle;

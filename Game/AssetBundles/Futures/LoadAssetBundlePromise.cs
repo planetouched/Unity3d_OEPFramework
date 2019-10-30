@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Basement.OEPFramework.Futures;
 using Basement.OEPFramework.UnityEngine.Util;
 using UnityEngine;
@@ -44,9 +45,9 @@ namespace Game.AssetBundles.Futures
 
         private IEnumerator<IFuture> LoadingProcess()
         {
-            Debug.Log("AssetBundle load: " + _url + _assetBundleName);
+            Debug.Log("AssetBundle load: " + Path.Combine(_url, _assetBundleName));
             
-            _loadFuture = new UnityWebRequestAssetBundleFuture(_url + _assetBundleName, _hash, _crc32, Int32.MaxValue);
+            _loadFuture = new UnityWebRequestAssetBundleFuture(Path.Combine(_url, _assetBundleName), _hash, _crc32, Int32.MaxValue);
             yield return _loadFuture.Run();
 
             assetBundle = DownloadHandlerAssetBundle.GetContent(_loadFuture.request);
