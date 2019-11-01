@@ -18,7 +18,7 @@ using Test.Simple;
 using fastJSON;
 using Game.Models.GameResources.Simple;
 
-namespace Basement454545
+namespace EntryPoint
 {
     class Program
     {

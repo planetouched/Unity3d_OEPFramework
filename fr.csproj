@@ -9,7 +9,7 @@
     <RootNamespace>
     </RootNamespace>
     <AssemblyName>Basement</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -56,35 +56,47 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Basement\Common\Random\FastRandom2.cs" />
-    <Compile Include="Basement\Common\ByteBuf\ByteBuffBase.cs" />
-    <Compile Include="Basement\Common\ByteBuf\ByteBufReader.cs" />
-    <Compile Include="Basement\Common\ByteBuf\ByteBufWriter.cs" />
     <Compile Include="Basement\OEPFramework\Futures\Util\SequenceFuture.cs" />
+    <Compile Include="OEPCommon\AssetBundles\AssetBundleManager.cs" />
+    <Compile Include="OEPCommon\AssetBundles\AssetbundleUnloadService.cs" />
+    <Compile Include="OEPCommon\AssetBundles\Futures\CascadeLoadingPromise.cs" />
+    <Compile Include="OEPCommon\AssetBundles\Futures\LoadAssetBundlePromise.cs" />
+    <Compile Include="OEPCommon\AssetBundles\Futures\ProcessFuture.cs" />
+    <Compile Include="OEPCommon\AssetBundles\Futures\UnityWebRequestAssetBundleFuture.cs" />
+    <Compile Include="OEPCommon\AssetBundles\Futures\UnpackBundlePromise.cs" />
+    <Compile Include="OEPCommon\AssetBundles\IProcess.cs" />
+    <Compile Include="OEPCommon\AssetBundles\ProcessChecker.cs" />
+    <Compile Include="OEPCommon\AssetBundles\Repository\AssetBundleRepositoryItem.cs" />
+    <Compile Include="OEPCommon\AssetBundles\Repository\AssetBundlesRepository.cs" />
+    <Compile Include="OEPCommon\AssetBundles\Unloader.cs" />
+    <Compile Include="OEPCommon\AssetBundles\СascadeLoading.cs" />
+    <Compile Include="OEPCommon\Audio\AudioPlayer.cs" />
+    <Compile Include="OEPCommon\Audio\Futures\AudioFuture.cs" />
+    <Compile Include="OEPCommon\Audio\Futures\AudioFutureBase.cs" />
+    <Compile Include="OEPCommon\Audio\Futures\SequenceAudioFuture.cs" />
+    <Compile Include="OEPCommon\ByteBuf\ByteBuffBase.cs" />
+    <Compile Include="OEPCommon\ByteBuf\ByteBufReader.cs" />
+    <Compile Include="OEPCommon\ByteBuf\ByteBufWriter.cs" />
+    <Compile Include="OEPCommon\Futures\UnityWebRequestFuture.cs" />
+    <Compile Include="OEPCommon\Lazy.cs" />
+    <Compile Include="OEPCommon\Pipeline\IPipelineHandler.cs" />
+    <Compile Include="OEPCommon\Pipeline\Pipeline.cs" />
+    <Compile Include="OEPCommon\Pipeline\PipelineHandlerBase.cs" />
+    <Compile Include="OEPCommon\Pool\IObjectPool.cs" />
+    <Compile Include="OEPCommon\Pool\IPooled.cs" />
+    <Compile Include="OEPCommon\Pool\ObjectPool.cs" />
+    <Compile Include="OEPCommon\Pool\Pooled.cs" />
+    <Compile Include="OEPCommon\Random\FastRandom2.cs" />
+    <Compile Include="OEPCommon\RaycastEvent.cs" />
+    <Compile Include="OEPCommon\SingletonManager.cs" />
+    <Compile Include="OEPCommon\StateMachine.cs" />
+    <Compile Include="OEPCommon\Thread\FixedThreadsExecutor.cs" />
+    <Compile Include="OEPCommon\Thread\IExecutor.cs" />
+    <Compile Include="OEPCommon\Thread\SingleThreadExecutor.cs" />
+    <Compile Include="OEPCommon\Tuple.cs" />
     <Compile Include="Editor\AssetBundles\AssetBundles.cs" />
     <Compile Include="Editor\RefViewer\RefEntry.cs" />
     <Compile Include="Editor\RefViewer\ReferenceViewer.cs" />
-    <Compile Include="Game\AssetBundles\AssetBundleManager.cs" />
-    <Compile Include="Game\AssetBundles\AssetbundleUnloadService.cs" />
-    <Compile Include="Game\AssetBundles\Futures\CascadeLoadingPromise.cs" />
-    <Compile Include="Game\AssetBundles\Futures\LoadAssetBundlePromise.cs" />
-    <Compile Include="Game\AssetBundles\Futures\ProcessFuture.cs" />
-    <Compile Include="Game\AssetBundles\Futures\UnityWebRequestAssetBundleFuture.cs" />
-    <Compile Include="Game\AssetBundles\Futures\UnpackBundlePromise.cs" />
-    <Compile Include="Game\AssetBundles\IProcess.cs" />
-    <Compile Include="Game\AssetBundles\ProcessChecker.cs" />
-    <Compile Include="Game\AssetBundles\Repository\AssetBundleRepositoryItem.cs" />
-    <Compile Include="Game\AssetBundles\Repository\AssetBundlesRepository.cs" />
-    <Compile Include="Game\AssetBundles\Unloader.cs" />
-    <Compile Include="Game\AssetBundles\СascadeLoading.cs" />
-    <Compile Include="Game\Audio\AudioPlayer.cs" />
-    <Compile Include="Game\Audio\Futures\AudioFuture.cs" />
-    <Compile Include="Game\Audio\Futures\AudioFutureBase.cs" />
-    <Compile Include="Game\Audio\Futures\SequenceAudioFuture.cs" />
-    <Compile Include="Game\Common\CachedComponents.cs" />
-    <Compile Include="Game\Common\RaycastEvent.cs" />
-    <Compile Include="Game\Components\CollisionTransit.cs" />
-    <Compile Include="Game\Futures\UnityWebRequestFuture.cs" />
     <Compile Include="Game\GameLoop.cs" />
     <Compile Include="Game\Models\Deals\DealDataSource.cs" />
     <Compile Include="Game\Models\Deals\DealDescription.cs" />
@@ -133,7 +145,6 @@
     <Compile Include="Game\Models\Triggers\_Base\CounterTrigger.cs" />
     <Compile Include="Game\Models\Triggers\_Base\CounterTriggerData.cs" />
     <Compile Include="Game\Models\Triggers\_Base\Trigger.cs" />
-    <Compile Include="Game\Preloader\AppStart.cs" />
     <Compile Include="Basement\BLFramework\Core\Common\IChildren.cs" />
     <Compile Include="Basement\BLFramework\Core\Common\IParent.cs" />
     <Compile Include="Basement\BLFramework\Core\Context\DataSources.cs" />
@@ -227,26 +238,13 @@
     <Compile Include="Basement\OEPFramework\Futures\Util\FutureQueue.cs" />
     <Compile Include="Basement\OEPFramework\Futures\Util\FutureScenario.cs" />
     <Compile Include="Basement\OEPFramework\Futures\Util\ThreadSafe\FutureWatcher.cs" />
-    <Compile Include="Basement\Common\Lazy.cs" />
-    <Compile Include="Basement\Common\Pipeline\IPipelineHandler.cs" />
-    <Compile Include="Basement\Common\Pipeline\Pipeline.cs" />
-    <Compile Include="Basement\Common\Pipeline\PipelineHandlerBase.cs" />
-    <Compile Include="Basement\Common\Pool\IObjectPool.cs" />
-    <Compile Include="Basement\Common\Pool\IPooled.cs" />
-    <Compile Include="Basement\Common\Pool\ObjectPool.cs" />
-    <Compile Include="Basement\Common\Pool\Pooled.cs" />
     <Compile Include="Basement\Common\RawNode.cs" />
-    <Compile Include="Basement\Common\StateMachine.cs" />
-    <Compile Include="Basement\Common\Thread\FixedThreadsExecutor.cs" />
-    <Compile Include="Basement\Common\Thread\IExecutor.cs" />
-    <Compile Include="Basement\Common\Thread\SingleThreadExecutor.cs" />
-    <Compile Include="Basement\Common\Tuple.cs" />
-    <Compile Include="Basement\Common\Util\SingletonManager.cs" />
     <Compile Include="Basement\Common\WeakRef.cs" />
     <Compile Include="Basement\OEPFramework\UnityEngine\Futures\FutureScenarioFuture.cs" />
     <Compile Include="Basement\OEPFramework\UnityEngine\Futures\SyncLoopFuture.cs" />
     <Compile Include="Basement\OEPFramework\UnityEngine\Util\VectorUtil.cs" />
     <Compile Include="Game\Utils\ZlibUtil.cs" />
+    <Compile Include="Preloader\AppStart.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Basement\OEPFramework\UnityEngine\Behaviour\ControlLoopBehaviour.cs" />
