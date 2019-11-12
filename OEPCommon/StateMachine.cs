@@ -55,6 +55,10 @@ namespace OEPCommon
         private readonly Dictionary<T, State> _states = new Dictionary<T, State>();
         private IFuture _leaveFuture;
 
+        public StateMachine()
+        {
+        }
+		
         public StateMachine(T startState)
         {
             currentState = startState;
