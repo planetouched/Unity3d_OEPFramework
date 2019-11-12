@@ -1,4 +1,4 @@
-﻿namespace OEPCommon.Pipeline
+﻿namespace OEPCommon.Pipelines
 {
     public interface IPipelineHandler
     {

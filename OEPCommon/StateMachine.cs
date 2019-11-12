@@ -50,6 +50,8 @@ namespace OEPCommon
         #endregion
 
         public T currentState { get; private set; }
+        public event Action<T, T, Object> onStateChange;
+        public event Action<T, Object> onStateUpdate;
         private readonly Dictionary<T, State> _states = new Dictionary<T, State>();
         private IFuture _leaveFuture;
 
@@ -58,10 +60,6 @@ namespace OEPCommon
             currentState = startState;
         }
         
-        public StateMachine()
-        {
-        }
-
         public bool Check(T state)
         {
             return currentState.Equals(state);
@@ -113,12 +111,14 @@ namespace OEPCommon
             {
                 if (currentState.Equals(state))
                 {
+                    onStateUpdate?.Invoke(state, obj);
                     _states[currentState].CallOnUpdate(obj);
                     return;
                 }
                 _leaveFuture = _states[currentState].CallOnLeave();
             }
 
+            var prevState = currentState; 
             currentState = state;
 
             if (_states.ContainsKey(currentState))
@@ -128,11 +128,15 @@ namespace OEPCommon
                     _leaveFuture.AddListener(future =>
                     {
                         _leaveFuture = null;
+                        onStateChange?.Invoke(prevState, state, obj);
                         _states[currentState].CallOnEnter(obj);
                     });
                 }
                 else
+                {
+                    onStateChange?.Invoke(prevState, state, obj);
                     _states[currentState].CallOnEnter(obj);
+                }
             }
         }
     }

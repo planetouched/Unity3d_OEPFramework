@@ -3,34 +3,36 @@ using System.Collections.Generic;
 using System.Threading;
 using Basement.OEPFramework.Futures;
 
-namespace OEPCommon.Thread
+namespace OEPCommon.Threads
 {
     public class SingleThreadExecutor : IExecutor
     {
         public int taskCount => _taskCount;
         
-        private readonly Queue<IFuture> _tasks = new Queue<IFuture>();
+        private readonly Queue<IFuture> _tasks = new Queue<IFuture>(128);
         private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(false);
         private readonly object _syncRoot = new object();
         private volatile bool _shutdown;
-        private readonly System.Threading.Thread _thread;
+        private readonly Thread _thread;
         private int _taskCount;
 
         public SingleThreadExecutor(ThreadPriority threadPriority = ThreadPriority.Normal)
         {
-            _thread = new System.Threading.Thread(Work) { Priority = threadPriority, IsBackground = true };
+            _thread = new Thread(Work) { Priority = threadPriority, IsBackground = true };
             _thread.Start();
             while (!_thread.IsAlive) {}
         }
 
-        void Work()
+        private void Work()
         {
             while (!_shutdown)
             {
                 lock (_syncRoot)
                 {
-                    if (_tasks.Count == 0)
+                    if (_tasks.Count == 0 && !_shutdown)
+                    {
                         _manualResetEvent.Reset();
+                    }
                 }
 
                 _manualResetEvent.WaitOne();
@@ -40,7 +42,9 @@ namespace OEPCommon.Thread
                     IFuture future;
 
                     lock (_syncRoot)
+                    {
                         future = _tasks.Dequeue();
+                    }
 
                     future.Run();
                     Interlocked.Decrement(ref _taskCount);
@@ -50,10 +54,9 @@ namespace OEPCommon.Thread
 
         public void Shutdown()
         {
-            _shutdown = true;
-
             lock (_syncRoot)
             {
+                _shutdown = true;
                 _manualResetEvent.Set();
             }
         }

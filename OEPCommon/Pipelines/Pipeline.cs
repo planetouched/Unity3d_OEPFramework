@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OEPCommon.Pipeline
+namespace OEPCommon.Pipelines
 {
     public class Pipeline
     {
@@ -18,10 +18,17 @@ namespace OEPCommon.Pipeline
 
             public IPipelineHandler GetHandler()
             {
-                if (_factory != null)
-                    return _factory();
+                return _factory != null ? _factory() : _handler;
+            }
 
-                return _handler;
+            public bool Compare(IPipelineHandler handler)
+            {
+                return _handler == handler;
+            }
+            
+            public bool Compare(Func<IPipelineHandler> factory)
+            {
+                return _factory == factory;
             }
         }
 
@@ -47,6 +54,34 @@ namespace OEPCommon.Pipeline
             _pipelineHandlers.RemoveAt(idx);
             return this;
         }
+        
+        public Pipeline RemoveHandler(IPipelineHandler handler)
+        {
+            for (int i = 0; i < _pipelineHandlers.Count; i++)
+            {
+                if (_pipelineHandlers[i].Compare(handler))
+                {
+                    _pipelineHandlers.RemoveAt(i);
+                    break;
+                }
+            }
+            
+            return this;
+        }
+        
+        public Pipeline RemoveHandler(Func<IPipelineHandler> factory)
+        {
+            for (int i = 0; i < _pipelineHandlers.Count; i++)
+            {
+                if (_pipelineHandlers[i].Compare(factory))
+                {
+                    _pipelineHandlers.RemoveAt(i);
+                    break;
+                }
+            }
+            
+            return this;
+        }
 
         public object Start(object item)
         {
@@ -57,18 +92,22 @@ namespace OEPCommon.Pipeline
                 handler.Create(currentItem);
 
                 var newElement = handler.ReturnItem();
-                if (newElement != null)
-                    currentItem = newElement;
-
-                if (onHandlerPassed != null)
-                    onHandlerPassed(handler);
-
+                
                 if (handler.GetError() != 0)
                 {
-                    if (onError != null)
-                        onError(handler);
+                    onError?.Invoke(handler);
                     return null;
                 }
+                
+                currentItem = newElement;
+                
+                if (newElement == null)
+                {
+                    return null;
+                }
+
+                onHandlerPassed?.Invoke(handler);
+
             }
             return currentItem;
         }

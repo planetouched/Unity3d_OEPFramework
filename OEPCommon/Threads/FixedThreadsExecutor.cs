@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Basement.OEPFramework.Futures;
 
-namespace OEPCommon.Thread
+namespace OEPCommon.Threads
 {
     public class FixedThreadsExecutor : IExecutor
     {
@@ -31,7 +31,7 @@ namespace OEPCommon.Thread
             }
         }
 
-        IExecutor GetThread()
+        private IExecutor GetThread()
         {
             int count = threads[0].taskCount;
 

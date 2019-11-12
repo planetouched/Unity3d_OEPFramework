@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace OEPCommon.Pipeline
+namespace OEPCommon.Pipelines
 {
     public abstract class PipelineHandlerBase : IPipelineHandler
     {
