@@ -152,7 +152,7 @@ namespace OEPCommon.AssetBundles
         
         public static bool IsCached(string assetBundle)
         {
-            return Caching.ready && Caching.IsVersionCached(assetBundlesUrl + assetBundle, repository[assetBundle].hash);
+            return Caching.ready && Caching.IsVersionCached(Path.Combine(assetBundlesUrl, assetBundle), repository[assetBundle].hash);
         }
 
         public static bool IsLoaded(string assetBundle)

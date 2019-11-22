@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using Basement.OEPFramework.Futures;
-using Basement.OEPFramework.UnityEngine.Util;
+using Basement.OEPFramework.Futures.Coroutine;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -40,7 +40,7 @@ namespace OEPCommon.AssetBundles.Futures
 
         protected override void OnRun()
         {
-            FutureUtils.Coroutine(LoadingProcess).Run();
+            new CoroutineFuture(LoadingProcess).Run();
         }
 
         private IEnumerator<IFuture> LoadingProcess()

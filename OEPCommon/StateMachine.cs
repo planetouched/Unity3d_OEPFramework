@@ -7,13 +7,13 @@ namespace OEPCommon
     public class StateMachine<T>
     {
         #region internal
-        internal class State
+        private class State
         {
             event Action<object> onEnter;
             event Func<IFuture> onLeave;
-            event Action<object> onUpdate;
+            event Func<object, IFuture> onUpdate;
 
-            public State(Action<object> onEnter, Func<IFuture> onLeave, Action<object> onUpdate)
+            public State(Action<object> onEnter, Func<IFuture> onLeave, Func<object, IFuture> onUpdate)
             {
                 this.onEnter += onEnter;
                 this.onLeave += onLeave;
@@ -34,10 +34,12 @@ namespace OEPCommon
                     onEnter(obj);
             }
 
-            public void CallOnUpdate(object obj = null)
+            public IFuture CallOnUpdate(object obj = null)
             {
                 if (onUpdate != null)
-                    onUpdate(obj);
+                    return onUpdate(obj);
+
+                return null;
             }
 
             public void Clear()
@@ -58,7 +60,7 @@ namespace OEPCommon
         public StateMachine()
         {
         }
-		
+
         public StateMachine(T startState)
         {
             currentState = startState;
@@ -69,13 +71,13 @@ namespace OEPCommon
             return currentState.Equals(state);
         }
 
-        public void Add(T state, Action<object> onEnter = null, Func<IFuture> onLeave = null, Action<object> onUpdate = null)
+        public void Add(T state, Action<object> onEnter = null, Func<IFuture> onLeave = null, Func<object, IFuture> onUpdate = null)
         {
             var newState = new State(onEnter, onLeave, onUpdate);
             _states.Add(state, newState);
         }
 
-        State Get(T state)
+        private State Get(T state)
         {
             if (!_states.ContainsKey(state))
                 throw new Exception("State machine don't have " + state + " condition");
@@ -105,24 +107,33 @@ namespace OEPCommon
             
             _states.Clear();
         }
+
+        public void SetStateSilently(T state)
+        {
+            currentState = state;
+        }
         
-        public void SetState(T state, object obj = null)
+        public IFuture SetState(T state, object obj = null)
         {
             if (_leaveFuture != null)
-                return;
+                return _leaveFuture;
 
+            var prevState = currentState;
+            
             if (_states.ContainsKey(currentState))
             {
                 if (currentState.Equals(state))
                 {
                     onStateUpdate?.Invoke(state, obj);
-                    _states[currentState].CallOnUpdate(obj);
-                    return;
+                    _leaveFuture = _states[currentState].CallOnUpdate(obj);
+                    _leaveFuture?.AddListener(f => { _leaveFuture = null; });
+
+                    return _leaveFuture;
                 }
+                onStateChange?.Invoke(prevState, state, obj);
                 _leaveFuture = _states[currentState].CallOnLeave();
             }
 
-            var prevState = currentState; 
             currentState = state;
 
             if (_states.ContainsKey(currentState))
@@ -132,16 +143,16 @@ namespace OEPCommon
                     _leaveFuture.AddListener(future =>
                     {
                         _leaveFuture = null;
-                        onStateChange?.Invoke(prevState, state, obj);
                         _states[currentState].CallOnEnter(obj);
                     });
                 }
                 else
                 {
-                    onStateChange?.Invoke(prevState, state, obj);
                     _states[currentState].CallOnEnter(obj);
                 }
             }
+
+            return _leaveFuture;
         }
     }
 }
