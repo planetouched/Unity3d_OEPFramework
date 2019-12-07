@@ -31,7 +31,7 @@ namespace Game.Models.GameResources.Renewable
         public void Change(int addAmount)
         {
             Recount();
-            InnerSet(_innerAmount + addAmount, false);
+            InnerSet(_innerAmount + addAmount, _innerAmount >= description.renewableMaximum);
         }
 
         public void Set(int setAmount)

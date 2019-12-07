@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Basement.Common;
 using Basement.OEPFramework.Futures;
 using OEPCommon.AssetBundles.Futures;
@@ -41,10 +42,6 @@ namespace OEPCommon.AssetBundles
 
                 return null;
             }
-            public T FindAsset<T>() where T : Object
-            {
-                return FindAsset<T>(_name);
-            }
         }
 
         private class DependencyNode
@@ -74,14 +71,14 @@ namespace OEPCommon.AssetBundles
             repository = new AssetBundlesRepository(repositoryNode);
         }
 
-        public static T GetAsset<T>(string assetBundle) where T : Object
-        {
-            return _loaded[assetBundle].FindAsset<T>();
-        }
-
         public static T GetAsset<T>(string assetBundle, string assetName) where T : Object
         {
             return _loaded[assetBundle].FindAsset<T>(assetName);
+        }
+
+        public static Object[] GetAllAssets(string assetBundle)
+        {
+            return _loaded[assetBundle].allAssets;
         }
 
         public static int GetLoadedCount(string assetBundle)
