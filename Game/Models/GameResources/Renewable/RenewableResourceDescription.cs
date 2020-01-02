@@ -6,16 +6,16 @@ namespace Game.Models.GameResources.Renewable
 {
     public class RenewableResourceDescription : DescriptionBase
     {
-        public int recoveryTime { get; private set; }
-        public int renewableMaximum { get; private set; }
-        public int recoveryStep { get; private set; }
-        public int maximum { get; private set; }
+        public int recoveryTime { get; }
+        public int renewableMaximum { get; }
+        public int recoveryStep { get; }
+        public int maximum { get; }
 
         public RenewableResourceDescription(RawNode node, IContext context = null) : base(node, context)
         {
-            recoveryTime = node.GetInt("recovery_time");
-            renewableMaximum = node.GetInt("renewable_maximum");
-            recoveryStep = node.GetInt("recovery_step");
+            recoveryTime = node.GetInt("recovery-time");
+            renewableMaximum = node.GetInt("renewable-maximum");
+            recoveryStep = node.GetInt("recovery-step");
             maximum = node.GetInt("maximum");
         }
     }

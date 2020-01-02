@@ -18,7 +18,7 @@ namespace Editor.RefViewer
 
         private static RunMode _mode = RunMode.Edit;
 
-        private readonly IList<RefEntrySet> _entrySetViews = new List<RefEntrySet>();
+        private IList<RefEntrySet> _entrySetViews;
 
         private RefEntrySet _currentSet;
 
@@ -48,6 +48,9 @@ namespace Editor.RefViewer
 
         private void Init(bool load)
         {
+            _entrySetViews?.Clear();
+            _entrySetViews = new List<RefEntrySet>();
+
             for (int i = 0; i < 8; i++)
             {
                 _entrySetViews.Add(new RefEntrySet(i.ToString(), load));
@@ -56,6 +59,15 @@ namespace Editor.RefViewer
             _currentSet = _entrySetViews[0];
         }
 
+        private void Refresh()
+        {
+            _adding = false;
+            _derived = false;
+            _typeToAdd = "";
+            Init(true);
+            _currentSet = _entrySetViews[0];
+        }
+        
         private void DrawSetHeaders()
         {
             GUILayout.BeginHorizontal();
@@ -169,8 +181,7 @@ namespace Editor.RefViewer
 
             if (GUILayout.Button("Refresh"))
             {
-                _entrySetViews.Clear();
-                CreateInstance();
+                Refresh();
             }
 
             if (GUILayout.Button("GC.Collect"))
@@ -187,7 +198,6 @@ namespace Editor.RefViewer
             {
                 if (_mode == RunMode.Edit)
                 {
-                    CreateInstance();
                     _mode = RunMode.Play;
                 }
             }
@@ -195,11 +205,15 @@ namespace Editor.RefViewer
             {
                 if (_mode == RunMode.Play)
                 {
-                    CreateInstance();
                     _mode = RunMode.Edit;
                 }
             }
 
+            if (_currentSet == null)
+            {
+                Refresh();
+            }
+            
             DrawSetHeaders();
             DrawClearRefresh();
             _currentSet.DrawEntities();
