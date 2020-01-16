@@ -111,7 +111,10 @@ namespace OEPCommon.AssetBundles
         
         private float CalcLoadingProgress()
         {
-            if (isComplete) return 1;
+            if (isComplete)
+            {
+                return 1;
+            }
             
             if (_processes.Count == 0)
             {

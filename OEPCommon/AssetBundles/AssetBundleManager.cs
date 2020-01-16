@@ -65,6 +65,9 @@ namespace OEPCommon.AssetBundles
         private static readonly Dictionary<string, LoadAssetBundlePromise> _loading = new Dictionary<string, LoadAssetBundlePromise>();
         private static readonly Dictionary<string, AssetBundleRef> _loaded = new Dictionary<string, AssetBundleRef>();
 
+        public static Action<string> onBundleCompleted { get; set; } 
+        public static Action<string> onBundleUnload { get; set; } 
+
         public static void Init(RawNode repositoryNode, string assetBundlesUrl)
         {
             AssetBundleManager.assetBundlesUrl = assetBundlesUrl;
@@ -102,6 +105,8 @@ namespace OEPCommon.AssetBundles
                     }
                     loadedPackedSize -= repository[pair.Key].packedSize;
                     remove.Add(pair.Key);
+                    onBundleUnload?.Invoke(pair.Key);
+                    
                     Debug.Log("Unload: " + pair.Key);
                 }
             }
@@ -195,6 +200,8 @@ namespace OEPCommon.AssetBundles
                         ab.allAssets = loader.GetAssets();
                         ab.assetBundle = loader.assetBundle;
                         ab.request = loader.request;
+                        
+                        onBundleCompleted?.Invoke(bundle);
                     });
 
                     cascade.AddFuture(loader);
