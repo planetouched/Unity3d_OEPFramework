@@ -13,8 +13,7 @@ namespace OEPCommon.AssetBundles.Futures
         public AssetBundle assetBundle { get; private set; }
         public UnityWebRequest request { get; private set; }
 
-        public float loadingProgress => _loadFuture != null ? (!_loadFuture.request.disposeDownloadHandlerOnDispose ? _loadFuture.request.downloadProgress : 1) : 0;
-        public float unpackProgress => _unpackBundlePromise?.asyncOperationProgress ?? 0;
+        public float loadingProgress => (GetLoadingProgress() + GetUnpackProgress()) * 0.5f;
         public event Action<IProcess> onProcessComplete;
         public bool isComplete { get; private set; }
         public bool isDependency { get; }
@@ -44,6 +43,18 @@ namespace OEPCommon.AssetBundles.Futures
             new CoroutineFuture(LoadingProcess).Run();
         }
 
+        private float GetLoadingProgress()
+        {
+            return _loadFuture != null 
+                ? !_loadFuture.request.disposeDownloadHandlerOnDispose ? _loadFuture.request.downloadProgress : 1 
+                : 0;
+        }
+
+        private float GetUnpackProgress()
+        {
+            return _unpackBundlePromise?.asyncOperationProgress ?? 0;
+        }
+        
         private IEnumerator<IFuture> LoadingProcess()
         {
             Debug.Log("AssetBundle load: " + Path.Combine(_url, _assetBundleName));

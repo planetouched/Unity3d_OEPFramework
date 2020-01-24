@@ -6,9 +6,11 @@ namespace OEPCommon.AssetBundles.Futures
     {
         private readonly ProcessChecker _processChecker;
         private readonly Unloader _unloader;
+        private readonly int _simultaneousLimit;
         
-        public ProcessCheckerFuture(ProcessChecker processChecker, Unloader unloader = null)
+        public ProcessCheckerFuture(ProcessChecker processChecker, Unloader unloader = null, int simultaneousLimit = int.MaxValue)
         {
+            _simultaneousLimit = simultaneousLimit;
             _unloader = unloader;
             _processChecker = processChecker;
         }
@@ -16,7 +18,7 @@ namespace OEPCommon.AssetBundles.Futures
         protected override void OnRun()
         {
             _processChecker.onProcessComplete += ProcessChecker_Complete;
-            _processChecker.Load(_unloader);
+            _processChecker.Load(_unloader, _simultaneousLimit);
         }
 
         private void ProcessChecker_Complete(IProcess obj)
@@ -28,7 +30,7 @@ namespace OEPCommon.AssetBundles.Futures
         {
             if (isCancelled)
             {
-                _processChecker.Drop();
+                _processChecker.Cancel();
             }
         }
     }

@@ -21,12 +21,9 @@ namespace OEPCommon.AssetBundles
             public int loadedCount { get; set; }
             public bool dependency { get; }
 
-            private readonly string _name;
-            
-            public AssetBundleRef(string name, bool dependency)
+            public AssetBundleRef(bool dependency)
             {
                 this.dependency = dependency;
-                _name = name;
                 loadedCount = 1;
             }
 
@@ -63,7 +60,7 @@ namespace OEPCommon.AssetBundles
         public static string assetBundlesUrl { get; private set; }
         
         private static readonly Dictionary<string, LoadAssetBundlePromise> _loading = new Dictionary<string, LoadAssetBundlePromise>();
-        private static readonly Dictionary<string, AssetBundleRef> _loaded = new Dictionary<string, AssetBundleRef>();
+        private static readonly Dictionary<string, AssetBundleRef> _assetBundlesRefs = new Dictionary<string, AssetBundleRef>();
 
         public static Action<string> onBundleCompleted { get; set; } 
         public static Action<string> onBundleUnload { get; set; } 
@@ -76,23 +73,23 @@ namespace OEPCommon.AssetBundles
 
         public static T GetAsset<T>(string assetBundle, string assetName) where T : Object
         {
-            return _loaded[assetBundle].FindAsset<T>(assetName);
+            return _assetBundlesRefs[assetBundle].FindAsset<T>(assetName);
         }
 
         public static Object[] GetAllAssets(string assetBundle)
         {
-            return _loaded[assetBundle].allAssets;
+            return _assetBundlesRefs[assetBundle].allAssets;
         }
 
         public static int GetLoadedCount(string assetBundle)
         {
-            return _loaded[assetBundle].loadedCount;
+            return _assetBundlesRefs[assetBundle].loadedCount;
         }
 
         public static AsyncOperation UnloadUnused()
         {
             List<string> remove = new List<string>();
-            foreach (var pair in _loaded)
+            foreach (var pair in _assetBundlesRefs)
             {
                 if (pair.Value.loadedCount == 0)
                 {
@@ -113,7 +110,7 @@ namespace OEPCommon.AssetBundles
 
             foreach (var key in remove)
             {
-                _loaded.Remove(key);
+                _assetBundlesRefs.Remove(key);
             }
 
             return Resources.UnloadUnusedAssets();
@@ -129,7 +126,7 @@ namespace OEPCommon.AssetBundles
             {
                 foreach (var assetBundle in assetBundles)
                 {
-                    var assetBundleRef = _loaded[assetBundle.assetBundleName];
+                    var assetBundleRef = _assetBundlesRefs[assetBundle.assetBundleName];
                     assetBundleRef.loadedCount--;
                     if (assetBundleRef.loadedCount < 0)
                         throw new Exception("loadedCount < 0, assetBundle: " + assetBundle);
@@ -159,7 +156,7 @@ namespace OEPCommon.AssetBundles
 
         public static bool IsLoaded(string assetBundle)
         {
-            return _loaded.ContainsKey(assetBundle);
+            return _assetBundlesRefs.ContainsKey(assetBundle);
         }
 
         private static void LoadPartial(CascadeLoading cascade, List<IProcess> processList, IEnumerable<DependencyNode> assetBundles, bool async)
@@ -167,6 +164,7 @@ namespace OEPCommon.AssetBundles
             foreach (var assetBundleNode in assetBundles)
             {
                 string assetBundle = assetBundleNode.assetBundleName;
+                
                 if (_loading.ContainsKey(assetBundle))
                 {
                     //loading at this moment
@@ -174,14 +172,14 @@ namespace OEPCommon.AssetBundles
                     cascade.AddFuture(loader);
 
                     processList?.Add(loader);
-                    _loaded[assetBundle].loadedCount++;
+                    _assetBundlesRefs[assetBundle].loadedCount++;
                 }
                 else
                 {
-                    if (_loaded.ContainsKey(assetBundle) && !_loading.ContainsKey(assetBundle))
+                    if (_assetBundlesRefs.ContainsKey(assetBundle) && !_loading.ContainsKey(assetBundle))
                     {
                         //already downloaded
-                        _loaded[assetBundle].loadedCount++;
+                        _assetBundlesRefs[assetBundle].loadedCount++;
                         continue;
                     }
 
@@ -189,19 +187,18 @@ namespace OEPCommon.AssetBundles
                     var node = repository[assetBundle];
                     var loader = new LoadAssetBundlePromise(node.file, assetBundlesUrl, assetBundleNode.parentNode != null, node.hash, node.crc32, async);
                     _loading.Add(assetBundle, loader);
-                    _loaded.Add(assetBundle, new AssetBundleRef(assetBundle, assetBundleNode.parentNode != null));
-                    string bundle = assetBundle;
+                    _assetBundlesRefs.Add(assetBundle, new AssetBundleRef(assetBundleNode.parentNode != null));
 
                     loader.AddListener(future =>
                     {
-                        loadedPackedSize += repository[bundle].packedSize;
-                        _loading.Remove(bundle);
-                        var ab = _loaded[bundle];
+                        _loading.Remove(assetBundle);
+                        loadedPackedSize += repository[assetBundle].packedSize;
+                        var ab = _assetBundlesRefs[assetBundle];
                         ab.allAssets = loader.GetAssets();
                         ab.assetBundle = loader.assetBundle;
                         ab.request = loader.request;
                         
-                        onBundleCompleted?.Invoke(bundle);
+                        onBundleCompleted?.Invoke(assetBundle);
                     });
 
                     cascade.AddFuture(loader);
@@ -225,7 +222,7 @@ namespace OEPCommon.AssetBundles
                 cascade.Next();
             }
 
-            return new CascadeLoadingPromise(cascade).Run();
+            return new CascadeLoadingPromise(cascade);
         }
 
         private static bool GetLatestDependencies(DependencyNode currentNode, List<DependencyNode> list)
@@ -247,7 +244,6 @@ namespace OEPCommon.AssetBundles
                 {
                     currentNode.stop = true;
                 }
-
             }
             else
             {

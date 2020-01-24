@@ -6,7 +6,6 @@ namespace OEPCommon.AssetBundles.Futures
     public class ProcessFuture : Future, IProcess
     {
         public float loadingProgress => _process.loadingProgress;
-        public float unpackProgress => _process.unpackProgress;
         public event Action<IProcess> onProcessComplete;
         public bool isComplete { get; private set; }
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Basement.OEPFramework.Futures;
-using Basement.OEPFramework.Futures.Util.ThreadSafe;
 using OEPCommon.AssetBundles.Futures;
 
 namespace OEPCommon.AssetBundles
@@ -9,17 +8,15 @@ namespace OEPCommon.AssetBundles
     public class ProcessChecker : IProcess
     {
         public float loadingProgress => CalcLoadingProgress();
-        public float unpackProgress => CalcUnpackProgress();
         public event Action<IProcess> onProcessComplete;
         public bool isComplete { get; private set; }
 
-        private readonly FutureWatcher _watcher = new FutureWatcher();
-        private readonly IList<IProcess> _processes = new List<IProcess>();
-        private bool _loading;
-        
+        private readonly List<IProcess> _processes = new List<IProcess>();
+        private readonly IList<IFuture> _listToLoad = new List<IFuture>();
+
         private readonly IList<(string resource, bool async)> _itemsToLoad = new List<(string resource, bool async)>();
         private readonly IList<IProcess> _processesToLoad = new List<IProcess>();
-        
+
         public void Add(IProcess process)
         {
             _processesToLoad.Add(process);
@@ -30,111 +27,132 @@ namespace OEPCommon.AssetBundles
             _itemsToLoad.Add((resource, async));
         }
 
-        public void Load(Unloader unloader = null)
+        public void Load(Unloader unloader = null, int simultaneousLimit = int.MaxValue)
         {
             isComplete = false;
-            
+
             foreach (var pair in _itemsToLoad)
             {
                 var loadFuture = AssetBundleManager.Load(pair.resource, out var processList, pair.async);
-                
                 unloader?.Add(pair.resource);
 
                 if (!loadFuture.isDone)
                 {
-                    foreach (var process in processList)
-                    {
-                        _processes.Add(process);
-                    }
-
+                    _processes.AddRange(processList);
                     AttachFuture(loadFuture);
                 }
             }
-            
-            _itemsToLoad.Clear();
 
             foreach (var process in _processesToLoad)
             {
                 if (!process.isComplete)
                 {
                     _processes.Add(process);
-                    AttachFuture(new ProcessFuture(process).Run());
+                    AttachFuture(new ProcessFuture(process));
                 }
             }
-            
+
+            _itemsToLoad.Clear();
             _processesToLoad.Clear();
 
-            if (_processes.Count == 0)
+            if (_listToLoad.Count == 0)
             {
                 isComplete = true;
                 onProcessComplete?.Invoke(this);
             }
-        }
-
-        private void AttachFuture(IFuture future)
-        {
-            _watcher.AddFuture(future);
-            
-            future.AddListener(f =>
+            else
             {
-                if (_watcher.futuresCount == 0)
+                for (int i = 0; i < simultaneousLimit; i++)
                 {
-                    _processes.Clear();
-
-                    if (f.isDone)
+                    if (i < _listToLoad.Count)
                     {
-                        isComplete = true;
-                        onProcessComplete?.Invoke(this);
+                        var future = _listToLoad[i];
+                        future.Run();
+
+                        if (future.isDone)
+                        {
+                            i--;
+                        }
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
-            });
-        }
-
-        private float CalcUnpackProgress()
-        {
-            if (isComplete) return 1;
-            
-            if (_processes.Count == 0)
-            {
-                return 0;
             }
-
-            float value = 0;
-            
-            foreach (var progress in _processes)
-            {
-                value += progress.unpackProgress;
-            }
-
-            return value / _processes.Count;
         }
         
+        private void AttachFuture(IFuture future)
+        {
+            _listToLoad.Add(future);
+            future.AddListener(Loading_Complete);
+        }
+        
+        private void Loading_Complete(IFuture completedFuture)
+        {
+            _listToLoad.Remove(completedFuture);
+            
+            if (_listToLoad.Count == 0)
+            {
+                _processes.Clear();
+                isComplete = true;
+                onProcessComplete?.Invoke(this);
+            }
+            else
+            {
+                foreach (var item in _listToLoad)
+                {
+                    if (!item.wasRun)
+                    {
+                        item.Run();
+                        break;
+                    }
+                }
+            }
+        }
+
         private float CalcLoadingProgress()
         {
             if (isComplete)
             {
                 return 1;
             }
-            
+
             if (_processes.Count == 0)
             {
                 return 0;
             }
 
             float value = 0;
-            
-            foreach (var progress in _processes)
+
+            for (var i = 0; i < _processes.Count; i++)
             {
+                var progress = _processes[i];
                 value += progress.loadingProgress;
             }
 
             return value / _processes.Count;
         }
-        
-        public void Drop()
+
+        public void Cancel()
         {
+            _itemsToLoad.Clear();
+            _processesToLoad.Clear();
+
+            foreach (var item in _listToLoad)
+            {
+                item.RemoveListener(Loading_Complete);
+            }
+            
+            _listToLoad.Clear();
+
+            foreach (var process in _processes)
+            {
+                process.Cancel();
+            }
+            
             _processes.Clear();
-            _watcher.CancelFutures();
+            
             onProcessComplete = null;
         }
     }
