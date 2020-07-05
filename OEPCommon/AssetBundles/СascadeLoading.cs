@@ -10,7 +10,7 @@ namespace OEPCommon.AssetBundles
         public event Action onComplete;
         private readonly List<CompositeFuture> _compositeFutures = new List<CompositeFuture>();
         private CompositeFuture _current;
-        
+
         public CascadeLoading()
         {
             _compositeFutures.Add(new CompositeFuture());
@@ -22,11 +22,11 @@ namespace OEPCommon.AssetBundles
         {
             onComplete = null;
         }
-        
+
         private void CompleteFuture(IFuture future)
         {
             IFuture nextFuture = null;
-            
+
             _compositeFutures.RemoveAt(0);
 
             if (_compositeFutures.Count > 0)
@@ -43,14 +43,14 @@ namespace OEPCommon.AssetBundles
                 nextFuture.Run();
             }
         }
-        
+
         private void Complete()
         {
             _current = null;
             onComplete?.Invoke();
             onComplete = null;
         }
-        
+
         public void Next()
         {
             if (_current.futuresCount == 0)
@@ -63,15 +63,41 @@ namespace OEPCommon.AssetBundles
             newFuture.AddListener(CompleteFuture);
             _current = newFuture;
         }
-        
+
         public void Run()
         {
-            _compositeFutures[0].Run();
+            if (_compositeFutures.Count > 0)
+            {
+                _compositeFutures[0].Run();
+            }
+            else
+            {
+                onComplete?.Invoke();
+                onComplete = null;
+            }
         }
-        
+
         public void AddFuture(IFuture future)
         {
             _current.AddFuture(future);
+        }
+
+        public void Trim()
+        {
+            var copy = new List<CompositeFuture>(_compositeFutures);
+
+            for (int i = copy.Count - 1; i >= 0; i--)
+            {
+                if (copy[i].futuresCount == 0)
+                {
+                    copy[i].RemoveListener(CompleteFuture);
+                    _compositeFutures.Remove(copy[i]);
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
     }
 }

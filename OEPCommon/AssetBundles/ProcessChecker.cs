@@ -58,7 +58,12 @@ namespace OEPCommon.AssetBundles
             if (_listToLoad.Count == 0)
             {
                 isComplete = true;
-                onProcessComplete?.Invoke(this);
+
+                if (onProcessComplete != null)
+                {
+                    onProcessComplete.Invoke(this);
+                    onProcessComplete = null;
+                }
             }
             else
             {
@@ -96,7 +101,12 @@ namespace OEPCommon.AssetBundles
             {
                 _processes.Clear();
                 isComplete = true;
-                onProcessComplete?.Invoke(this);
+                
+                if (onProcessComplete != null)
+                {
+                    onProcessComplete.Invoke(this);
+                    onProcessComplete = null;
+                }
             }
             else
             {

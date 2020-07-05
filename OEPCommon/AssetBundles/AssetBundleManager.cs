@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using Basement.Common;
 using Basement.OEPFramework.Futures;
+using Basement.OEPFramework.Futures.Util;
+using Basement.OEPFramework.UnityEngine.Util;
 using OEPCommon.AssetBundles.Futures;
 using OEPCommon.AssetBundles.Repository;
 using UnityEngine;
@@ -31,7 +33,7 @@ namespace OEPCommon.AssetBundles
             {
                 foreach (var asset in allAssets)
                 {
-                    if (asset.name == assetName && asset is T)
+                    if (String.Equals(asset.name, assetName, StringComparison.CurrentCultureIgnoreCase) && asset is T)
                     {
                         return (T) asset;
                     }
@@ -71,11 +73,22 @@ namespace OEPCommon.AssetBundles
             repository = new AssetBundlesRepository(repositoryNode);
         }
 
-        public static T GetAsset<T>(string assetBundle, string assetName) where T : Object
+        public static T GetAsset<T>(string bundle, string assetName) where T : Object
         {
-            return _assetBundlesRefs[assetBundle].FindAsset<T>(assetName);
+            return _assetBundlesRefs[bundle].FindAsset<T>(assetName);
+        }
+        
+        public static T GetAsset<T>(string assetBundle, char separator = ':') where T : Object
+        {
+            var arr = assetBundle.Split(separator);
+            return _assetBundlesRefs[arr[0]].FindAsset<T>(arr[1]);
         }
 
+        public static string GetBundleName(string assetBundle, char separator = ':')
+        {
+            return assetBundle.Split(separator)[0];
+        }
+        
         public static Object[] GetAllAssets(string assetBundle)
         {
             return _assetBundlesRefs[assetBundle].allAssets;
@@ -138,25 +151,40 @@ namespace OEPCommon.AssetBundles
 
         public static bool ClearOldCachedVersions(string assetBundle)
         {
-            return Caching.ready && Caching.ClearOtherCachedVersions(assetBundle, repository[assetBundle].hash);
+            return Caching.ClearOtherCachedVersions(assetBundle, repository[assetBundle].hash);
         }
 
         public static void ClearAllOldCache()
         {
             foreach (var pair in repository)
             {
-                ClearOldCachedVersions(pair.Key);
+                if (ClearOldCachedVersions(pair.Key));
             }
         }
         
-        public static bool IsCached(string assetBundle)
+        public static bool IsCached(string assetBundleName)
         {
-            return Caching.ready && Caching.IsVersionCached(Path.Combine(assetBundlesUrl, assetBundle), repository[assetBundle].hash);
+            return Caching.IsVersionCached(Path.Combine(assetBundlesUrl, repository[assetBundleName].file), repository[assetBundleName].hash);
         }
 
-        public static bool IsLoaded(string assetBundle)
+        public static bool IsLoaded(string assetBundleName)
         {
-            return _assetBundlesRefs.ContainsKey(assetBundle);
+            return _assetBundlesRefs.ContainsKey(assetBundleName);
+        }
+
+        public static UnityWebRequestAssetBundleFuture DownloadFromWWW(string assetBundleName, bool runImmediately = true)
+        {
+            if (IsCached(assetBundleName)) return null;
+            Debug.Log("Download WWW: " + assetBundleName);
+            var node = repository[assetBundleName];
+            var f = new UnityWebRequestAssetBundleFuture(Path.Combine(assetBundlesUrl, node.file), node.hash, node.crc32, Int32.MaxValue);
+            
+            if (runImmediately)
+            {
+                f.Run();
+            }
+            
+            return f;
         }
 
         private static void LoadPartial(CascadeLoading cascade, List<IProcess> processList, IEnumerable<DependencyNode> assetBundles, bool async)
@@ -207,10 +235,10 @@ namespace OEPCommon.AssetBundles
             }
         }
 
-        public static IFuture Load(string mainAssetBundle, out List<IProcess> processList, bool async = true)
+        public static IFuture Load(string mainAssetBundleName, out List<IProcess> processList, bool async = true)
         {
             var cascade = new CascadeLoading();
-            var node = new DependencyNode(mainAssetBundle, null);
+            var node = new DependencyNode(mainAssetBundleName, null);
             CollectDependencies(node);
             var assetBundles = new List<DependencyNode>();
             processList = new List<IProcess>();
@@ -222,6 +250,7 @@ namespace OEPCommon.AssetBundles
                 cascade.Next();
             }
 
+            cascade.Trim();
             return new CascadeLoadingPromise(cascade);
         }
 

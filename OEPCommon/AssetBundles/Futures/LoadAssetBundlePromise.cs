@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using Basement.OEPFramework.Futures;
 using Basement.OEPFramework.Futures.Coroutine;
+using Basement.OEPFramework.UnityEngine;
+using Basement.OEPFramework.UnityEngine.Loop;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -68,8 +70,12 @@ namespace OEPCommon.AssetBundles.Futures
             {
                 _unpackBundlePromise = new UnpackBundlePromise(assetBundle, _async);
                 yield return _unpackBundlePromise.Run();
-                assetBundle.Unload(false);
-                _loadFuture.request.Dispose();
+                
+                Sync.Add(() =>
+                {
+                    assetBundle.Unload(false);
+                    _loadFuture.request.Dispose();
+                }, Loops.UPDATE);
             }
             else
             {
