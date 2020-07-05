@@ -6,19 +6,22 @@ namespace Game.Models.GameResources.Renewable
 {
     public class RenewableResourcePrice : Price
     {
+        public readonly RenewableResource _resource;
+        
         public RenewableResourcePrice(RawNode rawNode, IContext context) : base(rawNode, context)
         {
+            _resource = GetPath().GetSelf<RenewableResource>();
         }
 
         public override bool Check()
         {
-            return GetPath().GetSelf<RenewableResource>().amount >= amount;
+            return _resource.Amount >= amount;
         }
 
         public override void Pay()
         {
             if (!Check()) return;
-            GetPath().GetSelf<RenewableResource>().Change(-amount);
+            _resource.Change(-amount);
         }
     }
 }

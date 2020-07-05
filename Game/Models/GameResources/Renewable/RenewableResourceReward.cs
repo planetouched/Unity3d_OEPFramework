@@ -34,7 +34,7 @@ namespace Game.Models.GameResources.Renewable
         public override IRewardResult Award(IRewardResult rewardResult)
         {
             var simpleResourceRewardResult = (RenewableResourceRewardResult)rewardResult;
-            simpleResourceRewardResult.resource.Change(simpleResourceRewardResult.amount);
+            simpleResourceRewardResult.Resource.Change(simpleResourceRewardResult.Amount);
             return rewardResult;
         }
     }

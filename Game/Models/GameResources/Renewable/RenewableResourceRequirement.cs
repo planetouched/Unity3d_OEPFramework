@@ -6,19 +6,19 @@ namespace Game.Models.GameResources.Renewable
 {
     public class RenewableResourceRequirement : Requirement
     {
-        public RenewableResource renewableResource { get; private set; }
-        public int amount { get; private set; }
+        private readonly RenewableResource _renewableResource;
+        private readonly int _amount;
 
         public RenewableResourceRequirement(RawNode node, IContext context) : base(node, context)
         {
-            renewableResource = GetPath().GetSelf<RenewableResource>();
-            amount = node.GetInt("amount");
+            _renewableResource = GetPath().GetSelf<RenewableResource>();
+            _amount = node.GetInt("amount");
         }
 
         public override bool Check()
         {
             var res = GetPath().GetSelf<RenewableResource>();
-            return res.amount >= amount;
+            return res.Amount >= _amount;
         }
     }
 }

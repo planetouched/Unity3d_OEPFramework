@@ -2,7 +2,7 @@
 {
     public class RenewableResourceHandlerArgs
     {
-        public int newAmount;
-        public int oldAmount;
+        public int NewAmount { get; set; }
+        public int OldAmount { get; set; }
     }
 }

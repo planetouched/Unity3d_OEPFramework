@@ -9,29 +9,36 @@ namespace Game.Models.GameResources.Renewable
 {
     public class RenewableResource : ReferenceModelBase<RenewableResourceCategories, RenewableResourceDescription>
     {
-        public long lastUpdateTime { get; private set; }
-
-        public int amount {
+        private int _innerAmount;
+        
+        public long LastUpdateTime { get; private set; }
+        
+        public int Amount 
+        {
             get
             {
                 Recount();
                 return _innerAmount;
             }
         }
-        
-        private int _innerAmount;
 
         public RenewableResource(RawNode initNode, RenewableResourceCategories categories, RenewableResourceDescription description, IContext context)
             : base(initNode, categories, description, context)
         {
             _innerAmount = initNode.GetInt("amount");
-            lastUpdateTime = TimeUtil.GetUnixTime(initNode.GetLong("ts"));
+            LastUpdateTime = TimeUtil.GetUnixTime(initNode.GetLong("ts"));
+        }
+
+        public void BackInTime(long deltaTime)
+        {
+            LastUpdateTime -= deltaTime;
+            Recount();
         }
 
         public void Change(int addAmount)
         {
             Recount();
-            InnerSet(_innerAmount + addAmount, _innerAmount >= description.renewableMaximum);
+            InnerSet(_innerAmount + addAmount, _innerAmount >= description.RenewableMaximum);
         }
 
         public void Set(int setAmount)
@@ -41,22 +48,22 @@ namespace Game.Models.GameResources.Renewable
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict().SetArgs("amount", amount, "ts", lastUpdateTime);
+            return SerializeUtil.Dict().SetArgs("amount", Amount, "ts", LastUpdateTime);
         }
         
         public void Recount()
         {
-            if (_innerAmount >= description.renewableMaximum) return;
+            if (_innerAmount >= description.RenewableMaximum) return;
             
             var currentTime = TimeUtil.GetUnixTime();
 
-            var newAmount = _innerAmount + (int)(currentTime - lastUpdateTime) / description.recoveryTime * description.recoveryStep;
+            var newAmount = _innerAmount + (int)(currentTime - LastUpdateTime) / description.RecoveryTime * description.RecoveryStep;
 
-            lastUpdateTime = currentTime - (currentTime - lastUpdateTime) % description.recoveryTime;
+            LastUpdateTime = currentTime - (currentTime - LastUpdateTime) % description.RecoveryTime;
 
-            if (newAmount >= description.renewableMaximum && _innerAmount <= description.renewableMaximum)
+            if (newAmount >= description.RenewableMaximum && _innerAmount <= description.RenewableMaximum)
             {
-                newAmount = description.renewableMaximum;
+                newAmount = description.RenewableMaximum;
             }
 
             int oldAmount = _innerAmount;
@@ -65,10 +72,10 @@ namespace Game.Models.GameResources.Renewable
             
             if (oldAmount != _innerAmount)
             {
-                Call(categories.changed, new RenewableResourceHandlerArgs { oldAmount = oldAmount, newAmount = _innerAmount });
+                Call(categories.Changed, new RenewableResourceHandlerArgs { OldAmount = oldAmount, NewAmount = _innerAmount });
             }
         }
-
+        
         private void InnerSet(int setAmount, bool updateTime)
         {
             if (_innerAmount == setAmount) return;
@@ -79,14 +86,14 @@ namespace Game.Models.GameResources.Renewable
             }
 
             int oldAmount = _innerAmount;
-            _innerAmount = setAmount > description.maximum ? description.maximum : setAmount;
+            _innerAmount = setAmount > description.Maximum ? description.Maximum : setAmount;
 
             if (updateTime)
             {
-                lastUpdateTime = TimeUtil.GetUnixTime();
+                LastUpdateTime = TimeUtil.GetUnixTime();
             }
 
-            Call(categories.changed, new RenewableResourceHandlerArgs { oldAmount = oldAmount, newAmount = _innerAmount });
+            Call(categories.Changed, new RenewableResourceHandlerArgs { OldAmount = oldAmount, NewAmount = _innerAmount });
         }
     }
 }

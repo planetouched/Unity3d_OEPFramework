@@ -4,6 +4,6 @@ namespace Game.Models.GameResources.Renewable
 {
     public class RenewableResourceCategories
     {
-        public readonly EventCategory changed = new EventCategory();
+        public EventCategory Changed { get; } = new EventCategory();
     }
 }
