@@ -28,6 +28,8 @@ namespace OEPCommon.AssetBundles.Futures
 
         protected override void OnComplete()
         {
+            _processChecker.onProcessComplete -= ProcessChecker_Complete;
+            
             if (isCancelled)
             {
                 _processChecker.Cancel();

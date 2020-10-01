@@ -8,6 +8,8 @@ namespace Game.Models.Triggers
 {
     public class QueueTrigger : CompositeTrigger
     {
+        public const string Type = "queue";
+        
         private int _step;
 
         public Trigger currentStep => GetStep(_step);
@@ -26,7 +28,7 @@ namespace Game.Models.Triggers
             currentStep.Activate();
         }
 
-        protected override void OnActivated()
+        protected override void OnActivate()
         {
             ActivateCurrentStep();
         }
@@ -58,7 +60,7 @@ namespace Game.Models.Triggers
             return null;
         }
 
-        protected override void OnDeactivated()
+        protected override void OnDeactivate()
         {
             currentStep.Detach(currentStep.categories.completed, OnCurrentTriggerCompleted);
         }

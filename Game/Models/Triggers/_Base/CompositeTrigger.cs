@@ -6,12 +6,14 @@ namespace Game.Models.Triggers._Base
 {
     public abstract class CompositeTrigger : Trigger
     {
-        public TriggerCollection triggers { get; private set; }
+        private const string TriggersKey = "triggers";
+        
+        public TriggerCollection triggers { get; }
 
         protected CompositeTrigger(RawNode initNode, TriggerCategories categories, TriggerDescription description, IContext context) 
             : base(initNode, categories, description, context)
         {
-            triggers = new TriggerCollection(initNode.GetNode("triggers"), categories, context, new TriggerDataSource(description.GetNode().GetNode("triggers"), context));
+            triggers = new TriggerCollection(initNode.GetNode(TriggersKey), categories, context, new TriggerDataSource(description.GetNode().GetNode(TriggersKey), context));
         }
 
         public override void Destroy()
@@ -22,7 +24,7 @@ namespace Game.Models.Triggers._Base
 
         public override object Serialize()
         {
-            return SerializeUtil.Dict(base.Serialize()).SetArgs("triggers", triggers.Serialize());
+            return SerializeUtil.Dict(base.Serialize()).SetArgs(TriggersKey, triggers.Serialize());
         }
     }
 }

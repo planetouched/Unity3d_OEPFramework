@@ -14,7 +14,7 @@ namespace OEPCommon.AssetBundles
         private readonly List<IProcess> _processes = new List<IProcess>();
         private readonly IList<IFuture> _listToLoad = new List<IFuture>();
 
-        private readonly IList<(string resource, bool async)> _itemsToLoad = new List<(string resource, bool async)>();
+        private readonly IList<(string resource, bool async, bool withDependencies)> _itemsToLoad = new List<(string resource, bool async, bool withDependencies)>();
         private readonly IList<IProcess> _processesToLoad = new List<IProcess>();
 
         public void Add(IProcess process)
@@ -22,19 +22,20 @@ namespace OEPCommon.AssetBundles
             _processesToLoad.Add(process);
         }
 
-        public void Add(string resource, bool async = true)
+        public void Add(string resource, bool async = true, bool withDependencies = true)
         {
-            _itemsToLoad.Add((resource, async));
+            _itemsToLoad.Add((resource, async, withDependencies));
         }
 
         public void Load(Unloader unloader = null, int simultaneousLimit = int.MaxValue)
         {
             isComplete = false;
 
-            foreach (var pair in _itemsToLoad)
+            foreach (var tuple in _itemsToLoad)
             {
-                var loadFuture = AssetBundleManager.Load(pair.resource, out var processList, pair.async);
-                unloader?.Add(pair.resource);
+                var loadFuture = AssetBundleManager.Load(tuple.resource, out var processList, tuple.async, tuple.withDependencies);
+
+                unloader?.Add(tuple.resource, tuple.withDependencies);
 
                 if (!loadFuture.isDone)
                 {
@@ -104,8 +105,8 @@ namespace OEPCommon.AssetBundles
                 
                 if (onProcessComplete != null)
                 {
-                    onProcessComplete.Invoke(this);
-                    onProcessComplete = null;
+                    onProcessComplete.Invoke(this); 
+                    //onProcessComplete = null;
                 }
             }
             else

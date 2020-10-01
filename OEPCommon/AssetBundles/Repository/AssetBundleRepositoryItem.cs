@@ -6,9 +6,10 @@ namespace OEPCommon.AssetBundles.Repository
     public class AssetBundleRepositoryItem
     {
         public string[] dependencies { get; }
-        public Hash128 hash { get; }
+        public string hash { get; }
         public uint crc32 { get; }
         public int packedSize { get; }
+        public bool isDependency { get; }
         
         public string file { get; }
 
@@ -17,8 +18,9 @@ namespace OEPCommon.AssetBundles.Repository
             dependencies = node.GetStringArray("dependencies");
             crc32 = node.GetUInt("crc");
             packedSize = node.GetInt("size");
-            hash = Hash128.Parse(node.GetString("hash"));
+            hash = node.GetString("hash");
             file = node.GetString("file");
+            isDependency = node.GetBool("dependency");
         }
     }
 }

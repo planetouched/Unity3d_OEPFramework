@@ -10,9 +10,7 @@ namespace Game.Models.Triggers.Util
             if (triggers == null)
                 triggers = new List<Trigger>();
 
-            var ct = trigger as CompositeTrigger;
-
-            if (ct != null)
+            if (trigger is CompositeTrigger ct)
             {
                 foreach (var r in ct.triggers)
                     Decomposite(r.Value, triggers);

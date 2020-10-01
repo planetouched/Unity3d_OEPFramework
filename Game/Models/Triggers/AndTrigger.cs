@@ -7,12 +7,14 @@ namespace Game.Models.Triggers
 {
     public class AndTrigger : CompositeTrigger
     {
+        public const string Type = "and";
+        
         public AndTrigger(RawNode initNode, TriggerCategories categories, TriggerDescription description, IContext context)
             : base(initNode, categories, description, context)
         {
         }
 
-        protected override void OnActivated()
+        protected override void OnActivate()
         {
             foreach (var triggerPair in triggers)
             {
@@ -43,7 +45,7 @@ namespace Game.Models.Triggers
             Complete();
         }
 
-        protected override void OnDeactivated()
+        protected override void OnDeactivate()
         {
             triggers.Detach(triggers.categories.completed, OnTriggerCompleted);
 

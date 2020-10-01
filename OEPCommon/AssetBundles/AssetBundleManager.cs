@@ -19,7 +19,6 @@ namespace OEPCommon.AssetBundles
         {
             public Object[] allAssets { get; set; }
             public AssetBundle assetBundle { get; set; }
-            public UnityWebRequest request { get; set; }
             public int loadedCount { get; set; }
             public bool dependency { get; }
 
@@ -59,7 +58,7 @@ namespace OEPCommon.AssetBundles
 
         public static int loadedPackedSize { get; private set; }
         public static AssetBundlesRepository repository { get; private set; }
-        public static string assetBundlesUrl { get; private set; }
+        public static string storageUrl { get; private set; }
         
         private static readonly Dictionary<string, LoadAssetBundlePromise> _loading = new Dictionary<string, LoadAssetBundlePromise>();
         private static readonly Dictionary<string, AssetBundleRef> _assetBundlesRefs = new Dictionary<string, AssetBundleRef>();
@@ -69,7 +68,7 @@ namespace OEPCommon.AssetBundles
 
         public static void Init(RawNode repositoryNode, string assetBundlesUrl)
         {
-            AssetBundleManager.assetBundlesUrl = assetBundlesUrl;
+            AssetBundleManager.storageUrl = assetBundlesUrl;
             repository = new AssetBundlesRepository(repositoryNode);
         }
 
@@ -111,7 +110,6 @@ namespace OEPCommon.AssetBundles
                     if (pair.Value.dependency)
                     {
                         pair.Value.assetBundle.Unload(true);
-                        pair.Value.request.Dispose();
                     }
                     loadedPackedSize -= repository[pair.Key].packedSize;
                     remove.Add(pair.Key);
@@ -129,10 +127,15 @@ namespace OEPCommon.AssetBundles
             return Resources.UnloadUnusedAssets();
         }
 
-        public static void TryUnload(string mainAssetBundle)
+        public static void TryUnload(string mainAssetBundle, bool withDependencies)
         {
             var node = new DependencyNode(mainAssetBundle, null);
-            CollectDependencies(node);
+            
+            if (withDependencies)
+            {
+                CollectDependencies(node);
+            }
+            
             var assetBundles = new List<DependencyNode>();
             
             while (!GetLatestDependencies(node, assetBundles))
@@ -142,29 +145,38 @@ namespace OEPCommon.AssetBundles
                     var assetBundleRef = _assetBundlesRefs[assetBundle.assetBundleName];
                     assetBundleRef.loadedCount--;
                     if (assetBundleRef.loadedCount < 0)
-                        throw new Exception("loadedCount < 0, assetBundle: " + assetBundle);
+                        throw new Exception("loadedCount < 0, assetBundle: " + assetBundle.assetBundleName);
                 }
 
                 assetBundles.Clear();
             }
         }
 
-        public static bool ClearOldCachedVersions(string assetBundle)
+        public static void ClearOldCachedVersions(List<string> assetBundleNames = null)
         {
-            return Caching.ClearOtherCachedVersions(assetBundle, repository[assetBundle].hash);
-        }
+            var list = new List<(string hash, string fileName)>();
 
-        public static void ClearAllOldCache()
-        {
-            foreach (var pair in repository)
+            if (assetBundleNames != null)
             {
-                if (ClearOldCachedVersions(pair.Key));
+                foreach (var assetBundleName in assetBundleNames)
+                {
+                    list.Add((assetBundleName, repository[assetBundleName].hash));
+                }
             }
+            else
+            {
+                foreach (var pair in repository)
+                {
+                    list.Add((pair.Key, pair.Value.hash));
+                }
+            }
+            
+            AssetBundleCache.ClearOtherCachedVersions(list);
         }
         
         public static bool IsCached(string assetBundleName)
         {
-            return Caching.IsVersionCached(Path.Combine(assetBundlesUrl, repository[assetBundleName].file), repository[assetBundleName].hash);
+            return AssetBundleCache.IsCached(assetBundleName, repository[assetBundleName].hash);
         }
 
         public static bool IsLoaded(string assetBundleName)
@@ -172,61 +184,74 @@ namespace OEPCommon.AssetBundles
             return _assetBundlesRefs.ContainsKey(assetBundleName);
         }
 
-        public static UnityWebRequestAssetBundleFuture DownloadFromWWW(string assetBundleName, bool runImmediately = true)
+        public static bool IsDependency(string assetBundleName)
+        {
+            return repository[assetBundleName].isDependency;
+        }
+
+        public static AssetBundleWebRequestFuture DownloadFromWWW(string assetBundleName, bool runImmediately = true)
         {
             if (IsCached(assetBundleName)) return null;
             Debug.Log("Download WWW: " + assetBundleName);
             var node = repository[assetBundleName];
-            var f = new UnityWebRequestAssetBundleFuture(Path.Combine(assetBundlesUrl, node.file), node.hash, node.crc32, Int32.MaxValue);
+            
+            var requestFuture =  new AssetBundleWebRequestFuture(storageUrl, node.file, false, node.crc32, Int32.MaxValue);
+            
+            requestFuture.AddListener(f =>
+            {
+                if (f.isDone)
+                {
+                    AssetBundleCache.AddCache(assetBundleName, node.hash, f.Cast<AssetBundleWebRequestFuture>().result, false);
+                }
+            });
             
             if (runImmediately)
             {
-                f.Run();
+                requestFuture.Run();
             }
             
-            return f;
+            return requestFuture;
         }
 
         private static void LoadPartial(CascadeLoading cascade, List<IProcess> processList, IEnumerable<DependencyNode> assetBundles, bool async)
         {
             foreach (var assetBundleNode in assetBundles)
             {
-                string assetBundle = assetBundleNode.assetBundleName;
+                string assetBundleName = assetBundleNode.assetBundleName;
                 
-                if (_loading.ContainsKey(assetBundle))
+                if (_loading.ContainsKey(assetBundleName))
                 {
                     //loading at this moment
-                    var loader = _loading[assetBundle];
+                    var loader = _loading[assetBundleName];
                     cascade.AddFuture(loader);
 
                     processList?.Add(loader);
-                    _assetBundlesRefs[assetBundle].loadedCount++;
+                    _assetBundlesRefs[assetBundleName].loadedCount++;
                 }
                 else
                 {
-                    if (_assetBundlesRefs.ContainsKey(assetBundle) && !_loading.ContainsKey(assetBundle))
+                    if (_assetBundlesRefs.ContainsKey(assetBundleName) && !_loading.ContainsKey(assetBundleName))
                     {
                         //already downloaded
-                        _assetBundlesRefs[assetBundle].loadedCount++;
+                        _assetBundlesRefs[assetBundleName].loadedCount++;
                         continue;
                     }
 
                     //first load
-                    var node = repository[assetBundle];
-                    var loader = new LoadAssetBundlePromise(node.file, assetBundlesUrl, assetBundleNode.parentNode != null, node.hash, node.crc32, async);
-                    _loading.Add(assetBundle, loader);
-                    _assetBundlesRefs.Add(assetBundle, new AssetBundleRef(assetBundleNode.parentNode != null));
+                    var node = repository[assetBundleName];
+                    var loader = new LoadAssetBundlePromise(node.file, storageUrl, node.isDependency, node.crc32, node.hash, async);
+                    _loading.Add(assetBundleName, loader);
+                    _assetBundlesRefs.Add(assetBundleName, new AssetBundleRef(node.isDependency));
 
                     loader.AddListener(future =>
                     {
-                        _loading.Remove(assetBundle);
-                        loadedPackedSize += repository[assetBundle].packedSize;
-                        var ab = _assetBundlesRefs[assetBundle];
+                        _loading.Remove(assetBundleName);
+                        loadedPackedSize += repository[assetBundleName].packedSize;
+                        var ab = _assetBundlesRefs[assetBundleName];
                         ab.allAssets = loader.GetAssets();
                         ab.assetBundle = loader.assetBundle;
-                        ab.request = loader.request;
                         
-                        onBundleCompleted?.Invoke(assetBundle);
+                        onBundleCompleted?.Invoke(assetBundleName);
                     });
 
                     cascade.AddFuture(loader);
@@ -235,22 +260,31 @@ namespace OEPCommon.AssetBundles
             }
         }
 
-        public static IFuture Load(string mainAssetBundleName, out List<IProcess> processList, bool async = true)
+        public static IFuture Load(string assetBundleName, out List<IProcess> processList, bool async = true, bool withDependencies = true)
         {
             var cascade = new CascadeLoading();
-            var node = new DependencyNode(mainAssetBundleName, null);
-            CollectDependencies(node);
+            var node = new DependencyNode(assetBundleName, null);
             var assetBundles = new List<DependencyNode>();
             processList = new List<IProcess>();
-            
-            while (!GetLatestDependencies(node, assetBundles))
-            {
-                LoadPartial(cascade, processList, assetBundles, async);
-                assetBundles.Clear();
-                cascade.Next();
-            }
 
-            cascade.Trim();
+            if (withDependencies)
+            {
+                CollectDependencies(node);
+            
+                while (!GetLatestDependencies(node, assetBundles))
+                {
+                    LoadPartial(cascade, processList, assetBundles, async);
+                    assetBundles.Clear();
+                    cascade.Next();
+                }
+
+                cascade.Trim();
+            }
+            else
+            {
+                LoadPartial(cascade, processList, new [] {node}, async);
+            }
+            
             return new CascadeLoadingPromise(cascade);
         }
 

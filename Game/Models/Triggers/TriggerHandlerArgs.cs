@@ -1,7 +1,9 @@
+using Basement.BLFramework.Essential.Rewards.Result;
+
 namespace Game.Models.Triggers
 {
     public class TriggerHandlerArgs
     {
-        public object triggerData { get; set; }
+        public IRewardResult rewardResult { get; set; }
     }
 }

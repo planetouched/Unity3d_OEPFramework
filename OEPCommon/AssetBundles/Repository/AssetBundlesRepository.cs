@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Basement.Common;
+using UnityEngine;
 
 namespace OEPCommon.AssetBundles.Repository
 {
@@ -8,13 +9,24 @@ namespace OEPCommon.AssetBundles.Repository
     {
         private readonly Dictionary<string, AssetBundleRepositoryItem> _repositoryItems = new Dictionary<string, AssetBundleRepositoryItem>();
 
-        public AssetBundleRepositoryItem this[string key] => _repositoryItems[key];
+        public AssetBundleRepositoryItem this[string key]
+        {
+            get
+            {
+                if (!_repositoryItems.ContainsKey(key))
+                {
+                    Debug.LogError("Error with key: " + key);
+                }
+
+                return _repositoryItems[key];
+            }
+        }
 
         public AssetBundlesRepository(RawNode node)
         {
             foreach (var dict in node.GetUnsortedCollection())
             {
-                _repositoryItems.Add(dict.Key, new AssetBundleRepositoryItem(dict.Value)); 
+                _repositoryItems.Add(dict.Key, new AssetBundleRepositoryItem(dict.Value));
             }
         }
 

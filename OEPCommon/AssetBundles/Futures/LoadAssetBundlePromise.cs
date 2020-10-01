@@ -6,37 +6,34 @@ using Basement.OEPFramework.Futures.Coroutine;
 using Basement.OEPFramework.UnityEngine;
 using Basement.OEPFramework.UnityEngine.Loop;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace OEPCommon.AssetBundles.Futures
 {
     public class LoadAssetBundlePromise : Future, IProcess
     {
         public AssetBundle assetBundle { get; private set; }
-        public UnityWebRequest request { get; private set; }
 
         public float loadingProgress => (GetLoadingProgress() + GetUnpackProgress()) * 0.5f;
         public event Action<IProcess> onProcessComplete;
         public bool isComplete { get; private set; }
         public bool isDependency { get; }
-        
-        private readonly string _assetBundleName;
-        private readonly string _url;
-        private UnityWebRequestAssetBundleFuture _loadFuture;
+
+        private readonly string _assetBundleFile;
+        private readonly string _storageUrl;
         private UnpackBundlePromise _unpackBundlePromise;
         private readonly bool _async;
-        private readonly Hash128 _hash;
         private readonly uint _crc32;
+        private readonly string _hash128;
+        private bool _isLoad;
 
-        public LoadAssetBundlePromise(string assetBundleName, string url, bool isDependency, Hash128 hash, uint crc32, bool async = true)
+        public LoadAssetBundlePromise(string assetBundleFile, string storageUrl, bool isDependency, uint crc32, string hash128, bool async = true)
         {
-            SetAsPromise(); 
+            SetAsPromise();
+            _hash128 = hash128;
             _crc32 = crc32;
-            _hash = hash;
             _async = async;
-            _assetBundleName = assetBundleName;
-            _hash = hash;
-            _url = url;
+            _assetBundleFile = assetBundleFile;
+            _storageUrl = storageUrl;
             this.isDependency = isDependency;
         }
 
@@ -47,39 +44,63 @@ namespace OEPCommon.AssetBundles.Futures
 
         private float GetLoadingProgress()
         {
-            return _loadFuture != null 
-                ? !_loadFuture.request.disposeDownloadHandlerOnDispose ? _loadFuture.request.downloadProgress : 1 
-                : 0;
+            return _isLoad ? 1 : 0;
         }
 
         private float GetUnpackProgress()
         {
             return _unpackBundlePromise?.asyncOperationProgress ?? 0;
         }
-        
+
         private IEnumerator<IFuture> LoadingProcess()
         {
-            Debug.Log("AssetBundle load: " + Path.Combine(_url, _assetBundleName));
-            
-            _loadFuture = new UnityWebRequestAssetBundleFuture(Path.Combine(_url, _assetBundleName), _hash, _crc32, Int32.MaxValue);
-            yield return _loadFuture.Run();
+            var fileName = Path.GetFileName(_assetBundleFile);
 
-            assetBundle = DownloadHandlerAssetBundle.GetContent(_loadFuture.request);
+            byte[] body;
+            
+            if (!AssetBundleCache.IsCached(fileName, _hash128))
+            {
+                Debug.Log("Download WWW: " + fileName);
+                var request = new AssetBundleWebRequestFuture(_storageUrl, _assetBundleFile, _async, _crc32, Int32.MaxValue);
+                yield return request.Run();
+                body = request.result;
+                AssetBundleCache.AddCache(fileName, _hash128, body, _async);
+            }
+            else
+            {
+                Debug.Log("Load from cache: " + fileName);
+                var task2FutureGetCache = new UnsafeTask2Future<byte[]>(() => AssetBundleCache.GetCache(fileName, _hash128, _async));
+                yield return task2FutureGetCache.Run();
+                body = task2FutureGetCache.result;
+            }
+            
+            if (_async)
+            {
+                var asyncFromMemory = new AssetBundleCreateRequestPromise(() => AssetBundle.LoadFromMemoryAsync(body));
+                yield return asyncFromMemory.Run();
+                assetBundle = asyncFromMemory.result.assetBundle;
+            }
+            else
+            {
+                assetBundle = AssetBundle.LoadFromMemory(body);
+            }
+
+            _isLoad = true;
 
             if (!isDependency)
             {
                 _unpackBundlePromise = new UnpackBundlePromise(assetBundle, _async);
                 yield return _unpackBundlePromise.Run();
-                
-                Sync.Add(() =>
+
+                //check it on new versions. Remove Sync.Add if it works with sync unpacking
+                if (_async)
                 {
                     assetBundle.Unload(false);
-                    _loadFuture.request.Dispose();
-                }, Loops.UPDATE);
-            }
-            else
-            {
-                request = _loadFuture.request;
+                }
+                else
+                {
+                    Sync.Add(() => { assetBundle.Unload(false); }, Loops.UPDATE);
+                }
             }
 
             Complete();

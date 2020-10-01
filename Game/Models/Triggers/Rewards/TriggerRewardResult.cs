@@ -9,7 +9,7 @@ namespace Game.Models.Triggers.Rewards
 {
     public class TriggerRewardResult : RewardResult
     {
-        public Trigger trigger { get; private set; }
+        public Trigger trigger { get; }
 
         public TriggerRewardResult(string type, Trigger trigger) : base(type)
         {

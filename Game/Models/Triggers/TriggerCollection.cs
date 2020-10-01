@@ -1,9 +1,7 @@
 using Basement.BLFramework.Core.Context;
-using Basement.BLFramework.Core.Factories;
 using Basement.BLFramework.Core.Model;
 using Basement.BLFramework.Core.Reference.Description;
 using Basement.Common;
-using Game.Models.Triggers._Base;
 
 namespace Game.Models.Triggers
 {
@@ -15,7 +13,20 @@ namespace Game.Models.Triggers
 
         protected override Trigger Factory(RawNode initNode, TriggerDescription description)
         {
-            return (Trigger)FactoryManager.Build(typeof(Trigger), description.type, initNode, categories, description, GetContext());
+            switch (description.type)
+            {
+                case AndTrigger.Type:
+                    return new AndTrigger(initNode, categories, description, GetContext());
+                
+                case OrTrigger.Type:
+                    return new QueueTrigger(initNode, categories, description, GetContext());
+                
+                case QueueTrigger.Type:
+                    return new QueueTrigger(initNode, categories, description, GetContext());
+                
+                default:
+                    return new Trigger(initNode, categories, description, GetContext());
+            }
         }
     }
 }

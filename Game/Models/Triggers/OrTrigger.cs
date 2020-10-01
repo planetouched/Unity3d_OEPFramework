@@ -7,12 +7,14 @@ namespace Game.Models.Triggers
 {
     public class OrTrigger : CompositeTrigger
     {
+        public const string Type = "or";
+        
         public OrTrigger(RawNode initNode, TriggerCategories categories, TriggerDescription description, IContext context)
             : base(initNode, categories, description, context)
         {
         }
 
-        protected override void OnActivated()
+        protected override void OnActivate()
         {
             triggers.Attach(triggers.categories.completed, OnTriggerCompleted);
             foreach (var triggerPair in triggers)
@@ -41,7 +43,7 @@ namespace Game.Models.Triggers
             }
         }
 
-        protected override void OnDeactivated()
+        protected override void OnDeactivate()
         {
             triggers.Detach(triggers.categories.completed, OnTriggerCompleted);
 
