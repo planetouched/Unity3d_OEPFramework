@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using Basement.OEPFramework.Futures;
@@ -9,41 +10,46 @@ namespace OEPCommon.Threads
     {
         public int taskCount => _taskCount;
         
-        private readonly Queue<IFuture> _tasks = new Queue<IFuture>(128);
+        private readonly ConcurrentQueue<IFuture> _tasks = new ConcurrentQueue<IFuture>();
         private readonly ManualResetEvent _manualResetEvent = new ManualResetEvent(false);
-        private readonly object _syncRoot = new object();
         private volatile bool _shutdown;
         private readonly Thread _thread;
-        private int _taskCount;
+        private volatile int _taskCount;
 
         public SingleThreadExecutor(ThreadPriority threadPriority = ThreadPriority.Normal)
         {
             _thread = new Thread(Work) { Priority = threadPriority, IsBackground = true };
             _thread.Start();
-            while (!_thread.IsAlive) {}
+            
+            var spinWait = new SpinWait();
+            
+            while (!_thread.IsAlive)
+            {
+                spinWait.SpinOnce();
+            }
         }
 
         private void Work()
         {
+            var spinWait = new SpinWait();
+            
             while (!_shutdown)
             {
-                lock (_syncRoot)
-                {
-                    if (_tasks.Count == 0 && !_shutdown)
-                    {
-                        _manualResetEvent.Reset();
-                    }
-                }
-
                 _manualResetEvent.WaitOne();
-
-                while (_tasks.Count > 0)
+                _manualResetEvent.Reset();
+                
+                while (!_tasks.IsEmpty)
                 {
                     IFuture future;
 
-                    lock (_syncRoot)
+                    for (;;)
                     {
-                        future = _tasks.Dequeue();
+                        if (_tasks.TryDequeue(out future))
+                        {
+                            break;
+                        }
+                        
+                        spinWait.SpinOnce();
                     }
 
                     future.Run();
@@ -54,54 +60,50 @@ namespace OEPCommon.Threads
 
         public void Shutdown()
         {
-            lock (_syncRoot)
-            {
-                _shutdown = true;
-                _manualResetEvent.Set();
-            }
+            _shutdown = true;
+            _manualResetEvent.Set();
         }
 
         public T Execute<T>(T future) where T : IFuture
         {
             if (_shutdown)
-                throw new Exception("executor was shutdown");
+            {
+                throw new Exception("executor is shutdown");
+            }
 
             Interlocked.Increment(ref _taskCount);
-            lock (_syncRoot)
-            {
-                _tasks.Enqueue(future);
-                _manualResetEvent.Set();
-            }
+            _tasks.Enqueue(future);
+            _manualResetEvent.Set();
+            
             return future;
         }
 
         public IFuture Execute(Action action)
         {
             if (_shutdown)
-                throw new Exception("executor Shutdown");
-
-            Interlocked.Increment(ref _taskCount);
-            IFuture future = new FutureTask(action);
-            lock (_syncRoot)
             {
-                _tasks.Enqueue(future);
-                _manualResetEvent.Set();
+                throw new Exception("executor is shutdown");
             }
+
+            var future = new FutureTask(action);
+            Interlocked.Increment(ref _taskCount);
+            _tasks.Enqueue(future);
+            _manualResetEvent.Set();
+            
             return future;
         }
 
         public IFuture Execute<T>(Func<T> func)
         {
             if (_shutdown)
-                throw new Exception("executor Shutdown");
-
-            Interlocked.Increment(ref _taskCount);
-            IFuture future = new FutureTask<T>(func);
-            lock (_syncRoot)
             {
-                _tasks.Enqueue(future);
-                _manualResetEvent.Set();
+                throw new Exception("executor is shutdown");
             }
+
+            var future = new FutureTask<T>(func);
+            Interlocked.Increment(ref _taskCount);
+            _tasks.Enqueue(future);
+            _manualResetEvent.Set();
 
             return future;
         }
